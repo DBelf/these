@@ -6,6 +6,8 @@ import jdk.nashorn.internal.runtime.Context;
 import jdk.nashorn.internal.runtime.ErrorManager;
 import jdk.nashorn.internal.runtime.options.Options;
 
+import org.json.*;
+
 /**
  *
  */
@@ -23,9 +25,11 @@ public class JStoJSON {
         Context.setGlobal(contextm.createGlobal());
     }
 
-    public String parse(String code){
+    public JSONObject parse(String code) throws JSONException {
         String json = ScriptUtils.parse(code, "<unknown>", false);
-        return json;
+        JSONObject obj;
+        obj = new JSONObject(json);
+        return obj;
     }
 }
 //For reference: https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey/Parser_API
