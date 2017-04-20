@@ -14,7 +14,7 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         ECMAScriptParser.SourceElementsContext elements = ctx.sourceElements();
 
         for (ECMAScriptParser.SourceElementContext element : elements.sourceElement()){
-            System.out.println("Programelements:");
+            System.out.println("Program elements:");
             element.accept(this);
         }
         return new ASTNode() {
@@ -22,8 +22,13 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     }
 
     @Override
+    public ASTNode visitStatement(ECMAScriptParser.StatementContext ctx) {
+        return super.visitStatement(ctx);
+    }
+
+    @Override
     public ASTNode visitVariableStatement(ECMAScriptParser.VariableStatementContext ctx) {
-        System.out.println(ctx.getText());
+
         return new ASTNode() {
         };
     }
@@ -44,11 +49,33 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitExpressionStatement(ECMAScriptParser.ExpressionStatementContext ctx) {
-        return super.visitExpressionStatement(ctx);
+        ctx.expressionSequence().accept(this);
+        return new ASTNode() {
+        };
+    }
+
+    @Override
+    public ASTNode visitExpressionSequence(ECMAScriptParser.ExpressionSequenceContext ctx) {
+        for (ECMAScriptParser.SingleExpressionContext expression : ctx.singleExpression()){
+            expression.accept(this);
+        }
+        return new ASTNode() {
+        };
+    }
+
+    @Override
+    public ASTNode visitMemberDotExpression(ECMAScriptParser.MemberDotExpressionContext ctx) {
+        System.out.println(ctx.getText());
+        return new ASTNode() {
+        };
     }
 
     @Override
     public ASTNode visitIfStatement(ECMAScriptParser.IfStatementContext ctx) {
         return super.visitIfStatement(ctx);
     }
+
+
 }
+
+//Alle singleexpressions moeten.
