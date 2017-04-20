@@ -11,22 +11,30 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitProgram(ECMAScriptParser.ProgramContext ctx) {
-        return super.visitProgram(ctx);
-    }
+        ECMAScriptParser.SourceElementsContext elements = ctx.sourceElements();
 
-    @Override
-    public ASTNode visitSourceElement(ECMAScriptParser.SourceElementContext ctx) {
-        return super.visitSourceElement(ctx);
-    }
-
-    @Override
-    public ASTNode visitSourceElements(ECMAScriptParser.SourceElementsContext ctx) {
-        return super.visitSourceElements(ctx);
+        for (ECMAScriptParser.SourceElementContext element : elements.sourceElement()){
+            System.out.println("Programelements:");
+            element.accept(this);
+        }
+        return new ASTNode() {
+        };
     }
 
     @Override
     public ASTNode visitVariableStatement(ECMAScriptParser.VariableStatementContext ctx) {
-        return super.visitVariableStatement(ctx);
+        System.out.println(ctx.getText());
+        return new ASTNode() {
+        };
+    }
+
+    @Override
+    public ASTNode visitFunctionDeclaration(ECMAScriptParser.FunctionDeclarationContext ctx) {
+        System.out.println(ctx.Identifier().getText());
+        ECMAScriptParser.FunctionBodyContext body = ctx.functionBody();
+        body.accept(this);
+        return new ASTNode() {
+        };
     }
 
     @Override
