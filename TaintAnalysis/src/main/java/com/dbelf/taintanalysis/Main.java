@@ -12,18 +12,7 @@ import java.io.StringReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String test = " test =\"What is all this?\"\n" +
-                "\n" +
-                "// opens document and uses methods to modify text characteristics\n" +
-                "document.open()\n" +
-                "document.write(test.bold()+\"<P>\")\n" +
-                "document.write(test.fontsize(7)+\"<P>\")\n" +
-                "document.write(test.fontcolor(\"red\")+\"<P>\")\n" +
-                "document.write(test.toUpperCase()+\"<P>\")\n" +
-                "\n" +
-                "//assigns multiple characteristics to text\n" +
-                "document.write(test.italics().fontsize(6).fontcolor(\"green\")+\"<P>\")\n" +
-                "document.open()";
+        String test = "var a = 5.0";
 
         // Create the parser.
         ANTLRInputStream input = new ANTLRInputStream(new StringReader(test));

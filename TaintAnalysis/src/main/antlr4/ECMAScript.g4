@@ -687,9 +687,9 @@ literal
  ;
 
 numericLiteral
- : DecimalLiteral
- | HexIntegerLiteral
- | OctalIntegerLiteral
+ : DecimalLiteral                                                       #DecimalLiteral
+ | HexIntegerLiteral                                                    #HexIntegerLiteral
+ | OctalIntegerLiteral                                                  #OctalIntegerLiteral
  ;
 
 identifierName

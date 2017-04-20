@@ -3,6 +3,7 @@ package com.dbelf.taintanalysis.ast;
 import com.dbelf.taintanalysis.ECMAScriptBaseVisitor;
 import com.dbelf.taintanalysis.ECMAScriptParser;
 import com.dbelf.taintanalysis.ast.nodes.ASTNode;
+import com.dbelf.taintanalysis.ast.nodes.literals.DecimalLiteral;
 
 /**
  *
@@ -28,7 +29,10 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitVariableStatement(ECMAScriptParser.VariableStatementContext ctx) {
-
+        ECMAScriptParser.VariableDeclarationListContext variableDeclarationListContext = ctx.variableDeclarationList();
+        for (ECMAScriptParser.VariableDeclarationContext variableDeclarationContext : variableDeclarationListContext.variableDeclaration()){
+            variableDeclarationContext.accept(this);
+        }
         return new ASTNode() {
         };
     }
@@ -38,7 +42,7 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         System.out.println(ctx.Identifier().getText());
         ECMAScriptParser.FunctionBodyContext body = ctx.functionBody();
         body.accept(this);
-        return new ASTNode() {
+        return new ASTNode() {//TODO make clear
         };
     }
 
@@ -75,7 +79,32 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         return super.visitIfStatement(ctx);
     }
 
+    @Override
+    public ASTNode visitLiteral(ECMAScriptParser.LiteralContext ctx) {
 
+        return super.visitLiteral(ctx);
+    }
+
+    @Override
+    public ASTNode visitDecimalLiteral(ECMAScriptParser.DecimalLiteralContext ctx) {
+        System.out.println(ctx.getText());
+        return new DecimalLiteral(convertTextToDecimal(ctx.getText()));
+    }
+
+    @Override
+    public ASTNode visitHexIntegerLiteral(ECMAScriptParser.HexIntegerLiteralContext ctx) {
+        return super.visitHexIntegerLiteral(ctx);
+    }
+
+    @Override
+    public ASTNode visitOctalIntegerLiteral(ECMAScriptParser.OctalIntegerLiteralContext ctx) {
+        return super.visitOctalIntegerLiteral(ctx);
+    }
+
+
+    private double convertTextToDecimal(String text){
+        return Double.parseDouble(text);
+    }
 }
 
 //Alle singleexpressions moeten.
