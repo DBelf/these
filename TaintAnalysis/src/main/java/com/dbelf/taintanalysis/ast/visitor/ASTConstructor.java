@@ -60,9 +60,7 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitExpressionStatement(ECMAScriptParser.ExpressionStatementContext ctx) {
-        ctx.expressionSequence().accept(this);
-        return new ASTNode() {
-        };
+        return ctx.expressionSequence().accept(this);
     }
 
     @Override
@@ -78,7 +76,9 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitMemberDotExpression(ECMAScriptParser.MemberDotExpressionContext ctx) {
-        System.out.println(ctx.getText());
+        Expression expression = (Expression) ctx.singleExpression().accept(this);
+        Identifier identifier = (Identifier) ctx.identifierName().accept(this);
+        //TODO What to do with this?
         return new ASTNode() {
         };
     }
