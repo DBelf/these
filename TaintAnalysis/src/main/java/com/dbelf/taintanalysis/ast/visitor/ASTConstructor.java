@@ -7,6 +7,7 @@ import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
 import com.dbelf.taintanalysis.ast.nodes.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
+import com.dbelf.taintanalysis.ast.nodes.sourceelements.FunctionDeclaration;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statements;
 import com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration;
@@ -28,12 +29,8 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
             System.out.println("Program elements:");
             statements.add((Statement) element.accept(this));
         }
-        return statements;
-    }
 
-    @Override
-    public ASTNode visitStatement(ECMAScriptParser.StatementContext ctx) {
-        return super.visitStatement(ctx);
+        return statements;
     }
 
     @Override
@@ -51,12 +48,12 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitFunctionDeclaration(ECMAScriptParser.FunctionDeclarationContext ctx) {
-        Identifier identifier = new Identifier(ctx.Identifier().getText());
 
-        ECMAScriptParser.FunctionBodyContext body = ctx.functionBody();
-        body.accept(this);
-        return new ASTNode() {//TODO make clear
-        };
+        Identifier identifier = new Identifier(ctx.Identifier().getText());
+        ECMAScriptParser.FunctionBodyContext functionBody = ctx.functionBody();
+        Statements body = (Statements) functionBody.accept(this);
+
+        return new FunctionDeclaration(identifier, body);
     }
 
     @Override
@@ -96,7 +93,6 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitLiteral(ECMAScriptParser.LiteralContext ctx) {
-        System.out.println(ctx.getText());
         if (ctx.BooleanLiteral() != null) {
             return new BooleanLiteral(convertTextToBoolean(ctx.getText()));
         } else if (ctx.StringLiteral() != null) {

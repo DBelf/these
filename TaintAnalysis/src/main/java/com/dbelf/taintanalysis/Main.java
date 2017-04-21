@@ -13,7 +13,7 @@ import java.io.StringReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String test = "var a = 5";
+        String test = "function a() {var a = 5;}";
 
         // Create the parser.
         ANTLRInputStream input = new ANTLRInputStream(new StringReader(test));
@@ -23,7 +23,7 @@ public class Main {
         ParseTree tree = parser.program();
 
         ASTConstructor constructor = new ASTConstructor();
-        ASTNode bla = tree.accept(constructor);
-        System.out.println(bla);
+        ASTNode root = tree.accept(constructor);
+        System.out.println(root);
     }
 }

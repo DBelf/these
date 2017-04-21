@@ -1,19 +1,19 @@
 package com.dbelf.taintanalysis.ast.nodes.sourceelements;
 
-import com.dbelf.taintanalysis.ast.nodes.Declaration;
-import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
+import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statements;
 
 /**
  *
  */
-public class FunctionDeclaration extends Declaration {
+public class FunctionDeclaration implements Statement {
 
+    private Identifier name;
     private Statements statements;
 
     public FunctionDeclaration(Identifier name, Statements statements) {
-        super(name);
+        this.name = name;
         this.statements = statements;
     }
 }
