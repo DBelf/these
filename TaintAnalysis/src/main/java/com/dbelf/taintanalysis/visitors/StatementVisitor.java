@@ -1,6 +1,6 @@
 package com.dbelf.taintanalysis.visitors;
 
-import com.dbelf.taintanalysis.ast.nodes.statements.Declaration;
+import com.dbelf.taintanalysis.ast.nodes.Declaration;
 import com.dbelf.taintanalysis.ast.nodes.statements.Switch;
 
 /**

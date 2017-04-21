@@ -7,6 +7,7 @@ import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
 import com.dbelf.taintanalysis.ast.nodes.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
+import com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,15 +37,16 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     @Override
     public ASTNode visitVariableStatement(ECMAScriptParser.VariableStatementContext ctx) {
         ECMAScriptParser.VariableDeclarationListContext variableDeclarationListContext = ctx.variableDeclarationList();
+        //TODO maak wrapper voor declaration lijst.
         for (ECMAScriptParser.VariableDeclarationContext variableDeclarationContext : variableDeclarationListContext.variableDeclaration()){
             Identifier identifier = new Identifier(variableDeclarationContext.Identifier().getText());
             ASTNode expression = variableDeclarationContext.accept(this);
+            VariableDeclaration declaration = new VariableDeclaration(identifier, expression);
         }
         return new ASTNode() {
         };
     }
-//167A43
-    //408C8E
+
     @Override
     public ASTNode visitFunctionDeclaration(ECMAScriptParser.FunctionDeclarationContext ctx) {
         Identifier identifier = new Identifier(ctx.Identifier().getText());
