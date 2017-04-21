@@ -15,6 +15,4 @@ public abstract class Declaration implements Statement {
     public Declaration(Identifier name) {
         this.name = name;
     }
-
-    public <T> T accept(StatementVisitor<T> visitor) { return visitor.visit(this); }
 }

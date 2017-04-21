@@ -1,6 +1,7 @@
 package com.dbelf.taintanalysis;
 
 
+import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.visitor.ASTConstructor;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -22,7 +23,7 @@ public class Main {
         ParseTree tree = parser.program();
 
         ASTConstructor constructor = new ASTConstructor();
-        tree.accept(constructor);
-
+        ASTNode bla = tree.accept(constructor);
+        System.out.println(bla);
     }
 }

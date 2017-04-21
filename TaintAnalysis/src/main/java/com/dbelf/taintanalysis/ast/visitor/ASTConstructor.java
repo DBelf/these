@@ -7,6 +7,8 @@ import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
 import com.dbelf.taintanalysis.ast.nodes.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
+import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
+import com.dbelf.taintanalysis.ast.nodes.statements.Statements;
 import com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration;
 
 import java.util.ArrayList;
@@ -20,13 +22,13 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     @Override
     public ASTNode visitProgram(ECMAScriptParser.ProgramContext ctx) {
         ECMAScriptParser.SourceElementsContext elements = ctx.sourceElements();
+        Statements statements = new Statements();
 
         for (ECMAScriptParser.SourceElementContext element : elements.sourceElement()){
             System.out.println("Program elements:");
-            element.accept(this);
+            statements.add((Statement) element.accept(this));
         }
-        return new ASTNode() {
-        };
+        return statements;
     }
 
     @Override
@@ -37,14 +39,14 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     @Override
     public ASTNode visitVariableStatement(ECMAScriptParser.VariableStatementContext ctx) {
         ECMAScriptParser.VariableDeclarationListContext variableDeclarationListContext = ctx.variableDeclarationList();
+        Statements statements = new Statements();
         //TODO maak wrapper voor declaration lijst.
         for (ECMAScriptParser.VariableDeclarationContext variableDeclarationContext : variableDeclarationListContext.variableDeclaration()){
             Identifier identifier = new Identifier(variableDeclarationContext.Identifier().getText());
             ASTNode expression = variableDeclarationContext.accept(this);
-            VariableDeclaration declaration = new VariableDeclaration(identifier, expression);
+            statements.add(new VariableDeclaration(identifier, expression));
         }
-        return new ASTNode() {
-        };
+        return statements;
     }
 
     @Override
@@ -94,12 +96,15 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitLiteral(ECMAScriptParser.LiteralContext ctx) {
+        System.out.println(ctx.getText());
         if (ctx.BooleanLiteral() != null) {
             return new BooleanLiteral(convertTextToBoolean(ctx.getText()));
         } else if (ctx.StringLiteral() != null) {
             return new StringLiteral(ctx.StringLiteral().getText());
         } else if (ctx.RegularExpressionLiteral() != null) {
             //TODO Decide whether I will implement this.
+        } else if (ctx.numericLiteral() != null) {
+            return ctx.numericLiteral().accept(this);
         }
         return new NullLiteral();
     }

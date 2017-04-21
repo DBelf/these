@@ -1,5 +1,6 @@
 package com.dbelf.taintanalysis.ast.nodes.statements;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,8 +9,8 @@ import java.util.List;
 public class Statements implements Statement{
     private List<Statement> statements;
 
-    public Statements(List<Statement> statements) {
-        this.statements = statements;
+    public Statements() {
+        this.statements = new ArrayList<Statement>();
     }
 
     public void add(Statement statement){
