@@ -3,7 +3,9 @@ package com.dbelf.taintanalysis.ast;
 import com.dbelf.taintanalysis.ECMAScriptBaseVisitor;
 import com.dbelf.taintanalysis.ECMAScriptParser;
 import com.dbelf.taintanalysis.ast.nodes.ASTNode;
-import com.dbelf.taintanalysis.ast.nodes.literals.DecimalLiteral;
+import com.dbelf.taintanalysis.ast.nodes.literals.HexIntegerLiteral;
+import com.dbelf.taintanalysis.ast.nodes.literals.NumberLiteral;
+import com.dbelf.taintanalysis.ast.nodes.literals.OctalIntegerLiteral;
 
 /**
  *
@@ -36,7 +38,8 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         return new ASTNode() {
         };
     }
-
+//167A43
+    //408C8E
     @Override
     public ASTNode visitFunctionDeclaration(ECMAScriptParser.FunctionDeclarationContext ctx) {
         System.out.println(ctx.Identifier().getText());
@@ -81,30 +84,33 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitLiteral(ECMAScriptParser.LiteralContext ctx) {
-
         return super.visitLiteral(ctx);
     }
 
     @Override
     public ASTNode visitDecimalLiteral(ECMAScriptParser.DecimalLiteralContext ctx) {
         System.out.println(ctx.getText());
-        return new DecimalLiteral(convertTextToDecimal(ctx.getText()));
+        return new NumberLiteral(convertTextToDecimal(ctx.getText()));
     }
 
     @Override
     public ASTNode visitHexIntegerLiteral(ECMAScriptParser.HexIntegerLiteralContext ctx) {
-        return super.visitHexIntegerLiteral(ctx);
+        return new HexIntegerLiteral(convertTextToHex(ctx.getText()));
     }
 
     @Override
     public ASTNode visitOctalIntegerLiteral(ECMAScriptParser.OctalIntegerLiteralContext ctx) {
-        return super.visitOctalIntegerLiteral(ctx);
+        return new OctalIntegerLiteral(convertTextToOct(ctx.getText()));
     }
-
 
     private double convertTextToDecimal(String text){
         return Double.parseDouble(text);
     }
+
+    private int convertTextToHex(String text) {return Integer.parseInt(text, 16);}
+
+    private int convertTextToOct(String text) {return Integer.parseInt(text, 8);}
+
 }
 
 //Alle singleexpressions moeten.

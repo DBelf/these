@@ -5,10 +5,11 @@ import com.dbelf.taintanalysis.visitors.LiteralVisitor;
 /**
  *
  */
-public class DecimalLiteral implements NumericLiteral{
+public class NumberLiteral implements NumericLiteral{
+    //JavaScript supports Numbers which don't neccesarily have commas
     private double value;
 
-    public DecimalLiteral(double value) {
+    public NumberLiteral(double value) {
         this.value = value;
     }
 
