@@ -600,7 +600,7 @@ argumentList
 ///     new NewExpression
 ///
 /// MemberExpression :
-///     PrimaryExpression
+///     Expression
 ///     FunctionExpression
 ///     MemberExpression [ Expression ]
 ///     MemberExpression . IdentifierName
@@ -609,7 +609,7 @@ argumentList
 /// FunctionExpression :
 ///     function Identifier? ( FormalParameterList? ) { FunctionBody }
 ///
-/// PrimaryExpression :
+/// Expression :
 ///     this
 ///     Identifier
 ///     Literal

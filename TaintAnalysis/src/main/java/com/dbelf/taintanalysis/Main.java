@@ -1,7 +1,7 @@
 package com.dbelf.taintanalysis;
 
 
-import com.dbelf.taintanalysis.ast.ASTConstructor;
+import com.dbelf.taintanalysis.ast.visitor.ASTConstructor;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;

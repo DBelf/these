@@ -1,11 +1,13 @@
-package com.dbelf.taintanalysis.ast;
+package com.dbelf.taintanalysis.ast.visitor;
 
 import com.dbelf.taintanalysis.ECMAScriptBaseVisitor;
 import com.dbelf.taintanalysis.ECMAScriptParser;
 import com.dbelf.taintanalysis.ast.nodes.ASTNode;
+import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.literals.HexIntegerLiteral;
 import com.dbelf.taintanalysis.ast.nodes.literals.NumberLiteral;
 import com.dbelf.taintanalysis.ast.nodes.literals.OctalIntegerLiteral;
+import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
 
 /**
  *
@@ -33,7 +35,8 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     public ASTNode visitVariableStatement(ECMAScriptParser.VariableStatementContext ctx) {
         ECMAScriptParser.VariableDeclarationListContext variableDeclarationListContext = ctx.variableDeclarationList();
         for (ECMAScriptParser.VariableDeclarationContext variableDeclarationContext : variableDeclarationListContext.variableDeclaration()){
-            variableDeclarationContext.accept(this);
+            Identifier identifier = new Identifier(variableDeclarationContext.Identifier().getText());
+            Expression expression = (Expression) variableDeclarationContext.accept(this);
         }
         return new ASTNode() {
         };
@@ -101,6 +104,16 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     @Override
     public ASTNode visitOctalIntegerLiteral(ECMAScriptParser.OctalIntegerLiteralContext ctx) {
         return new OctalIntegerLiteral(convertTextToOct(ctx.getText()));
+    }
+
+    @Override
+    public ASTNode visitIdentifierExpression(ECMAScriptParser.IdentifierExpressionContext ctx) {
+        return new Identifier(ctx.getText());
+    }
+
+    @Override
+    public ASTNode visitIdentifierName(ECMAScriptParser.IdentifierNameContext ctx) {
+        return new Identifier(ctx.getText());
     }
 
     private double convertTextToDecimal(String text){
