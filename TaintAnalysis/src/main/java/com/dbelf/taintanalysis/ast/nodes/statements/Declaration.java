@@ -1,4 +1,4 @@
-package com.dbelf.taintanalysis.ast.nodes;
+package com.dbelf.taintanalysis.ast.nodes.statements;
 
 import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;

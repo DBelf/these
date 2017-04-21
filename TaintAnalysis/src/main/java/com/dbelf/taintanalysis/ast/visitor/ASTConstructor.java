@@ -7,13 +7,10 @@ import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
 import com.dbelf.taintanalysis.ast.nodes.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
-import com.dbelf.taintanalysis.ast.nodes.sourceelements.FunctionDeclaration;
+import com.dbelf.taintanalysis.ast.nodes.statements.FunctionDeclaration;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statements;
 import com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
