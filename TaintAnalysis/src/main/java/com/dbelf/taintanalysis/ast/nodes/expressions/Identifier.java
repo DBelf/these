@@ -9,7 +9,6 @@ public class Identifier implements Expression {
     private String name;
 
     public Identifier(String name) {
-        System.out.println(name);
         this.name = name;
     }
 

@@ -36,7 +36,7 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         ECMAScriptParser.VariableDeclarationListContext variableDeclarationListContext = ctx.variableDeclarationList();
         for (ECMAScriptParser.VariableDeclarationContext variableDeclarationContext : variableDeclarationListContext.variableDeclaration()){
             Identifier identifier = new Identifier(variableDeclarationContext.Identifier().getText());
-            Expression expression = (Expression) variableDeclarationContext.accept(this);
+            ASTNode expression = variableDeclarationContext.accept(this);
         }
         return new ASTNode() {
         };
@@ -45,8 +45,11 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     //408C8E
     @Override
     public ASTNode visitFunctionDeclaration(ECMAScriptParser.FunctionDeclarationContext ctx) {
-        System.out.println(ctx.Identifier().getText());
+        Identifier identifier = new Identifier(ctx.Identifier().getText());
+
         ECMAScriptParser.FunctionBodyContext body = ctx.functionBody();
+
+
         body.accept(this);
         return new ASTNode() {//TODO make clear
         };
