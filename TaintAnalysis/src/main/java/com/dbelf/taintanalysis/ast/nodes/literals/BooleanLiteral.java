@@ -5,10 +5,10 @@ import com.dbelf.taintanalysis.visitors.LiteralVisitor;
 /**
  *
  */
-public class StringLiteral implements Literal{
-    String value;
+public class BooleanLiteral implements Literal {
+    boolean value;
 
-    public StringLiteral(String value) {
+    public BooleanLiteral(boolean value) {
         this.value = value;
     }
 

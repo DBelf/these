@@ -4,10 +4,12 @@ import com.dbelf.taintanalysis.ECMAScriptBaseVisitor;
 import com.dbelf.taintanalysis.ECMAScriptParser;
 import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
-import com.dbelf.taintanalysis.ast.nodes.literals.HexIntegerLiteral;
-import com.dbelf.taintanalysis.ast.nodes.literals.NumberLiteral;
-import com.dbelf.taintanalysis.ast.nodes.literals.OctalIntegerLiteral;
+import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
+import com.dbelf.taintanalysis.ast.nodes.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -48,8 +50,6 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         Identifier identifier = new Identifier(ctx.Identifier().getText());
 
         ECMAScriptParser.FunctionBodyContext body = ctx.functionBody();
-
-
         body.accept(this);
         return new ASTNode() {//TODO make clear
         };
@@ -69,11 +69,13 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitExpressionSequence(ECMAScriptParser.ExpressionSequenceContext ctx) {
+        ExpressionBlock expressions = new ExpressionBlock();
+
         for (ECMAScriptParser.SingleExpressionContext expression : ctx.singleExpression()){
-            expression.accept(this);
+            expressions.add((Expression) expression.accept(this));
         }
-        return new ASTNode() {
-        };
+
+        return expressions;
     }
 
     @Override
@@ -90,12 +92,18 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitLiteral(ECMAScriptParser.LiteralContext ctx) {
-        return super.visitLiteral(ctx);
+        if (ctx.BooleanLiteral() != null) {
+            return new BooleanLiteral(convertTextToBoolean(ctx.getText()));
+        } else if (ctx.StringLiteral() != null) {
+            return new StringLiteral(ctx.StringLiteral().getText());
+        } else if (ctx.RegularExpressionLiteral() != null) {
+            //TODO Decide whether I will implement this.
+        }
+        return new NullLiteral();
     }
 
     @Override
     public ASTNode visitDecimalLiteral(ECMAScriptParser.DecimalLiteralContext ctx) {
-        System.out.println(ctx.getText());
         return new NumberLiteral(convertTextToDecimal(ctx.getText()));
     }
 
@@ -126,6 +134,8 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     private int convertTextToHex(String text) {return Integer.parseInt(text, 16);}
 
     private int convertTextToOct(String text) {return Integer.parseInt(text, 8);}
+
+    private boolean convertTextToBoolean(String text) {return Boolean.parseBoolean(text);}
 
 }
 
