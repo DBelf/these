@@ -3,6 +3,7 @@ package com.dbelf.taintanalysis.ast.visitor;
 import com.dbelf.taintanalysis.ECMAScriptBaseVisitor;
 import com.dbelf.taintanalysis.ECMAScriptParser;
 import com.dbelf.taintanalysis.ast.nodes.ASTNode;
+import com.dbelf.taintanalysis.ast.nodes.Program;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
 import com.dbelf.taintanalysis.ast.nodes.expressions.binary.*;
@@ -28,7 +29,7 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
             statements.add((Statement) element.accept(this));
         }
 
-        return statements;
+        return new Program(statements);
     }
 
     @Override

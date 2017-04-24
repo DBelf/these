@@ -2,8 +2,11 @@ package com.dbelf.taintanalysis;
 
 
 import com.dbelf.taintanalysis.ast.nodes.ASTNode;
+import com.dbelf.taintanalysis.ast.nodes.Program;
 import com.dbelf.taintanalysis.ast.visitor.ASTConstructor;
+import com.dbelf.taintanalysis.ast.visitor.ASTVisualizer;
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -15,14 +18,17 @@ public class Main {
         String test = "function a(bla) {if ((1*1) == 1) {var a = 1;};}";
 
         // Create the parser.
-        ANTLRInputStream input = new ANTLRInputStream(new StringReader(test));
+        CharStream input = new ANTLRInputStream(test);
         ECMAScriptLexer lexer = new ECMAScriptLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ECMAScriptParser parser = new ECMAScriptParser(tokens);
         ParseTree tree = parser.program();
 
         ASTConstructor constructor = new ASTConstructor();
-        ASTNode root = tree.accept(constructor);
-        System.out.println(root);
+        Program root = (Program) tree.accept(constructor);
+
+        ASTVisualizer visualizer = new ASTVisualizer();
+        root.accept(visualizer);
+        visualizer.visualize();
     }
 }
