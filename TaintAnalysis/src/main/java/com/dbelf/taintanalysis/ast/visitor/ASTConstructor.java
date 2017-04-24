@@ -221,6 +221,25 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     }
 
     @Override
+    public ASTNode visitAssignmentOperatorExpression(ECMAScriptParser.AssignmentOperatorExpressionContext ctx) {
+        Statement lhs = (Statement) ctx.singleExpression().get(0).accept(this);
+        Statement rhs = (Statement) ctx.singleExpression().get(1).accept(this);
+        String operation = ctx.assignmentOperator().getText();
+
+        return new AssignmentOperatorExpression(lhs, rhs, operation);
+    }
+
+    @Override
+    public ASTNode visitFunctionExpression(ECMAScriptParser.FunctionExpressionContext ctx) {//FIXME duplicate code, leave it be?
+        Identifier identifier = new Identifier(ctx.Identifier().getText());
+        ECMAScriptParser.FunctionBodyContext functionBody = ctx.functionBody();
+        Statements body = (Statements) functionBody.accept(this);
+        ParameterList parameters = (ParameterList) ctx.formalParameterList().accept(this);
+
+        return new FunctionDeclaration(identifier, parameters, body);
+    }
+
+    @Override
     public ASTNode visitParenthesizedExpression(ECMAScriptParser.ParenthesizedExpressionContext ctx) {
         return ctx.expressionSequence().accept(this);
     }
