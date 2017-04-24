@@ -11,9 +11,11 @@ public class FunctionDeclaration implements Statement {
 
     private Identifier name;
     private Statements statements;
+    private ParameterList parameters;
 
-    public FunctionDeclaration(Identifier name, Statements statements) {
+    public FunctionDeclaration(Identifier name, ParameterList parameters, Statements statements) {
         this.name = name;
+        this.parameters = parameters;
         this.statements = statements;
     }
 }

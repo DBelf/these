@@ -8,10 +8,8 @@ import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
 import com.dbelf.taintanalysis.ast.nodes.expressions.control.IfElseStatement;
 import com.dbelf.taintanalysis.ast.nodes.expressions.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
-import com.dbelf.taintanalysis.ast.nodes.statements.FunctionDeclaration;
-import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
-import com.dbelf.taintanalysis.ast.nodes.statements.Statements;
-import com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration;
+import com.dbelf.taintanalysis.ast.nodes.statements.*;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
  *
@@ -50,8 +48,9 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         Identifier identifier = new Identifier(ctx.Identifier().getText());
         ECMAScriptParser.FunctionBodyContext functionBody = ctx.functionBody();
         Statements body = (Statements) functionBody.accept(this);
+        ParameterList parameters = (ParameterList) ctx.formalParameterList().accept(this);
 
-        return new FunctionDeclaration(identifier, body);
+        return new FunctionDeclaration(identifier, parameters, body);
     }
 
     @Override
@@ -62,6 +61,17 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
             statements.add((Statement) element.accept(this));
         }
         return statements;
+    }
+
+    @Override
+    public ASTNode visitFormalParameterList(ECMAScriptParser.FormalParameterListContext ctx) {
+        ParameterList parameters = new ParameterList();
+
+        for (TerminalNode identifier: ctx.Identifier()) {
+            parameters.add(new Identifier(identifier.getText()));
+        }
+
+        return parameters;
     }
 
     @Override

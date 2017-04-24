@@ -12,7 +12,7 @@ import java.io.StringReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String test = "function a() {if (true) {var a = 1;};}";
+        String test = "function a(bla) {if (true) {var a = 1;};}";
 
         // Create the parser.
         ANTLRInputStream input = new ANTLRInputStream(new StringReader(test));
