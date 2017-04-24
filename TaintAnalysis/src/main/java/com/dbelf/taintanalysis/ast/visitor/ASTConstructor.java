@@ -176,6 +176,51 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     }
 
     @Override
+    public ASTNode visitBitAndExpression(ECMAScriptParser.BitAndExpressionContext ctx) {
+        Statement lhs = (Statement) ctx.singleExpression().get(0).accept(this);
+        Statement rhs = (Statement) ctx.singleExpression().get(1).accept(this);
+        String operation = ctx.children.get(1).getText();
+
+        return new BitAndExpression(lhs, rhs, operation);
+    }
+
+    @Override
+    public ASTNode visitBitXOrExpression(ECMAScriptParser.BitXOrExpressionContext ctx) {
+        Statement lhs = (Statement) ctx.singleExpression().get(0).accept(this);
+        Statement rhs = (Statement) ctx.singleExpression().get(1).accept(this);
+        String operation = ctx.children.get(1).getText();
+
+        return new BitXOrExpression(lhs, rhs, operation);
+    }
+
+    @Override
+    public ASTNode visitBitOrExpression(ECMAScriptParser.BitOrExpressionContext ctx) {
+        Statement lhs = (Statement) ctx.singleExpression().get(0).accept(this);
+        Statement rhs = (Statement) ctx.singleExpression().get(1).accept(this);
+        String operation = ctx.children.get(1).getText();
+
+        return new BitOrExpression(lhs, rhs, operation);
+    }
+
+    @Override
+    public ASTNode visitLogicalAndExpression(ECMAScriptParser.LogicalAndExpressionContext ctx) {
+        Statement lhs = (Statement) ctx.singleExpression().get(0).accept(this);
+        Statement rhs = (Statement) ctx.singleExpression().get(1).accept(this);
+        String operation = ctx.children.get(1).getText();
+
+        return new LogicalAndExpression(lhs, rhs, operation);
+    }
+
+    @Override
+    public ASTNode visitLogicalOrExpression(ECMAScriptParser.LogicalOrExpressionContext ctx) {
+        Statement lhs = (Statement) ctx.singleExpression().get(0).accept(this);
+        Statement rhs = (Statement) ctx.singleExpression().get(1).accept(this);
+        String operation = ctx.children.get(1).getText();
+
+        return new LogicalOrExpression(lhs, rhs, operation);
+    }
+
+    @Override
     public ASTNode visitParenthesizedExpression(ECMAScriptParser.ParenthesizedExpressionContext ctx) {
         return ctx.expressionSequence().accept(this);
     }
