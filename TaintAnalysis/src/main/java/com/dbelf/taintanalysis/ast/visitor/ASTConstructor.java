@@ -5,8 +5,7 @@ import com.dbelf.taintanalysis.ECMAScriptParser;
 import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
-import com.dbelf.taintanalysis.ast.nodes.expressions.binary.EqualityExpression;
-import com.dbelf.taintanalysis.ast.nodes.expressions.binary.MultiplicativeExpression;
+import com.dbelf.taintanalysis.ast.nodes.expressions.binary.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.control.IfElseStatement;
 import com.dbelf.taintanalysis.ast.nodes.expressions.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
@@ -147,6 +146,33 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         String operation = ctx.children.get(1).getText();
 
         return new EqualityExpression(lhs, rhs, operation);
+    }
+
+    @Override
+    public ASTNode visitAdditiveExpression(ECMAScriptParser.AdditiveExpressionContext ctx) {
+        Statement lhs = (Statement) ctx.singleExpression().get(0).accept(this);
+        Statement rhs = (Statement) ctx.singleExpression().get(1).accept(this);
+        String operation = ctx.children.get(1).getText();
+
+        return new AdditiveExpression(lhs, rhs, operation);
+    }
+
+    @Override
+    public ASTNode visitBitShiftExpression(ECMAScriptParser.BitShiftExpressionContext ctx) {
+        Statement lhs = (Statement) ctx.singleExpression().get(0).accept(this);
+        Statement rhs = (Statement) ctx.singleExpression().get(1).accept(this);
+        String operation = ctx.children.get(1).getText();
+
+        return new BitShiftExpression(lhs, rhs, operation);
+    }
+
+    @Override
+    public ASTNode visitRelationalExpression(ECMAScriptParser.RelationalExpressionContext ctx) {
+        Statement lhs = (Statement) ctx.singleExpression().get(0).accept(this);
+        Statement rhs = (Statement) ctx.singleExpression().get(1).accept(this);
+        String operation = ctx.children.get(1).getText();
+
+        return new RelationalExpression(lhs, rhs, operation);
     }
 
     @Override
