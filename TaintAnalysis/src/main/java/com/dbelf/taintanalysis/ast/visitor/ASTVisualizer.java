@@ -1,7 +1,16 @@
 package com.dbelf.taintanalysis.ast.visitor;
 
 import com.dbelf.taintanalysis.ast.nodes.Program;
+import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
+import com.dbelf.taintanalysis.ast.nodes.expressions.binary.*;
+import com.dbelf.taintanalysis.ast.nodes.expressions.unary.*;
+import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
+import com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration;
+import com.dbelf.taintanalysis.ast.nodes.statements.control.IfElseStatement;
+import com.dbelf.taintanalysis.ast.nodes.statements.control.Switch;
+import com.dbelf.taintanalysis.visitors.ExpressionVisitor;
 import com.dbelf.taintanalysis.visitors.ProgramVisitor;
+import com.dbelf.taintanalysis.visitors.StatementVisitor;
 import com.mxgraph.layout.mxCircleLayout;
 import com.mxgraph.layout.mxIGraphLayout;
 import com.mxgraph.swing.mxGraphComponent;
@@ -15,7 +24,7 @@ import javax.swing.*;
 /**
  *
  */
-public class ASTVisualizer implements ProgramVisitor<Void> {
+public class ASTVisualizer implements ProgramVisitor<Void>, ExpressionVisitor<String>, StatementVisitor<String> {
 
     private DirectedGraph<String, DefaultEdge> graph;
 
@@ -24,10 +33,13 @@ public class ASTVisualizer implements ProgramVisitor<Void> {
     }
 
     public Void visit(Program program) {
-        String statement = "a = 1";
-        graph.addVertex("Entry");
-        graph.addVertex(statement);
-        graph.addEdge("Entry", statement);
+        String entry = "Entry";
+        graph.addVertex(entry);
+        for (Statement statement : program.getStatements().getStatements()) {
+            String stat = statement.accept(this);
+            graph.addVertex(stat);
+            graph.addEdge(entry, stat);
+        }
         return null;
     }
 
@@ -46,5 +58,97 @@ public class ASTVisualizer implements ProgramVisitor<Void> {
         frame.pack();
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
+    }
+
+    public String visit(Identifier identifier) {
+        return identifier.toString();
+    }
+
+    public String visit(IfElseStatement ifElseStatement) {
+        return null;
+    }
+
+    public String visit(MultiplicativeExpression multiplicativeExpression) {
+        return null;
+    }
+
+    public String visit(EqualityExpression equalityExpression) {
+        return null;
+    }
+
+    public String visit(AdditiveExpression additiveExpression) {
+        return null;
+    }
+
+    public String visit(AssignmentOperatorExpression assignmentOperatorExpression) {
+        return null;
+    }
+
+    public String visit(BitAndExpression bitAndExpression) {
+        return null;
+    }
+
+    public String visit(BitOrExpression bitOrExpression) {
+        return null;
+    }
+
+    public String visit(BitShiftExpression bitShiftExpression) {
+        return null;
+    }
+
+    public String visit(BitXOrExpression bitXOrExpression) {
+        return null;
+    }
+
+    public String visit(LogicalAndExpression logicalAndExpression) {
+        return null;
+    }
+
+    public String visit(LogicalOrExpression logicalOrExpression) {
+        return null;
+    }
+
+    public String visit(RelationalExpression relationalExpression) {
+        return null;
+    }
+
+    public String visit(BitNotExpression bitNotExpression) {
+        return null;
+    }
+
+    public String visit(NotExpression notExpression) {
+        return null;
+    }
+
+    public String visit(PostDecrementExpression postDecrementExpression) {
+        return null;
+    }
+
+    public String visit(PostIncrementExpression postIncrementExpression) {
+        return null;
+    }
+
+    public String visit(PreDecrementExpression preDecrementExpression) {
+        return null;
+    }
+
+    public String visit(UnaryMinus unaryMinus) {
+        return null;
+    }
+
+    public String visit(UnaryPlusExpression unaryPlusExpression) {
+        return null;
+    }
+
+    public String visit(PreIncrementExpression preIncrementExpression) {
+        return null;
+    }
+
+    public String visit(VariableDeclaration variableDeclaration) {
+        return variableDeclaration.toString();
+    }
+
+    public String visit(Switch switchstatement) {
+        return null;
     }
 }

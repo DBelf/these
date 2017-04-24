@@ -12,6 +12,11 @@ public class Identifier implements Expression {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public <T> T accept(ExpressionVisitor<T> visitor) {
         return visitor.visit(this);
     }

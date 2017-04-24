@@ -15,5 +15,10 @@ public class VariableDeclaration extends Declaration {
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "VarDec: " + super.toString() + " = " + value.toString();
+    }
+
     public <T> T accept(StatementVisitor<T> visitor) { return visitor.visit(this); }
 }

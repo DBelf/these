@@ -15,7 +15,8 @@ import java.io.StringReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String test = "function a(bla) {if ((1*1) == 1) {var a = 1;};}";
+        String test = "var a = 1; var b = 3;";
+
 
         // Create the parser.
         CharStream input = new ANTLRInputStream(test);
