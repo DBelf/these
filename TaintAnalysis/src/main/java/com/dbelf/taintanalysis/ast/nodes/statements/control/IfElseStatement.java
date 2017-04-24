@@ -1,6 +1,5 @@
-package com.dbelf.taintanalysis.ast.nodes.expressions.control;
+package com.dbelf.taintanalysis.ast.nodes.statements.control;
 
-import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statements;
 import com.dbelf.taintanalysis.visitors.ExpressionVisitor;
@@ -9,7 +8,7 @@ import com.dbelf.taintanalysis.visitors.ExpressionVisitor;
 /**
  *
  */
-public class IfElseStatement implements Expression {
+public class IfElseStatement implements Statement {
 
     private Statement condition;
     private Statements ifStatements;

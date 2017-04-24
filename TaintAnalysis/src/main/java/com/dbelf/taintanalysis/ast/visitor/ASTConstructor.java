@@ -6,9 +6,10 @@ import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
 import com.dbelf.taintanalysis.ast.nodes.expressions.binary.*;
-import com.dbelf.taintanalysis.ast.nodes.expressions.control.IfElseStatement;
+import com.dbelf.taintanalysis.ast.nodes.statements.control.IfElseStatement;
 import com.dbelf.taintanalysis.ast.nodes.expressions.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
+import com.dbelf.taintanalysis.ast.nodes.expressions.unary.*;
 import com.dbelf.taintanalysis.ast.nodes.statements.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -237,6 +238,70 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         ParameterList parameters = (ParameterList) ctx.formalParameterList().accept(this);
 
         return new FunctionDeclaration(identifier, parameters, body);
+    }
+
+    @Override
+    public ASTNode visitBitNotExpression(ECMAScriptParser.BitNotExpressionContext ctx) {
+        Statement expression = (Statement) ctx.singleExpression().accept(this);
+        String operation = ctx.getChild(0).getText();
+
+        return new BitNotExpression(expression, operation);
+    }
+
+    @Override
+    public ASTNode visitNotExpression(ECMAScriptParser.NotExpressionContext ctx) {
+        Statement expression = (Statement) ctx.singleExpression().accept(this);
+        String operation = ctx.getChild(0).getText();
+
+        return new NotExpression(expression, operation);
+    }
+
+    @Override
+    public ASTNode visitUnaryMinusExpression(ECMAScriptParser.UnaryMinusExpressionContext ctx) {
+        Statement expression = (Statement) ctx.singleExpression().accept(this);
+        String operation = ctx.getChild(0).getText();
+
+        return new UnaryMinus(expression, operation);
+    }
+
+    @Override
+    public ASTNode visitUnaryPlusExpression(ECMAScriptParser.UnaryPlusExpressionContext ctx) {
+        Statement expression = (Statement) ctx.singleExpression().accept(this);
+        String operation = ctx.getChild(0).getText();
+
+        return new UnaryPlusExpression(expression, operation);
+    }
+
+    @Override
+    public ASTNode visitPreIncrementExpression(ECMAScriptParser.PreIncrementExpressionContext ctx) {
+        Statement expression = (Statement) ctx.singleExpression().accept(this);
+        String operation = ctx.getChild(0).getText();
+
+        return new PreIncrementExpression(expression, operation);
+    }
+
+    @Override
+    public ASTNode visitPreDecreaseExpression(ECMAScriptParser.PreDecreaseExpressionContext ctx) {
+        Statement expression = (Statement) ctx.singleExpression().accept(this);
+        String operation = ctx.getChild(0).getText();
+
+        return new PreDecrementExpression(expression, operation);
+    }
+
+    @Override
+    public ASTNode visitPostDecreaseExpression(ECMAScriptParser.PostDecreaseExpressionContext ctx) {
+        Statement expression = (Statement) ctx.singleExpression().accept(this);
+        String operation = ctx.getChild(1).getText();
+
+        return new PostDecrementExpression(expression, operation);
+    }
+
+    @Override
+    public ASTNode visitPostIncrementExpression(ECMAScriptParser.PostIncrementExpressionContext ctx) {
+        Statement expression = (Statement) ctx.singleExpression().accept(this);
+        String operation = ctx.getChild(1).getText();
+
+        return new PostIncrementExpression(expression, operation);
     }
 
     @Override
