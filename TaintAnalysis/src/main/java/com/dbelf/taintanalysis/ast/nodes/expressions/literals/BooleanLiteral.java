@@ -1,4 +1,4 @@
-package com.dbelf.taintanalysis.ast.nodes.literals;
+package com.dbelf.taintanalysis.ast.nodes.expressions.literals;
 
 import com.dbelf.taintanalysis.visitors.LiteralVisitor;
 

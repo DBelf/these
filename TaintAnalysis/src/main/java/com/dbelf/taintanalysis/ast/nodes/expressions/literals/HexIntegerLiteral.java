@@ -1,14 +1,15 @@
-package com.dbelf.taintanalysis.ast.nodes.literals;
+package com.dbelf.taintanalysis.ast.nodes.expressions.literals;
 
 import com.dbelf.taintanalysis.visitors.LiteralVisitor;
 
 /**
  *
  */
-public class OctalIntegerLiteral implements NumericLiteral{
+public class HexIntegerLiteral implements NumericLiteral{
+
     private int value;
 
-    public OctalIntegerLiteral(int value){
+    public HexIntegerLiteral(int value){
         this.value = value;
     }
 

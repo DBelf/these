@@ -5,7 +5,8 @@ import com.dbelf.taintanalysis.ECMAScriptParser;
 import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.ExpressionBlock;
-import com.dbelf.taintanalysis.ast.nodes.literals.*;
+import com.dbelf.taintanalysis.ast.nodes.expressions.control.IfElseStatement;
+import com.dbelf.taintanalysis.ast.nodes.expressions.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
 import com.dbelf.taintanalysis.ast.nodes.statements.FunctionDeclaration;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
@@ -54,6 +55,16 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
     }
 
     @Override
+    public ASTNode visitFunctionBody(ECMAScriptParser.FunctionBodyContext ctx) {
+        Statements statements = new Statements();
+        ECMAScriptParser.SourceElementsContext elements = ctx.sourceElements();
+        for (ECMAScriptParser.SourceElementContext element : elements.sourceElement()) {
+            statements.add((Statement) element.accept(this));
+        }
+        return statements;
+    }
+
+    @Override
     public ASTNode visitEmptyStatement(ECMAScriptParser.EmptyStatementContext ctx) {
         return super.visitEmptyStatement(ctx);
     }
@@ -74,6 +85,19 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         return expressions;
     }
 
+
+    @Override
+    public ASTNode visitBlock(ECMAScriptParser.BlockContext ctx) {
+        Statements statements = new Statements();
+        ECMAScriptParser.StatementListContext statementListContext = ctx.statementList();
+
+        for(ECMAScriptParser.StatementContext statement : statementListContext.statement()) {
+            statements.add((Statement) statement.accept(this));
+        }
+
+        return statements;
+    }
+
     @Override
     public ASTNode visitMemberDotExpression(ECMAScriptParser.MemberDotExpressionContext ctx) {
         Expression expression = (Expression) ctx.singleExpression().accept(this);
@@ -85,7 +109,14 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
 
     @Override
     public ASTNode visitIfStatement(ECMAScriptParser.IfStatementContext ctx) {
-        return super.visitIfStatement(ctx);
+        Statement condition = (Statement) ctx.expressionSequence().accept(this);
+        Statements ifStatements = (Statements) ctx.statement().get(0).accept(this);
+        Statements elseStatements = null;
+
+        if (ctx.statement().size() > 1) {
+            elseStatements = (Statements) ctx.statement().get(0).accept(this);
+        }
+        return new IfElseStatement(condition, ifStatements, elseStatements);
     }
 
     @Override
