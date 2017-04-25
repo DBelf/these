@@ -1,8 +1,7 @@
 package com.dbelf.taintanalysis.ast.nodes.expressions.binary;
 
-import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
-import com.dbelf.taintanalysis.visitors.ExpressionVisitor;
+import com.dbelf.taintanalysis.visitors.StatementVisitor;
 
 /**
  *
@@ -13,7 +12,7 @@ public class EqualityExpression extends BinaryExpression {
         super(lhs, rhs, operation);
     }
 
-    public <T> T accept(ExpressionVisitor<T> visitor) {
+    public <T> T accept(StatementVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

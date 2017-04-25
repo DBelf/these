@@ -1,6 +1,6 @@
 package com.dbelf.taintanalysis.ast.nodes.expressions;
 
-import com.dbelf.taintanalysis.visitors.ExpressionVisitor;
+import com.dbelf.taintanalysis.visitors.StatementVisitor;
 
 /**
  *
@@ -17,7 +17,7 @@ public class Identifier implements Expression {
         return name;
     }
 
-    public <T> T accept(ExpressionVisitor<T> visitor) {
+    public <T> T accept(StatementVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

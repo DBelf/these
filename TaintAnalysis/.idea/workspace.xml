@@ -25,162 +25,127 @@
     <favorites_list name="TaintAnalysis" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.40668693">
       <split-first>
-        <leaf>
-          <file leaf-file-name="ASTVisualizer.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTVisualizer.java">
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="ASTConstructor.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTConstructor.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="465">
-                  <caret line="41" column="9" lean-forward="false" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
+                <state relative-caret-position="131">
+                  <caret line="78" column="13" lean-forward="true" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="13" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BitNotExpression.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/BitNotExpression.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="288">
+                  <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#1256#1257#0" expanded="true" />
-                    <element signature="e#1344#1345#0" expanded="true" />
-                    <element signature="e#1929#1950#0" expanded="true" />
-                    <element signature="e#2291#2292#0" expanded="true" />
-                    <element signature="e#2335#2336#0" expanded="true" />
-                    <element signature="e#2395#2396#0" expanded="true" />
-                    <element signature="e#2422#2423#0" expanded="true" />
-                    <element signature="e#2500#2501#0" expanded="true" />
-                    <element signature="e#2527#2528#0" expanded="true" />
-                    <element signature="e#2593#2594#0" expanded="true" />
-                    <element signature="e#2620#2621#0" expanded="true" />
-                    <element signature="e#2686#2687#0" expanded="true" />
-                    <element signature="e#2713#2714#0" expanded="true" />
-                    <element signature="e#2799#2800#0" expanded="true" />
-                    <element signature="e#2826#2827#0" expanded="true" />
-                    <element signature="e#2888#2889#0" expanded="true" />
-                    <element signature="e#2915#2916#0" expanded="true" />
-                    <element signature="e#2975#2976#0" expanded="true" />
-                    <element signature="e#3002#3003#0" expanded="true" />
-                    <element signature="e#3068#3069#0" expanded="true" />
-                    <element signature="e#3095#3096#0" expanded="true" />
-                    <element signature="e#3157#3158#0" expanded="true" />
-                    <element signature="e#3184#3185#0" expanded="true" />
-                    <element signature="e#3254#3255#0" expanded="true" />
-                    <element signature="e#3281#3282#0" expanded="true" />
-                    <element signature="e#3349#3350#0" expanded="true" />
-                    <element signature="e#3376#3377#0" expanded="true" />
-                    <element signature="e#3446#3447#0" expanded="true" />
-                    <element signature="e#3473#3474#0" expanded="true" />
-                    <element signature="e#3535#3536#0" expanded="true" />
-                    <element signature="e#3562#3563#0" expanded="true" />
-                    <element signature="e#3618#3619#0" expanded="true" />
-                    <element signature="e#3645#3646#0" expanded="true" />
-                    <element signature="e#3721#3722#0" expanded="true" />
-                    <element signature="e#3748#3749#0" expanded="true" />
-                    <element signature="e#3824#3825#0" expanded="true" />
-                    <element signature="e#3851#3852#0" expanded="true" />
-                    <element signature="e#3925#3926#0" expanded="true" />
-                    <element signature="e#3952#3953#0" expanded="true" />
-                    <element signature="e#4002#4003#0" expanded="true" />
-                    <element signature="e#4029#4030#0" expanded="true" />
-                    <element signature="e#4097#4098#0" expanded="true" />
-                    <element signature="e#4124#4125#0" expanded="true" />
-                    <element signature="e#4198#4199#0" expanded="true" />
-                    <element signature="e#4225#4226#0" expanded="true" />
-                    <element signature="e#4293#4294#0" expanded="true" />
-                    <element signature="e#4346#4347#0" expanded="true" />
-                    <element signature="e#4397#4398#0" expanded="true" />
-                    <element signature="e#4424#4425#0" expanded="true" />
+                    <element signature="e#418#419#0" expanded="true" />
+                    <element signature="e#460#461#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Declaration.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Declaration.java">
+          <file leaf-file-name="PostDecrementExpression.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostDecrementExpression.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="200">
-                  <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Statements.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Statements.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="380">
-                  <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
-                  <folding>
-                    <element signature="e#478#479#0" expanded="true" />
-                    <element signature="e#511#512#0" expanded="true" />
-                    <element signature="e#567#568#0" expanded="true" />
-                    <element signature="e#609#610#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Statement.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Statement.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="200">
-                  <caret line="10" column="46" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="46" />
+                <state relative-caret-position="288">
+                  <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
                   <folding>
                     <element signature="imports" expanded="true" />
+                    <element signature="e#432#433#0" expanded="true" />
+                    <element signature="e#474#475#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Program.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/Program.java">
+          <file leaf-file-name="NotExpression.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/NotExpression.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="9" column="20" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+                <state relative-caret-position="288">
+                  <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#476#477#0" expanded="true" />
-                    <element signature="e#509#510#0" expanded="true" />
+                    <element signature="e#412#413#0" expanded="true" />
+                    <element signature="e#454#455#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="FunctionDeclaration.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/FunctionDeclaration.java">
+          <file leaf-file-name="PostIncrementExpression.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostIncrementExpression.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="500">
-                  <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+                <state relative-caret-position="288">
+                  <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
                   <folding>
-                    <element signature="e#728#729#0" expanded="true" />
-                    <element signature="e#786#787#0" expanded="true" />
-                    <element signature="e#842#843#0" expanded="true" />
-                    <element signature="e#884#885#0" expanded="true" />
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#432#433#0" expanded="true" />
+                    <element signature="e#474#475#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="StatementVisitor.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/StatementVisitor.java">
+          <file leaf-file-name="PreDecrementExpression.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreDecrementExpression.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="300">
-                  <caret line="18" column="35" lean-forward="false" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
-                  <folding />
+                <state relative-caret-position="288">
+                  <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#430#431#0" expanded="true" />
+                    <element signature="e#472#473#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ParameterList.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/ParameterList.java">
+          <file leaf-file-name="PreIncrementExpression.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreIncrementExpression.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-                  <folding />
+                <state relative-caret-position="288">
+                  <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#430#431#0" expanded="true" />
+                    <element signature="e#472#473#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ProgramVisitor.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/ProgramVisitor.java">
+          <file leaf-file-name="UnaryMinus.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryMinus.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="160">
-                  <caret line="8" column="18" lean-forward="false" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
-                  <folding />
+                <state relative-caret-position="288">
+                  <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#406#407#0" expanded="true" />
+                    <element signature="e#448#449#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="UnaryPlusExpression.java" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryPlusExpression.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="312">
+                  <caret line="15" column="34" lean-forward="false" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#424#425#0" expanded="true" />
+                    <element signature="e#466#467#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -188,16 +153,13 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="ECMAScript.g4" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/antlr4/ECMAScript.g4">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-716">
-                  <caret line="618" column="3" lean-forward="false" selection-start-line="618" selection-start-column="3" selection-end-line="618" selection-end-column="3" />
-                  <folding>
-                    <element signature="e#1176#3729#1" expanded="true" />
-                    <element signature="e#3731#6235#1" expanded="true" />
-                  </folding>
+                <state relative-caret-position="307">
+                  <caret line="636" column="30" lean-forward="false" selection-start-line="636" selection-start-column="30" selection-end-line="636" selection-end-column="30" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -209,14 +171,13 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>functiondecla</find>
       <find>expressionsequ</find>
       <find>expressionSequsou</find>
       <find>sourceElemen</find>
@@ -246,6 +207,7 @@
       <find>expressionsequence</find>
       <find>identifierName</find>
       <find>assignmentOperator</find>
+      <find>ifel</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -259,57 +221,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/literals/BooleanLiteral.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/LiteralVisitor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/literals/NullLiteral.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/ExpressionBlock.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/SourceElement.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/Declaration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/sourceelements/SourceElement.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/sourceelements/FunctionDeclaration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Declaration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/Expression.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/literals/Literal.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/Literal.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/ParameterList.java" />
         <option value="$PROJECT_DIR$/src/main/antlr4/ECMAScript.g4" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BinaryExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/MultiplicativeExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/EqualityExpression.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/AdditiveExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/AssignmentOperatorExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitAndExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitOrExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitShiftExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitXOrExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/LogicalAndExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/LogicalOrExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/RelationalExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/BitNotExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/NotExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostDecrementExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreDecrementExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostIncrementExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryMinus.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryPlusExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreIncrementExpression.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/ExpressionVisitor.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/control/IfElseStatement.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/control/IfElseStatement.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/control/Switch.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/ProgramVisitor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTConstructor.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/Identifier.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/VariableDeclaration.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/Main.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/Program.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Statement.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTVisualizer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/FunctionDeclaration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/ParameterList.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/control/Switch.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/control/IfElseStatement.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/VisitorInterface.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/ProgramVisitor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/Expression.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Statements.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/ExpressionVisitor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/AdditiveExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/EqualityExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitXOrExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitShiftExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitOrExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitAndExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/AssignmentOperatorExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/LogicalAndExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/LogicalOrExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/MultiplicativeExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/RelationalExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/Identifier.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/BitNotExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostDecrementExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/NotExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostIncrementExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreDecrementExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreIncrementExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryMinus.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryPlusExpression.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/ExpressionBlock.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTConstructor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/HexIntegerLiteral.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/BooleanLiteral.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/NullLiteral.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/NumberLiteral.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/OctalIntegerLiteral.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/StringLiteral.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/LiteralVisitor.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/StatementVisitor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTVisualizer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/Program.java" />
       </list>
     </option>
   </component>
@@ -327,8 +289,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1920" />
-    <option name="height" value="1200" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -348,19 +312,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TaintAnalysis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="TaintAnalysis" />
@@ -395,25 +348,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TaintAnalysis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="TaintAnalysis" />
+              <option name="myItemId" value="target" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
+              <option name="myItemId" value="generated-sources" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -613,18 +552,121 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="statements" />
+              <option name="myItemId" value="expressions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TaintAnalysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TaintAnalysis" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="control" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="taintanalysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ast" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nodes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="expressions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="literals" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TaintAnalysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TaintAnalysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="taintanalysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ast" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="nodes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="expressions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="binary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TaintAnalysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TaintAnalysis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="antlr4" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -639,7 +681,7 @@
     <property name="$PROJECT_DIR$/src/main/antlr4/ECMAScript.g4::/output-dir" value="$PROJECT_DIR$/target/generated-sources" />
     <property name="$PROJECT_DIR$/src/main/antlr4/ECMAScript.g4::/package" value="com.dbelf.taintanalysis" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
-    <property name="FullScreen" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -1147,11 +1189,14 @@
       <workItem from="1492980442467" duration="317000" />
       <workItem from="1492980787067" duration="387000" />
       <workItem from="1493024137019" duration="15612000" />
+      <workItem from="1493117352052" duration="471000" />
+      <workItem from="1493117842753" duration="419000" />
+      <workItem from="1493120101231" duration="1596000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47308000" />
+    <option name="totallyTimeSpent" value="49794000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1163,7 +1208,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1180,18 +1225,18 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38248047" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38160676" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32957503" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32875264" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32957503" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32971016" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32971016" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32875264" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14322917" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32971016" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32875264" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1220,7 +1265,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="15" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/Main.java</url>
+          <line>30</line>
+          <properties />
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="18" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1229,527 +1282,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="uml://JAVA/com.dbelf.taintanalysis">
-      <provider selected="true" editor-type-id="UmlEditorProvider">
-        <state>
-          <ID>JAVA</ID>
-          <OriginalElement>com.dbelf.taintanalysis</OriginalElement>
-          <nodes>
-            <node x="0.0" y="237.0">com.dbelf.taintanalysis.ast.nodes.sourceelements.FunctionDeclaration</node>
-            <node x="7.5" y="79.0">com.dbelf.taintanalysis.ast.nodes.statements</node>
-            <node x="0.0" y="617.0">com.dbelf.taintanalysis.cfg</node>
-            <node x="561.8301282051282" y="237.0">com.dbelf.taintanalysis.ast.nodes.literals.HexIntegerLiteral</node>
-            <node x="251.0" y="311.0">com.dbelf.taintanalysis.ECMAScriptListener</node>
-            <node x="416.66025641025635" y="158.0">com.dbelf.taintanalysis.ast.nodes.literals.NumericLiteral</node>
-            <node x="244.0064102564102" y="158.0">com.dbelf.taintanalysis.ast.nodes.literals.BooleanLiteral</node>
-            <node x="0.0" y="390.0">com.dbelf.taintanalysis.ECMAScriptBaseVisitor</node>
-            <node x="572.6602564102564" y="158.0">com.dbelf.taintanalysis.ast.nodes.literals.NullLiteral</node>
-            <node x="334.1426282051282" y="0.0">com.dbelf.taintanalysis.ast.nodes.ASTNode</node>
-            <node x="503.5801282051281" y="79.0">com.dbelf.taintanalysis.ast.nodes.literals.Literal</node>
-            <node x="15.0" y="311.0">com.dbelf.taintanalysis.ECMAScriptVisitor</node>
-            <node x="407.8301282051282" y="237.0">com.dbelf.taintanalysis.ast.nodes.literals.NumberLiteral</node>
-            <node x="33.0" y="469.0">com.dbelf.taintanalysis.ast.visitor</node>
-            <node x="701.6602564102564" y="158.0">com.dbelf.taintanalysis.ast.nodes.literals.StringLiteral</node>
-            <node x="236.0" y="390.0">com.dbelf.taintanalysis.ECMAScriptBaseListener</node>
-            <node x="0.0" y="543.0">com.dbelf.taintanalysis.ECMAScriptParser</node>
-            <node x="152.0" y="617.0">com.dbelf.taintanalysis.Main</node>
-            <node x="205.0" y="543.0">com.dbelf.taintanalysis.ECMAScriptLexer</node>
-            <node x="306.6426282051282" y="79.0">com.dbelf.taintanalysis.ast.nodes.expressions</node>
-            <node x="27.0" y="158.0">com.dbelf.taintanalysis.ast.nodes.Declaration</node>
-            <node x="404.0" y="543.0">com.dbelf.taintanalysis.visitors</node>
-            <node x="227.83012820512815" y="237.0">com.dbelf.taintanalysis.ast.nodes.literals.OctalIntegerLiteral</node>
-          </nodes>
-          <notes />
-          <edges>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.literals.StringLiteral" target="com.dbelf.taintanalysis.ast.nodes.literals.Literal">
-              <point x="0.0" y="-14.5" />
-              <point x="762.6602564102564" y="128.0" />
-              <point x="577.9551282051282" y="128.0" />
-              <point x="31.875" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.literals.NumberLiteral" target="com.dbelf.taintanalysis.ast.nodes.literals.NumericLiteral">
-              <point x="0.0" y="-14.5" />
-              <point x="474.8301282051282" y="212.0" />
-              <point x="484.66025641025635" y="212.0" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.literals.OctalIntegerLiteral" target="com.dbelf.taintanalysis.ast.nodes.literals.NumericLiteral">
-              <point x="0.0" y="-14.5" />
-              <point x="307.8301282051282" y="212.0" />
-              <point x="439.32692307692304" y="212.0" />
-              <point x="-45.333333333333314" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.literals.BooleanLiteral" target="com.dbelf.taintanalysis.ast.nodes.literals.Literal">
-              <point x="0.0" y="-14.5" />
-              <point x="311.50641025641016" y="128.0" />
-              <point x="514.2051282051282" y="128.0" />
-              <point x="-31.875" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ECMAScriptBaseVisitor" target="com.dbelf.taintanalysis.ECMAScriptVisitor">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.statements" target="com.dbelf.taintanalysis.ast.nodes.ASTNode">
-              <point x="0.0" y="-14.5" />
-              <point x="85.5" y="54.0" />
-              <point x="351.8092948717948" y="54.0" />
-              <point x="-35.333333333333314" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.literals.HexIntegerLiteral" target="com.dbelf.taintanalysis.ast.nodes.literals.NumericLiteral">
-              <point x="0.0" y="-14.5" />
-              <point x="637.8301282051282" y="212.0" />
-              <point x="529.9935897435896" y="212.0" />
-              <point x="45.333333333333314" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.literals.NumericLiteral" target="com.dbelf.taintanalysis.ast.nodes.literals.Literal">
-              <point x="-5.6843418860808015E-14" y="-14.5" />
-              <point x="484.6602564102563" y="138.0" />
-              <point x="535.4551282051282" y="138.0" />
-              <point x="-10.625" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.visitor" target="com.dbelf.taintanalysis.ECMAScriptBaseVisitor">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ECMAScriptBaseListener" target="com.dbelf.taintanalysis.ECMAScriptListener">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.literals.Literal" target="com.dbelf.taintanalysis.ast.nodes.ASTNode">
-              <point x="0.0" y="-14.5" />
-              <point x="546.0801282051282" y="54.0" />
-              <point x="422.47596153846155" y="54.0" />
-              <point x="35.33333333333337" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.literals.NullLiteral" target="com.dbelf.taintanalysis.ast.nodes.literals.Literal">
-              <point x="0.0" y="-14.5" />
-              <point x="627.1602564102564" y="138.0" />
-              <point x="556.7051282051282" y="138.0" />
-              <point x="10.625" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.statements" target="com.dbelf.taintanalysis.ast.nodes.Declaration">
-              <point x="39.0" y="14.5" />
-              <point x="124.5" y="138.0" />
-              <point x="114.75" y="138.0" />
-              <point x="29.25" y="-14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.expressions" target="com.dbelf.taintanalysis.ast.nodes.ASTNode">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.sourceelements.FunctionDeclaration" target="com.dbelf.taintanalysis.ast.nodes.Declaration">
-              <point x="0.0" y="-14.5" />
-              <point x="0.0" y="14.5" />
-            </edge>
-            <edge source="com.dbelf.taintanalysis.ast.nodes.Declaration" target="com.dbelf.taintanalysis.ast.nodes.statements">
-              <point x="-29.25" y="-14.5" />
-              <point x="56.25" y="138.0" />
-              <point x="46.5" y="138.0" />
-              <point x="-39.0" y="14.5" />
-            </edge>
-          </edges>
-          <settings layout="Hierarchic Group" zoom="1.0" x="209.0" y="121.0" />
-          <SelectedNodes />
-          <Categories />
-          <SCOPE>All</SCOPE>
-          <VISIBILITY>private</VISIBILITY>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/sourceelements/SourceElement.java" />
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/src.zip!/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="105" column="35" lean-forward="true" selection-start-line="105" selection-start-column="35" selection-end-line="105" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/Literal.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="7" column="43" lean-forward="false" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.7/antlr4-runtime-4.7.jar!/org/antlr/v4/runtime/ParserRuleContext.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="202" column="0" lean-forward="false" selection-start-line="202" selection-start-column="0" selection-end-line="202" selection-end-column="0" />
-          <folding>
-            <element signature="e#6442#6443#0" expanded="true" />
-            <element signature="e#6509#6510#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/antlr/antlr4-runtime/4.7/antlr4-runtime-4.7.jar!/org/antlr/v4/runtime/tree/AbstractParseTreeVisitor.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/target/generated-sources/com/dbelf/taintanalysis/ECMAScriptBaseVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="33" column="86" lean-forward="false" selection-start-line="33" selection-start-column="86" selection-end-line="33" selection-end-column="86" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/Expression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/ExpressionBlock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="9" column="33" lean-forward="false" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/target/generated-sources/com/dbelf/taintanalysis/ECMAScriptParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="3838" column="0" lean-forward="false" selection-start-line="3838" selection-start-column="0" selection-end-line="3838" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BinaryExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="16" column="35" lean-forward="false" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/EqualityExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
-          <folding>
-            <element signature="e#484#485#0" expanded="false" />
-            <element signature="e#526#527#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="16" column="5" lean-forward="true" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/MultiplicativeExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="14" column="4" lean-forward="false" selection-start-line="14" selection-start-column="4" selection-end-line="16" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#445#446#0" expanded="false" />
-            <element signature="e#487#488#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/BooleanLiteral.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="12" column="5" lean-forward="false" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
-          <folding>
-            <element signature="e#243#244#0" expanded="false" />
-            <element signature="e#277#278#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitOrExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="19" lean-forward="false" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#428#429#0" expanded="false" />
-            <element signature="e#470#471#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitAndExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="31" lean-forward="true" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#430#431#0" expanded="false" />
-            <element signature="e#472#473#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitShiftExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="29" lean-forward="false" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#434#435#0" expanded="false" />
-            <element signature="e#476#477#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/BitNotExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="33" lean-forward="true" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#420#421#0" expanded="false" />
-            <element signature="e#462#463#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/LogicalAndExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="34" lean-forward="true" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#438#439#0" expanded="false" />
-            <element signature="e#480#481#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitXOrExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="35" lean-forward="false" selection-start-line="15" selection-start-column="35" selection-end-line="15" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#430#431#0" expanded="false" />
-            <element signature="e#472#473#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/AssignmentOperatorExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="27" lean-forward="true" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#454#455#0" expanded="false" />
-            <element signature="e#496#497#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/RelationalExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="15" column="33" lean-forward="true" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/LogicalOrExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="15" column="33" lean-forward="true" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostIncrementExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="33" lean-forward="true" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#434#435#0" expanded="false" />
-            <element signature="e#476#477#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryMinus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="32" lean-forward="true" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#408#409#0" expanded="false" />
-            <element signature="e#450#451#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryPlusExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="34" lean-forward="true" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#426#427#0" expanded="false" />
-            <element signature="e#468#469#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreDecrementExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="15" column="34" lean-forward="true" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostDecrementExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="15" column="33" lean-forward="true" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/NotExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="33" lean-forward="true" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#414#415#0" expanded="false" />
-            <element signature="e#456#457#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/AdditiveExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="31" lean-forward="false" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
-          <folding>
-            <element signature="e#335#336#0" expanded="false" />
-            <element signature="e#377#378#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/control/IfElseStatement.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="10" column="49" lean-forward="false" selection-start-line="10" selection-start-column="49" selection-end-line="10" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#686#687#0" expanded="false" />
-            <element signature="e#738#739#0" expanded="false" />
-            <element signature="e#796#797#0" expanded="false" />
-            <element signature="e#838#839#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/antlr4/ECMAScript.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-716">
-          <caret line="618" column="3" lean-forward="false" selection-start-line="618" selection-start-column="3" selection-end-line="618" selection-end-column="3" />
-          <folding>
-            <element signature="e#1176#3729#1" expanded="true" />
-            <element signature="e#3731#6235#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/control/Switch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreIncrementExpression.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="15" column="33" lean-forward="false" selection-start-line="15" selection-start-column="33" selection-end-line="15" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#432#433#0" expanded="false" />
-            <element signature="e#474#475#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/LiteralVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="2" lean-forward="true" selection-start-line="5" selection-start-column="2" selection-end-line="5" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/ExpressionVisitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="51" column="59" lean-forward="false" selection-start-line="51" selection-start-column="59" selection-end-line="51" selection-end-column="59" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTConstructor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/VariableDeclaration.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="8" column="3" lean-forward="true" selection-start-line="8" selection-start-column="3" selection-end-line="8" selection-end-column="3" />
-          <folding>
-            <element signature="e#487#488#0" expanded="true" />
-            <element signature="e#566#567#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="17" column="44" lean-forward="false" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1761,37 +1297,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/ParameterList.java">
+    <entry file="file://$PROJECT_DIR$/TaintAnalysis.iml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="168">
+          <caret line="6" column="5" lean-forward="true" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/ProgramVisitor.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Declaration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="18" lean-forward="false" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/Program.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" column="20" lean-forward="false" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#476#477#0" expanded="true" />
-            <element signature="e#509#510#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="308">
+          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Statement.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
+        <state relative-caret-position="280">
           <caret line="10" column="46" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1799,111 +1321,582 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Declaration.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/FunctionDeclaration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        <state relative-caret-position="84">
+          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/control/Switch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="10" column="33" lean-forward="false" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTVisualizer.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/ParameterList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="41" column="9" lean-forward="false" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
+        <state relative-caret-position="168">
+          <caret line="11" column="45" lean-forward="false" selection-start-line="11" selection-start-column="45" selection-end-line="11" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/VisitorInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="5" column="34" lean-forward="false" selection-start-line="5" selection-start-column="34" selection-end-line="5" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/control/IfElseStatement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1256#1257#0" expanded="true" />
-            <element signature="e#1344#1345#0" expanded="true" />
-            <element signature="e#1929#1950#0" expanded="true" />
-            <element signature="e#2291#2292#0" expanded="true" />
-            <element signature="e#2335#2336#0" expanded="true" />
-            <element signature="e#2395#2396#0" expanded="true" />
-            <element signature="e#2422#2423#0" expanded="true" />
-            <element signature="e#2500#2501#0" expanded="true" />
-            <element signature="e#2527#2528#0" expanded="true" />
-            <element signature="e#2593#2594#0" expanded="true" />
-            <element signature="e#2620#2621#0" expanded="true" />
-            <element signature="e#2686#2687#0" expanded="true" />
-            <element signature="e#2713#2714#0" expanded="true" />
-            <element signature="e#2799#2800#0" expanded="true" />
-            <element signature="e#2826#2827#0" expanded="true" />
-            <element signature="e#2888#2889#0" expanded="true" />
-            <element signature="e#2915#2916#0" expanded="true" />
-            <element signature="e#2975#2976#0" expanded="true" />
-            <element signature="e#3002#3003#0" expanded="true" />
-            <element signature="e#3068#3069#0" expanded="true" />
-            <element signature="e#3095#3096#0" expanded="true" />
-            <element signature="e#3157#3158#0" expanded="true" />
-            <element signature="e#3184#3185#0" expanded="true" />
-            <element signature="e#3254#3255#0" expanded="true" />
-            <element signature="e#3281#3282#0" expanded="true" />
-            <element signature="e#3349#3350#0" expanded="true" />
-            <element signature="e#3376#3377#0" expanded="true" />
-            <element signature="e#3446#3447#0" expanded="true" />
-            <element signature="e#3473#3474#0" expanded="true" />
-            <element signature="e#3535#3536#0" expanded="true" />
-            <element signature="e#3562#3563#0" expanded="true" />
-            <element signature="e#3618#3619#0" expanded="true" />
-            <element signature="e#3645#3646#0" expanded="true" />
-            <element signature="e#3721#3722#0" expanded="true" />
-            <element signature="e#3748#3749#0" expanded="true" />
-            <element signature="e#3824#3825#0" expanded="true" />
-            <element signature="e#3851#3852#0" expanded="true" />
-            <element signature="e#3925#3926#0" expanded="true" />
-            <element signature="e#3952#3953#0" expanded="true" />
-            <element signature="e#4002#4003#0" expanded="true" />
-            <element signature="e#4029#4030#0" expanded="true" />
-            <element signature="e#4097#4098#0" expanded="true" />
-            <element signature="e#4124#4125#0" expanded="true" />
-            <element signature="e#4198#4199#0" expanded="true" />
-            <element signature="e#4225#4226#0" expanded="true" />
-            <element signature="e#4293#4294#0" expanded="true" />
-            <element signature="e#4346#4347#0" expanded="true" />
-            <element signature="e#4397#4398#0" expanded="true" />
-            <element signature="e#4424#4425#0" expanded="true" />
+            <element signature="e#794#795#0" expanded="true" />
+            <element signature="e#836#837#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/FunctionDeclaration.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/ProgramVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+        <state relative-caret-position="240">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/Expression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="8" column="45" lean-forward="false" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
           <folding>
-            <element signature="e#728#729#0" expanded="true" />
-            <element signature="e#786#787#0" expanded="true" />
-            <element signature="e#842#843#0" expanded="true" />
-            <element signature="e#884#885#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/statements/Statements.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="26" column="35" lean-forward="false" selection-start-line="26" selection-start-column="35" selection-end-line="26" selection-end-column="35" />
+        <state relative-caret-position="168">
+          <caret line="11" column="44" lean-forward="false" selection-start-line="11" selection-start-column="44" selection-end-line="11" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/ExpressionVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="11" column="4" lean-forward="false" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/AdditiveExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="40" />
           <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#432#433#0" expanded="true" />
+            <element signature="e#474#475#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BinaryExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="354">
+          <caret line="16" column="35" lean-forward="false" selection-start-line="16" selection-start-column="35" selection-end-line="16" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/EqualityExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="37" lean-forward="false" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitXOrExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="29" lean-forward="false" selection-start-line="14" selection-start-column="29" selection-end-line="14" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#428#429#0" expanded="true" />
+            <element signature="e#470#471#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitShiftExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#432#433#0" expanded="true" />
+            <element signature="e#474#475#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitOrExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="32" lean-forward="false" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#426#427#0" expanded="true" />
+            <element signature="e#468#469#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/BitAndExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="31" lean-forward="false" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#428#429#0" expanded="true" />
+            <element signature="e#470#471#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/AssignmentOperatorExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="33" lean-forward="false" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#452#453#0" expanded="true" />
+            <element signature="e#494#495#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/LogicalAndExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#436#437#0" expanded="true" />
             <element signature="e#478#479#0" expanded="true" />
-            <element signature="e#511#512#0" expanded="true" />
-            <element signature="e#567#568#0" expanded="true" />
-            <element signature="e#609#610#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/LogicalOrExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#434#435#0" expanded="true" />
+            <element signature="e#476#477#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/MultiplicativeExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#443#444#0" expanded="true" />
+            <element signature="e#485#486#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/binary/RelationalExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#436#437#0" expanded="true" />
+            <element signature="e#478#479#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/Identifier.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state relative-caret-position="248">
+          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="e#396#397#0" expanded="true" />
+            <element signature="e#438#439#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/BitNotExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#418#419#0" expanded="true" />
+            <element signature="e#460#461#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostDecrementExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#432#433#0" expanded="true" />
+            <element signature="e#474#475#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/NotExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#412#413#0" expanded="true" />
+            <element signature="e#454#455#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PostIncrementExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#432#433#0" expanded="true" />
+            <element signature="e#474#475#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreDecrementExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#430#431#0" expanded="true" />
+            <element signature="e#472#473#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/PreIncrementExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#430#431#0" expanded="true" />
+            <element signature="e#472#473#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryMinus.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#406#407#0" expanded="true" />
+            <element signature="e#448#449#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/unary/UnaryPlusExpression.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="15" column="34" lean-forward="false" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#424#425#0" expanded="true" />
+            <element signature="e#466#467#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/ExpressionBlock.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/com.dbelf.taintanalysis.ast.nodes">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>com.dbelf.taintanalysis.ast.nodes</OriginalElement>
+          <nodes>
+            <node x="605.0" y="237.0">com.dbelf.taintanalysis.ast.nodes.expressions.binary</node>
+            <node x="377.0" y="237.0">com.dbelf.taintanalysis.ast.nodes.expressions.unary</node>
+            <node x="446.54464285714283" y="158.0">com.dbelf.taintanalysis.ast.nodes.expressions.Expression</node>
+            <node x="506.0" y="237.0">com.dbelf.taintanalysis.ast.nodes.expressions.Identifier</node>
+            <node x="304.0625" y="79.0">com.dbelf.taintanalysis.ast.nodes.statements.Statement</node>
+            <node x="408.0625" y="0.0">com.dbelf.taintanalysis.ast.nodes.ASTNode</node>
+            <node x="553.5446428571429" y="158.0">com.dbelf.taintanalysis.ast.nodes.statements.control</node>
+            <node x="287.54464285714283" y="158.0">com.dbelf.taintanalysis.ast.nodes.statements.FunctionDeclaration</node>
+            <node x="111.0" y="158.0">com.dbelf.taintanalysis.ast.nodes.statements.Declaration</node>
+            <node x="0.0" y="158.0">com.dbelf.taintanalysis.ast.nodes.statements.Statements</node>
+            <node x="410.0625" y="79.0">com.dbelf.taintanalysis.ast.nodes.Program</node>
+            <node x="244.0" y="237.0">com.dbelf.taintanalysis.ast.nodes.expressions.literals</node>
+            <node x="508.0625" y="79.0">com.dbelf.taintanalysis.ast.nodes.statements.ParameterList</node>
+            <node x="90.0" y="237.0">com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.expressions.Identifier" target="com.dbelf.taintanalysis.ast.nodes.expressions.Expression">
+              <point x="0.0" y="-14.5" />
+              <point x="545.5" y="217.0" />
+              <point x="500.91964285714283" y="217.0" />
+              <point x="10.875" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.statements.Statements" target="com.dbelf.taintanalysis.ast.nodes.statements.Statement">
+              <point x="0.0" y="-14.5" />
+              <point x="45.5" y="128.0" />
+              <point x="312.6625" y="128.0" />
+              <point x="-34.39999999999998" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.statements.FunctionDeclaration" target="com.dbelf.taintanalysis.ast.nodes.statements.Statement">
+              <point x="0.0" y="-14.5" />
+              <point x="357.04464285714283" y="138.0" />
+              <point x="347.0625" y="138.0" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration" target="com.dbelf.taintanalysis.ast.nodes.statements.Declaration">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.expressions.binary" target="com.dbelf.taintanalysis.ast.nodes.expressions.Expression">
+              <point x="0.0" y="-14.5" />
+              <point x="661.0" y="207.0" />
+              <point x="522.6696428571429" y="207.0" />
+              <point x="32.62500000000006" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.Program" target="com.dbelf.taintanalysis.ast.nodes.ASTNode">
+              <point x="0.0" y="-14.5" />
+              <point x="0.0" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.statements.Statement" target="com.dbelf.taintanalysis.ast.nodes.ASTNode">
+              <point x="0.0" y="-14.5" />
+              <point x="347.0625" y="54.0" />
+              <point x="421.7291666666667" y="54.0" />
+              <point x="-27.333333333333314" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.statements.ParameterList" target="com.dbelf.taintanalysis.ast.nodes.ASTNode">
+              <point x="0.0" y="-14.5" />
+              <point x="560.0625" y="54.0" />
+              <point x="476.3958333333333" y="54.0" />
+              <point x="27.333333333333314" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.expressions.Expression" target="com.dbelf.taintanalysis.ast.nodes.statements.Statement">
+              <point x="5.6843418860808015E-14" y="-14.5" />
+              <point x="490.0446428571429" y="138.0" />
+              <point x="364.2625" y="138.0" />
+              <point x="17.19999999999999" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.statements.Declaration" target="com.dbelf.taintanalysis.ast.nodes.statements.Statement">
+              <point x="0.0" y="-14.5" />
+              <point x="157.0" y="138.0" />
+              <point x="329.8625" y="138.0" />
+              <point x="-17.19999999999999" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.expressions.unary" target="com.dbelf.taintanalysis.ast.nodes.expressions.Expression">
+              <point x="0.0" y="-14.5" />
+              <point x="431.5" y="217.0" />
+              <point x="479.16964285714283" y="217.0" />
+              <point x="-10.875" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.statements.control" target="com.dbelf.taintanalysis.ast.nodes.statements.Statement">
+              <point x="0.0" y="-14.5" />
+              <point x="612.0446428571429" y="128.0" />
+              <point x="381.4625" y="128.0" />
+              <point x="34.39999999999998" y="14.5" />
+            </edge>
+            <edge source="com.dbelf.taintanalysis.ast.nodes.expressions.literals" target="com.dbelf.taintanalysis.ast.nodes.expressions.Expression">
+              <point x="0.0" y="-14.5" />
+              <point x="300.5" y="207.0" />
+              <point x="457.41964285714283" y="207.0" />
+              <point x="-32.625" y="14.5" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="0.8" x="-102.0" y="-173.0" />
+          <SelectedNodes />
+          <Categories />
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/HexIntegerLiteral.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="15" column="29" lean-forward="false" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/BooleanLiteral.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="14" column="28" lean-forward="false" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#245#246#0" expanded="true" />
+            <element signature="e#279#280#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/NumberLiteral.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="15" column="40" lean-forward="false" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/OctalIntegerLiteral.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/StringLiteral.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="14" column="40" lean-forward="false" selection-start-line="14" selection-start-column="40" selection-end-line="14" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/LiteralVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="4" lean-forward="false" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/expressions/literals/NullLiteral.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="14" column="35" lean-forward="false" selection-start-line="14" selection-start-column="35" selection-end-line="14" selection-end-column="35" />
+          <folding>
+            <element signature="e#269#270#0" expanded="true" />
+            <element signature="e#311#312#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/visitors/StatementVisitor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="18" column="35" lean-forward="false" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
+        <state relative-caret-position="847">
+          <caret line="77" column="37" lean-forward="false" selection-start-line="77" selection-start-column="37" selection-end-line="77" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/jgrapht/jgrapht-core/1.0.1/jgrapht-core-1.0.1.jar!/org/jgrapht/graph/AbstractBaseGraph.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="89" column="0" lean-forward="false" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="30" column="0" lean-forward="false" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/nodes/Program.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding>
+            <element signature="e#393#394#0" expanded="true" />
+            <element signature="e#435#436#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTVisualizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#4768#4769#0" expanded="true" />
+            <element signature="e#4795#4796#0" expanded="true" />
+            <element signature="e#4859#4860#0" expanded="true" />
+            <element signature="e#4886#4887#0" expanded="true" />
+            <element signature="e#4954#4955#0" expanded="true" />
+            <element signature="e#4981#4982#0" expanded="true" />
+            <element signature="e#5037#5038#0" expanded="true" />
+            <element signature="e#5064#5065#0" expanded="true" />
+            <element signature="e#5122#5123#0" expanded="true" />
+            <element signature="e#5149#5150#0" expanded="true" />
+            <element signature="e#5201#5202#0" expanded="true" />
+            <element signature="e#5228#5229#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/antlr4/ECMAScript.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="636" column="30" lean-forward="false" selection-start-line="636" selection-start-column="30" selection-end-line="636" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/dbelf/taintanalysis/ast/visitor/ASTConstructor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="78" column="13" lean-forward="true" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="13" />
           <folding />
         </state>
       </provider>
@@ -1937,6 +1930,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
+          <last-edited>scala-sdk-2.10.6</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

@@ -1,6 +1,6 @@
 package com.dbelf.taintanalysis.ast.nodes.expressions.literals;
 
-import com.dbelf.taintanalysis.visitors.LiteralVisitor;
+import com.dbelf.taintanalysis.visitors.StatementVisitor;
 
 /**
  *
@@ -12,5 +12,5 @@ public class BooleanLiteral implements Literal {
         this.value = value;
     }
 
-    public <T> T accept(LiteralVisitor<T> visitor) { return visitor.visit(this); }
+    public <T> T accept(StatementVisitor<T> visitor) { return visitor.visit(this); }
 }

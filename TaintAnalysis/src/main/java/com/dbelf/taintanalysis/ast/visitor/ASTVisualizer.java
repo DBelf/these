@@ -3,12 +3,14 @@ package com.dbelf.taintanalysis.ast.visitor;
 import com.dbelf.taintanalysis.ast.nodes.Program;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
 import com.dbelf.taintanalysis.ast.nodes.expressions.binary.*;
+import com.dbelf.taintanalysis.ast.nodes.expressions.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.unary.*;
+import com.dbelf.taintanalysis.ast.nodes.statements.FunctionDeclaration;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
+import com.dbelf.taintanalysis.ast.nodes.statements.Statements;
 import com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration;
 import com.dbelf.taintanalysis.ast.nodes.statements.control.IfElseStatement;
 import com.dbelf.taintanalysis.ast.nodes.statements.control.Switch;
-import com.dbelf.taintanalysis.visitors.ExpressionVisitor;
 import com.dbelf.taintanalysis.visitors.ProgramVisitor;
 import com.dbelf.taintanalysis.visitors.StatementVisitor;
 import com.mxgraph.layout.mxCircleLayout;
@@ -24,7 +26,7 @@ import javax.swing.*;
 /**
  *
  */
-public class ASTVisualizer implements ProgramVisitor<Void>, ExpressionVisitor<String>, StatementVisitor<String> {
+public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<String> {
 
     private DirectedGraph<String, DefaultEdge> graph;
 
@@ -149,6 +151,38 @@ public class ASTVisualizer implements ProgramVisitor<Void>, ExpressionVisitor<St
     }
 
     public String visit(Switch switchstatement) {
+        return null;
+    }
+
+    public String visit(FunctionDeclaration functionDeclaration) {
+        return null;
+    }
+
+    public String visit(Statements statements) {
+        return null;
+    }
+
+    public String visit(NumberLiteral numberLiteral) {
+        return null;
+    }
+
+    public String visit(HexIntegerLiteral hexIntegerLiteral) {
+        return null;
+    }
+
+    public String visit(OctalIntegerLiteral octalIntegerLiteral) {
+        return null;
+    }
+
+    public String visit(StringLiteral stringLiteral) {
+        return null;
+    }
+
+    public String visit(BooleanLiteral booleanLiteral) {
+        return null;
+    }
+
+    public String visit(NullLiteral nullLiteral) {
         return null;
     }
 }
