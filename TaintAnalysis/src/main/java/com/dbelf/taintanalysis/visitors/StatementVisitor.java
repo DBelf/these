@@ -6,6 +6,7 @@ import com.dbelf.taintanalysis.ast.nodes.expressions.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.unary.*;
 import com.dbelf.taintanalysis.ast.nodes.statements.FunctionDeclaration;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statements;
+import com.dbelf.taintanalysis.ast.nodes.statements.control.ForStatement;
 import com.dbelf.taintanalysis.ast.nodes.statements.control.IfElseStatement;
 import com.dbelf.taintanalysis.ast.nodes.statements.control.Switch;
 import com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration;
@@ -76,4 +77,6 @@ public interface StatementVisitor<T> {
     T visit(BooleanLiteral booleanLiteral);
 
     T visit(NullLiteral nullLiteral);
+
+    T visit(ForStatement forStatement);
 }

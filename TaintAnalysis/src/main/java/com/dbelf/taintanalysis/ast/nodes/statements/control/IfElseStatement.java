@@ -27,4 +27,16 @@ public class IfElseStatement implements Statement {
     public <T> T accept (StatementVisitor<T> visitor) {
         return visitor.visit(this);
     }
+
+    public Statement condition() {
+        return condition;
+    }
+
+    public Statements ifStatements() {
+        return ifStatements;
+    }
+
+    public Statements elseStatements() {
+        return elseStatements;
+    }
 }

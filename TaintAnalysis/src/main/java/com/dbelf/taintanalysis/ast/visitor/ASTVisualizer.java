@@ -9,6 +9,7 @@ import com.dbelf.taintanalysis.ast.nodes.statements.FunctionDeclaration;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statement;
 import com.dbelf.taintanalysis.ast.nodes.statements.Statements;
 import com.dbelf.taintanalysis.ast.nodes.statements.VariableDeclaration;
+import com.dbelf.taintanalysis.ast.nodes.statements.control.ForStatement;
 import com.dbelf.taintanalysis.ast.nodes.statements.control.IfElseStatement;
 import com.dbelf.taintanalysis.ast.nodes.statements.control.Switch;
 import com.dbelf.taintanalysis.visitors.ProgramVisitor;
@@ -43,7 +44,6 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
         graph.addVertex(entry);
         for (Statement statement : program.getStatements().getStatements()) {
             String stat = statement.accept(this);
-            graph.addVertex(stat);
             graph.addEdge(entry, stat);
         }
         return null;
@@ -73,7 +73,20 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
     }
 
     public String visit(IfElseStatement ifElseStatement) {
-        return null;
+        String condition = ifElseStatement.condition().accept(this);
+        String ifClause = ifElseStatement.ifStatements().accept(this);
+
+        graph.addVertex(condition);
+        graph.addVertex(ifClause);
+        graph.addEdge(condition, ifClause);
+
+        if (ifElseStatement.hasElse()){
+            String elseClause = ifElseStatement.elseStatements().accept(this);
+            graph.addVertex(elseClause);
+            graph.addEdge(condition, elseClause);
+        }
+
+        return condition;
     }
 
     public String visit(MultiplicativeExpression multiplicativeExpression) {
@@ -156,7 +169,9 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
         String identifier = variableDeclaration.name();
         String expression = variableDeclaration.value().accept(this);
 
-        return "var " + identifier + " = " + expression;
+        String declaration = "var " + identifier + " = " + expression;
+        graph.addVertex(declaration);
+        return declaration;
     }
 
     public String visit(Switch switchstatement) {
@@ -167,40 +182,55 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
         String name = functionDeclaration.name();
         String body = functionDeclaration.body().accept(this);
         graph.addVertex(name);
-        graph.addVertex(body);
         graph.addEdge(name, body);
         return name;
     }
 
     public String visit(Statements statements) {
-        String statementBlock = "";
+        String statementBlock = "Statements:";
+        graph.addVertex(statementBlock);
         for (Statement statement : statements.getStatements()){
-            statementBlock += statement.accept(this) + "\n";
+            String statementString = statement.accept(this);
+            graph.addEdge(statementBlock, statementString);
         }
         return statementBlock;
     }
 
     public String visit(NumberLiteral numberLiteral) {
-        return numberLiteral.toString();
+        String literal = numberLiteral.toString();
+        graph.addVertex(literal);
+        return literal;
     }
 
     public String visit(HexIntegerLiteral hexIntegerLiteral) {
-        return hexIntegerLiteral.toString();
+        String literal = hexIntegerLiteral.toString();
+        graph.addVertex(literal);
+        return literal;
     }
 
     public String visit(OctalIntegerLiteral octalIntegerLiteral) {
-        return octalIntegerLiteral.toString();
+        String literal = octalIntegerLiteral.toString();
+        graph.addVertex(literal);
+        return literal;
     }
 
     public String visit(StringLiteral stringLiteral) {
-        return stringLiteral.toString();
+        String literal = stringLiteral.toString();
+        graph.addVertex(literal);
+        return literal;
     }
 
     public String visit(BooleanLiteral booleanLiteral) {
-        return booleanLiteral.toString();
+        String literal = booleanLiteral.toString();
+        graph.addVertex(literal);
+        return literal;
     }
 
     public String visit(NullLiteral nullLiteral) {
         return nullLiteral.toString();
+    }
+
+    public String visit(ForStatement forStatement) {
+        return null;
     }
 }

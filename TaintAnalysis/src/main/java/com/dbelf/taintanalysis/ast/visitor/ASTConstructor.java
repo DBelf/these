@@ -6,6 +6,7 @@ import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.nodes.Program;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.binary.*;
+import com.dbelf.taintanalysis.ast.nodes.statements.control.ForStatement;
 import com.dbelf.taintanalysis.ast.nodes.statements.control.IfElseStatement;
 import com.dbelf.taintanalysis.ast.nodes.expressions.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
@@ -101,6 +102,16 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         return expressions;
     }
 
+    @Override
+    public ASTNode visitForStatement(ECMAScriptParser.ForStatementContext ctx) {
+        Statements forHeader = new Statements();
+        for (ECMAScriptParser.ExpressionSequenceContext expression : ctx.expressionSequence()) {
+            forHeader.add((Statement) expression.accept(this));
+        }
+
+        Statement forBody = (Statement) ctx.statement().accept(this);
+        return new ForStatement(forHeader, forBody);
+    }
 
     @Override
     public ASTNode visitBlock(ECMAScriptParser.BlockContext ctx) {
