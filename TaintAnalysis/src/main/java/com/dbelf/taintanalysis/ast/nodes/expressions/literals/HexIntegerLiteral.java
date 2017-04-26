@@ -1,6 +1,6 @@
 package com.dbelf.taintanalysis.ast.nodes.expressions.literals;
 
-import com.dbelf.taintanalysis.visitors.LiteralVisitor;
+import com.dbelf.taintanalysis.visitors.StatementVisitor;
 
 /**
  *
@@ -13,7 +13,7 @@ public class HexIntegerLiteral implements NumericLiteral{
         this.value = value;
     }
 
-    public <T> T accept(LiteralVisitor<T> visitor) {
+    public <T> T accept(StatementVisitor<T> visitor) {
         return visitor.visit(this);
     }
 }

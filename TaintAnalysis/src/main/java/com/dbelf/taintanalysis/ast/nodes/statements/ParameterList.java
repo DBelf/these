@@ -1,5 +1,6 @@
 package com.dbelf.taintanalysis.ast.nodes.statements;
 
+import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  *
  */
-public class ParameterList implements Statement{
+public class ParameterList implements ASTNode{
     private List<Identifier> identifiers;
 
     public ParameterList() {
