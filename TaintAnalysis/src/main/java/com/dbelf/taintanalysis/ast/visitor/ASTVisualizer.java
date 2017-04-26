@@ -26,6 +26,7 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import javax.swing.*;
+import java.util.Stack;
 
 /**
  *
@@ -33,19 +34,22 @@ import javax.swing.*;
 public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<String> {
 
     private DirectedGraph<String, DefaultEdge> graph;
+    private Stack<String> scopeStack;
 
     public ASTVisualizer(){
         graph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
-
+        scopeStack = new Stack<String>();
     }
 
     public Void visit(Program program) {
         String entry = "Entry";
         graph.addVertex(entry);
+        scopeStack.push(entry);
         for (Statement statement : program.getStatements().getStatements()) {
             String stat = statement.accept(this);
             graph.addEdge(entry, stat);
         }
+        scopeStack.pop();
         return null;
     }
 
@@ -90,15 +94,24 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
     }
 
     public String visit(MultiplicativeExpression multiplicativeExpression) {
-        return null;
+        String lhs = multiplicativeExpression.getLhs().accept(this);
+        String rhs = multiplicativeExpression.getRhs().accept(this);
+        String operation = multiplicativeExpression.getOparation();
+        return lhs + " " + operation + " " + rhs;
     }
 
     public String visit(EqualityExpression equalityExpression) {
-        return null;
+        String lhs = equalityExpression.getLhs().accept(this);
+        String rhs = equalityExpression.getRhs().accept(this);
+        String operation = equalityExpression.getOparation();
+        return lhs + " " + operation + " " + rhs;
     }
 
     public String visit(AdditiveExpression additiveExpression) {
-        return null;
+        String lhs = additiveExpression.getLhs().accept(this);
+        String rhs = additiveExpression.getRhs().accept(this);
+        String operation = additiveExpression.getOparation();
+        return lhs + " " + operation + " " + rhs;
     }
 
     public String visit(AssignmentOperatorExpression assignmentOperatorExpression) {
@@ -106,27 +119,45 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
     }
 
     public String visit(BitAndExpression bitAndExpression) {
-        return null;
+        String lhs = bitAndExpression.getLhs().accept(this);
+        String rhs = bitAndExpression.getRhs().accept(this);
+        String operation = bitAndExpression.getOparation();
+        return lhs + " " + operation + " " + rhs;
     }
 
     public String visit(BitOrExpression bitOrExpression) {
-        return null;
+        String lhs = bitOrExpression.getLhs().accept(this);
+        String rhs = bitOrExpression.getRhs().accept(this);
+        String operation = bitOrExpression.getOparation();
+        return lhs + " " + operation + " " + rhs;
     }
 
     public String visit(BitShiftExpression bitShiftExpression) {
-        return null;
+        String lhs = bitShiftExpression.getLhs().accept(this);
+        String rhs = bitShiftExpression.getRhs().accept(this);
+        String operation = bitShiftExpression.getOparation();
+        return lhs + " " + operation + " " + rhs;
     }
 
     public String visit(BitXOrExpression bitXOrExpression) {
-        return null;
+        String lhs = bitXOrExpression.getLhs().accept(this);
+        String rhs = bitXOrExpression.getRhs().accept(this);
+        String operation = bitXOrExpression.getOparation();
+        return lhs + " " + operation + " " + rhs;
     }
 
     public String visit(LogicalAndExpression logicalAndExpression) {
-        return null;
+        String lhs = logicalAndExpression.getLhs().accept(this);
+        String rhs = logicalAndExpression.getRhs().accept(this);
+        String operation = logicalAndExpression.getOparation();
+        return lhs + " " + operation + " " + rhs;
     }
 
     public String visit(LogicalOrExpression logicalOrExpression) {
-        return null;
+        String lhs = logicalOrExpression.getLhs().accept(this);
+        String rhs = logicalOrExpression.getRhs().accept(this);
+        String operation = logicalOrExpression.getOparation();
+        return lhs + " " + operation + " " + rhs;
     }
 
     public String visit(RelationalExpression relationalExpression) {
@@ -179,51 +210,45 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
     }
 
     public String visit(FunctionDeclaration functionDeclaration) {
+
         String name = functionDeclaration.name();
+        scopeStack.push(name);
         String body = functionDeclaration.body().accept(this);
         graph.addVertex(name);
         graph.addEdge(name, body);
+        scopeStack.pop();
         return name;
     }
 
     public String visit(Statements statements) {
-        String statementBlock = "Statements:";
+        String statementBlock = scopeStack.peek();
         graph.addVertex(statementBlock);
         for (Statement statement : statements.getStatements()){
             String statementString = statement.accept(this);
+            graph.addVertex(statementString);
             graph.addEdge(statementBlock, statementString);
         }
         return statementBlock;
     }
 
     public String visit(NumberLiteral numberLiteral) {
-        String literal = numberLiteral.toString();
-        graph.addVertex(literal);
-        return literal;
+        return numberLiteral.toString();
     }
 
     public String visit(HexIntegerLiteral hexIntegerLiteral) {
-        String literal = hexIntegerLiteral.toString();
-        graph.addVertex(literal);
-        return literal;
+        return hexIntegerLiteral.toString();
     }
 
     public String visit(OctalIntegerLiteral octalIntegerLiteral) {
-        String literal = octalIntegerLiteral.toString();
-        graph.addVertex(literal);
-        return literal;
+        return octalIntegerLiteral.toString();
     }
 
     public String visit(StringLiteral stringLiteral) {
-        String literal = stringLiteral.toString();
-        graph.addVertex(literal);
-        return literal;
+        return stringLiteral.toString();
     }
 
     public String visit(BooleanLiteral booleanLiteral) {
-        String literal = booleanLiteral.toString();
-        graph.addVertex(literal);
-        return literal;
+        return booleanLiteral.toString();
     }
 
     public String visit(NullLiteral nullLiteral) {

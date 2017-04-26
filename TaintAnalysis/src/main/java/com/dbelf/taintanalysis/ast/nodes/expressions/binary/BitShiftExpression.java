@@ -15,4 +15,5 @@ public class BitShiftExpression extends BinaryExpression {
     public <T> T accept(StatementVisitor<T> visitor) {
         return visitor.visit(this);
     }
+
 }

@@ -141,7 +141,7 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         Statements elseStatements = null;
 
         if (ctx.statement().size() > 1) {
-            elseStatements = (Statements) ctx.statement().get(0).accept(this);
+            elseStatements = (Statements) ctx.statement().get(1).accept(this);
         }
         return new IfElseStatement(condition, ifStatements, elseStatements);
     }

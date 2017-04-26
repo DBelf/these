@@ -15,7 +15,7 @@ import java.io.StringReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String test = "function test(b) {if(true) {var c = 1;}}";
+        String test = "var b = 1; function test(b) {if(true && true) {var c = 1; var q = 2;} else {var c = 2;}}";
 
         // Create the parser.
         CharStream input = new ANTLRInputStream(test);
