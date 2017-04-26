@@ -8,24 +8,22 @@ import com.dbelf.taintanalysis.visitors.StatementVisitor;
 /**
  *
  */
-public class FunctionDeclaration implements Statement {
+public class FunctionDeclaration extends Declaration {
 
-    private Identifier name;
-    private Statements statements;
+    private Statements body;
     private ParameterList parameters;
 
     public FunctionDeclaration(Identifier name, ParameterList parameters, Statements statements) {
-        this.name = name;
+        super(name);
         this.parameters = parameters;
-        this.statements = statements;
-    }
-
-    @Override
-    public String toString() {
-        return "Function: " + this.name.toString();
+        this.body = statements;
     }
 
     public <T> T accept(StatementVisitor<T> visitor) {
         return visitor.visit(this);
+    }
+
+    public Statements body() {
+        return this.body;
     }
 }

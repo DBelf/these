@@ -55,7 +55,7 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
         Identifier identifier = new Identifier(ctx.Identifier().getText());
         ECMAScriptParser.FunctionBodyContext functionBody = ctx.functionBody();
         Statements body = (Statements) functionBody.accept(this);
-        ParameterList parameters = (ParameterList) ctx.formalParameterList().accept(this);
+        ParameterList parameters = (ParameterList) ctx.formalParameterList().accept(this);//FIXME cant be null
 
         return new FunctionDeclaration(identifier, parameters, body);
     }

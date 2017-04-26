@@ -14,8 +14,11 @@ import com.dbelf.taintanalysis.ast.nodes.statements.control.Switch;
 import com.dbelf.taintanalysis.visitors.ProgramVisitor;
 import com.dbelf.taintanalysis.visitors.StatementVisitor;
 import com.mxgraph.layout.mxCircleLayout;
+import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.layout.mxIGraphLayout;
+import com.mxgraph.layout.mxOrganicLayout;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxConstants;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultDirectedGraph;
@@ -32,6 +35,7 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
 
     public ASTVisualizer(){
         graph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+
     }
 
     public Void visit(Program program) {
@@ -52,7 +56,8 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
         JGraphXAdapter<String, DefaultEdge> graphAdapter =
                 new JGraphXAdapter<String, DefaultEdge>(graph);
 
-        mxIGraphLayout layout = new mxCircleLayout(graphAdapter);
+        graphAdapter.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "1");
+        mxIGraphLayout layout = new mxCompactTreeLayout(graphAdapter);
         layout.execute(graphAdapter.getDefaultParent());
 
         frame.add(new mxGraphComponent(graphAdapter));
@@ -60,6 +65,7 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
         frame.pack();
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
+
     }
 
     public String visit(Identifier identifier) {
@@ -158,7 +164,12 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
     }
 
     public String visit(FunctionDeclaration functionDeclaration) {
-        return null;
+        String name = functionDeclaration.name();
+        String body = functionDeclaration.body().accept(this);
+        graph.addVertex(name);
+        graph.addVertex(body);
+        graph.addEdge(name, body);
+        return name;
     }
 
     public String visit(Statements statements) {
