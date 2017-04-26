@@ -217,6 +217,7 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
         graph.addVertex(name);
         graph.addEdge(name, body);
         scopeStack.pop();
+
         return name;
     }
 

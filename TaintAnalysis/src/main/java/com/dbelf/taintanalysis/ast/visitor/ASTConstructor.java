@@ -6,8 +6,7 @@ import com.dbelf.taintanalysis.ast.nodes.ASTNode;
 import com.dbelf.taintanalysis.ast.nodes.Program;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Expression;
 import com.dbelf.taintanalysis.ast.nodes.expressions.binary.*;
-import com.dbelf.taintanalysis.ast.nodes.statements.control.ForStatement;
-import com.dbelf.taintanalysis.ast.nodes.statements.control.IfElseStatement;
+import com.dbelf.taintanalysis.ast.nodes.statements.control.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.literals.*;
 import com.dbelf.taintanalysis.ast.nodes.expressions.Identifier;
 import com.dbelf.taintanalysis.ast.nodes.expressions.unary.*;
@@ -144,6 +143,48 @@ public class ASTConstructor extends ECMAScriptBaseVisitor<ASTNode>{
             elseStatements = (Statements) ctx.statement().get(1).accept(this);
         }
         return new IfElseStatement(condition, ifStatements, elseStatements);
+    }
+
+    @Override
+    public ASTNode visitSwitchStatement(ECMAScriptParser.SwitchStatementContext ctx) {
+        Statement expression = (Statement) ctx.expressionSequence().accept(this);
+        SwitchClauses clauses = (SwitchClauses) ctx.caseBlock().accept(this);
+
+        return new Switch(expression, clauses);
+    }
+
+    @Override
+    public ASTNode visitCaseBlock(ECMAScriptParser.CaseBlockContext ctx) {
+        SwitchClauses clauses = new SwitchClauses();
+
+        for (ECMAScriptParser.CaseClausesContext caseClauses : ctx.caseClauses()) {
+            SwitchClauses innerClauses = (SwitchClauses) caseClauses.accept(this);
+            clauses.add(innerClauses);
+        }
+
+        if (ctx.defaultClause() != null) {
+        //TODO implement
+        }
+        return clauses;
+    }
+
+    @Override
+    public ASTNode visitCaseClauses(ECMAScriptParser.CaseClausesContext ctx) {
+        SwitchClauses clauses = new SwitchClauses();
+
+        for (ECMAScriptParser.CaseClauseContext clause : ctx.caseClause()) {
+            clauses.add((Clause) clause.accept(this));
+        }
+
+        return clauses;
+    }
+
+    @Override
+    public ASTNode visitCaseClause(ECMAScriptParser.CaseClauseContext ctx) {
+        Statement expression = (Statement) ctx.expressionSequence().accept(this);
+        Statement block = (Statement) ctx.statementList().accept(this);
+
+        return new Clause(expression, block);
     }
 
     @Override
