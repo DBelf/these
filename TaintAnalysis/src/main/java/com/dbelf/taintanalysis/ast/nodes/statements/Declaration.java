@@ -15,4 +15,8 @@ public abstract class Declaration implements Statement {
     public Declaration(Identifier name) {
         this.name = name;
     }
+
+    public String name() {
+        return name.toString();
+    }
 }

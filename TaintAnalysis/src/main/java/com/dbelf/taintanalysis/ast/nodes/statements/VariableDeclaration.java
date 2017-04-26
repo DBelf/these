@@ -8,17 +8,16 @@ import com.dbelf.taintanalysis.visitors.StatementVisitor;
  *
  */
 public class VariableDeclaration extends Declaration {
-    private ASTNode value;
+    private Statement value;
 
-    public VariableDeclaration(Identifier name, ASTNode value) {
+    public VariableDeclaration(Identifier name, Statement value) {
         super(name);
         this.value = value;
     }
 
-    @Override
-    public String toString() {
-        return "VarDec: " + super.toString() + " = " + value.toString();
-    }
-
     public <T> T accept(StatementVisitor<T> visitor) { return visitor.visit(this); }
+
+    public Statement value() {
+        return this.value;
+    }
 }

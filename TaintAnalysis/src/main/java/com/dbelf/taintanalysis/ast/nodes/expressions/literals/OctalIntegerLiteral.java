@@ -15,4 +15,9 @@ public class OctalIntegerLiteral implements NumericLiteral{
     public <T> T accept(StatementVisitor<T> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return Integer.toString(value);
+    }
 }

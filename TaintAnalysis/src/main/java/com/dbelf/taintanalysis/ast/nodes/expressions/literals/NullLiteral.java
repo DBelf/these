@@ -14,4 +14,9 @@ public class NullLiteral implements Literal {
     public <T> T accept(StatementVisitor<T> visitor) {
         return visitor.visit(this);
     }
+
+    @Override
+    public String toString() {
+        return "null";
+    }
 }

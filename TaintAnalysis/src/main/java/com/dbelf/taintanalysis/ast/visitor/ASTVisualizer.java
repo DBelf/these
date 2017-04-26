@@ -147,7 +147,10 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
     }
 
     public String visit(VariableDeclaration variableDeclaration) {
-        return variableDeclaration.toString();
+        String identifier = variableDeclaration.name();
+        String expression = variableDeclaration.value().accept(this);
+
+        return "var " + identifier + " = " + expression;
     }
 
     public String visit(Switch switchstatement) {
@@ -159,30 +162,34 @@ public class ASTVisualizer implements ProgramVisitor<Void>, StatementVisitor<Str
     }
 
     public String visit(Statements statements) {
-        return null;
+        String statementBlock = "";
+        for (Statement statement : statements.getStatements()){
+            statementBlock += statement.accept(this) + "\n";
+        }
+        return statementBlock;
     }
 
     public String visit(NumberLiteral numberLiteral) {
-        return null;
+        return numberLiteral.toString();
     }
 
     public String visit(HexIntegerLiteral hexIntegerLiteral) {
-        return null;
+        return hexIntegerLiteral.toString();
     }
 
     public String visit(OctalIntegerLiteral octalIntegerLiteral) {
-        return null;
+        return octalIntegerLiteral.toString();
     }
 
     public String visit(StringLiteral stringLiteral) {
-        return null;
+        return stringLiteral.toString();
     }
 
     public String visit(BooleanLiteral booleanLiteral) {
-        return null;
+        return booleanLiteral.toString();
     }
 
     public String visit(NullLiteral nullLiteral) {
-        return null;
+        return nullLiteral.toString();
     }
 }
