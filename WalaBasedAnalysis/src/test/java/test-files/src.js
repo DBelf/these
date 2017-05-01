@@ -1,4 +1,4 @@
-function f () {
-	function g() {
-	}
+function outer(s) {
+	var a = true;
 }
+var bla = outer(4);

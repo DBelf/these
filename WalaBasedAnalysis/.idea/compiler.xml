@@ -9,8 +9,8 @@
         <module name="WalaBasedAnalysis" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="WalaBasedAnalysis" target="1.5" />
+    <bytecodeTargetLevel target="1.7">
+      <module name="WalaBasedAnalysis" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
