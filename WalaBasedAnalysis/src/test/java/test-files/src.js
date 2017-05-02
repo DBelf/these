@@ -1,4 +1,5 @@
 function outer(s) {
 	var a = true;
 }
-var bla = outer(4);
+var text=document.getElementById('input1').value;
+var c = outer(s);
