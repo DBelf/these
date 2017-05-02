@@ -1,6 +1,7 @@
 package taintgraph;
 
 import com.ibm.wala.cast.js.ipa.callgraph.JSCallGraphUtil;
+import com.ibm.wala.cast.js.ipa.modref.JavaScriptModRef;
 import com.ibm.wala.cast.js.loader.JavaScriptLoader;
 import com.ibm.wala.cast.js.ssa.JavaScriptInvoke;
 import com.ibm.wala.cast.js.translator.CAstRhinoTranslatorFactory;
@@ -8,8 +9,11 @@ import com.ibm.wala.classLoader.CallSiteReference;
 import com.ibm.wala.ipa.callgraph.CGNode;
 import com.ibm.wala.ipa.callgraph.CallGraph;
 import com.ibm.wala.ipa.callgraph.CallGraphBuilder;
+import com.ibm.wala.ipa.callgraph.propagation.InstanceKey;
 import com.ibm.wala.ipa.callgraph.propagation.PropagationCallGraphBuilder;
 import com.ibm.wala.ipa.slicer.NormalStatement;
+import com.ibm.wala.ipa.slicer.SDG;
+import com.ibm.wala.ipa.slicer.Slicer;
 import com.ibm.wala.ipa.slicer.Statement;
 import com.ibm.wala.ssa.*;
 import com.ibm.wala.types.TypeName;
@@ -44,6 +48,9 @@ public class BaseGraph {
         this.cg = cgb.makeCallGraph(cgb.getOptions());
     }
 
+    public SDG<InstanceKey> sdg(Slicer.DataDependenceOptions data, Slicer.ControlDependenceOptions control) {
+        return new SDG<InstanceKey>(cg, cgb.getPointerAnalysis(), new JavaScriptModRef<InstanceKey>(), data, control);
+    }
 
     public void printInstructions(CGNode node) {
         IR ir = node.getIR();

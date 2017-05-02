@@ -25,9 +25,7 @@ import taintgraph.FileInfo;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  *
@@ -45,7 +43,10 @@ public class WalaTests {
         CGNode entry = bg.getFunctionNode(null);
 
         System.err.println("-----------------");
-        bg.printInstructions(entry);
+//        bg.printInstructions(entry);
+
+        SDG<InstanceKey> sdg = bg.sdg(Slicer.DataDependenceOptions.NO_BASE_NO_HEAP, Slicer.ControlDependenceOptions.NONE);
+        System.err.println(sdg);
     }
 }
 
