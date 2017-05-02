@@ -41,7 +41,7 @@ public class BaseGraph {
         JSCallGraphUtil.setTranslatorFactory(new CAstRhinoTranslatorFactory());
 
         cgb = JSCallGraphBuilderUtil.makeScriptCGBuilder(file.getRoot(), file.getName());
-        this.cg = cgb.getCallGraph();
+        this.cg = cgb.makeCallGraph(cgb.getOptions());
     }
 
 
