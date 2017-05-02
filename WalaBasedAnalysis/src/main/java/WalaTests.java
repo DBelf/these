@@ -42,8 +42,10 @@ public class WalaTests {
         FileInfo file = new FileInfo(path.getParent().toString(), path.getFileName().toString());
 
         BaseGraph bg = new BaseGraph(file);
-        bg.getFunctionNode(null);
-//        printInstructions(entry);
+        CGNode entry = bg.getFunctionNode(null);
+
+        System.err.println("-----------------");
+        bg.printInstructions(entry);
     }
 }
 

@@ -45,7 +45,7 @@ public class BaseGraph {
     }
 
 
-    private void printInstructions(CGNode node) {
+    public void printInstructions(CGNode node) {
         IR ir = node.getIR();
 
         // Get CFG from IR
