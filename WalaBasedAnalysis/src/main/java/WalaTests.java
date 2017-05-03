@@ -17,10 +17,12 @@ import com.ibm.wala.types.*;
 import com.ibm.wala.util.CancelException;
 import com.ibm.wala.util.WalaException;
 import com.ibm.wala.util.debug.Assertions;
+import com.ibm.wala.util.graph.traverse.BFSPathFinder;
 import com.ibm.wala.util.intset.IntSet;
 import com.ibm.wala.util.strings.Atom;
 import taintgraph.BaseGraph;
 import taintgraph.FileInfo;
+import taintgraph.Print;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -46,7 +48,33 @@ public class WalaTests {
 //        bg.printInstructions(entry);
 
         SDG<InstanceKey> sdg = bg.sdg(Slicer.DataDependenceOptions.NO_BASE_NO_HEAP, Slicer.ControlDependenceOptions.NONE);
-        System.err.println(sdg);
+        Atom funAtom = Atom.findOrCreateUnicodeAtom("do");
+        NormalStatement source = null;
+        NormalStatement exit = null;
+        for (Statement src : sdg) {
+            if (src.getNode().getMethod().toString().contains("Lassign")){
+//                System.err.println(src);
+                if (src.getKind() == Statement.Kind.NORMAL){
+                    NormalStatement s = (NormalStatement) src;
+                    if(s.toString().contains("getfield")) {
+                        System.err.println(s);
+                        source = s;
+                    }
+                    if (s.toString().contains("eval")){
+                        System.err.print(s);
+                        exit = s;
+                    }
+//
+
+                }
+            }
+
+
+        }
+        BFSPathFinder<Statement> paths = new BFSPathFinder<Statement>(sdg, source, exit);
+        List<Statement> shortPath = paths.find();
+        System.err.println(shortPath);
+//        System.err.println(sdg);
     }
 }
 
@@ -57,7 +85,8 @@ public class WalaTests {
 * Deze hot zones zijn function calls die onveilig zijn.
 * Dus als een variable gezet wordt op iets dat user input heeft, is dat gevaarlijk.
 *
-*
+* Source element accesses in een statement worden gemarkt als een "getfield" instructie.
+* --Zoek uit wat voor soort accesses er nog meer zijn.
 *
 *
 * */
