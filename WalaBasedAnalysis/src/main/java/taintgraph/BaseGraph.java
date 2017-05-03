@@ -157,4 +157,7 @@ public class BaseGraph {
 
     }
 
+    public SDG<InstanceKey> getSDG() {
+        return sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
+    }
 }

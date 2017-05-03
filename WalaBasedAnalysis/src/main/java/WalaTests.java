@@ -44,10 +44,9 @@ public class WalaTests {
         System.err.println("-----------------");
 
         bg.analyzeSDG();
-
+//        System.err.println(bg.getSDG());
 //        System.err.println(sdg);
     }
-
 }
 
 

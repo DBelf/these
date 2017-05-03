@@ -7,5 +7,14 @@ function test(id) {
     return field;
 }
 
-var tmp = test("id");
+var input = document.getElementById("form").value;
+var tmp = test(input);
 var unsafe_sink = eval(tmp);
+
+// window.addEventListener("message", function(event) {
+//     if (event.source == window &&
+//         event.data.direction &&
+//         event.data.direction == "from-page-script") {
+//         eval(event.data.message);
+//     }
+// });
