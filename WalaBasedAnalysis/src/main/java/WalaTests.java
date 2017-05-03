@@ -8,10 +8,7 @@ import com.ibm.wala.ipa.callgraph.propagation.InstanceKey;
 import com.ibm.wala.ipa.callgraph.propagation.PointerAnalysis;
 import com.ibm.wala.ipa.callgraph.propagation.PropagationCallGraphBuilder;
 import com.ibm.wala.ipa.cfg.ExplodedInterproceduralCFG;
-import com.ibm.wala.ipa.slicer.NormalStatement;
-import com.ibm.wala.ipa.slicer.SDG;
-import com.ibm.wala.ipa.slicer.Slicer;
-import com.ibm.wala.ipa.slicer.Statement;
+import com.ibm.wala.ipa.slicer.*;
 import com.ibm.wala.ssa.*;
 import com.ibm.wala.types.*;
 import com.ibm.wala.util.CancelException;
@@ -48,32 +45,33 @@ public class WalaTests {
 //        bg.printInstructions(entry);
 
         SDG<InstanceKey> sdg = bg.sdg(Slicer.DataDependenceOptions.NO_BASE_NO_HEAP, Slicer.ControlDependenceOptions.NONE);
-        Atom funAtom = Atom.findOrCreateUnicodeAtom("do");
         NormalStatement source = null;
-        NormalStatement exit = null;
         for (Statement src : sdg) {
-            if (src.getNode().getMethod().toString().contains("Lassign")){
 //                System.err.println(src);
-                if (src.getKind() == Statement.Kind.NORMAL){
+            if (src.getNode().getMethod().toString().contains("Lassignment")) {
+                if (src.getKind() == Statement.Kind.NORMAL) {
                     NormalStatement s = (NormalStatement) src;
-                    if(s.toString().contains("getfield")) {
-                        System.err.println(s);
+                    if (s.toString().contains("getfield")) {
                         source = s;
+                        for (Statement dst : sdg) {
+                            if( s.equals(dst)){
+                                continue;
+                            }
+                            BFSPathFinder<Statement> paths = new BFSPathFinder<Statement>(sdg, source, dst);
+                            List<Statement> shortPath = paths.find();
+                            if (shortPath != null) {
+//                                System.err.println(shortPath);
+                                System.err.println();
+                                Print.printPath(shortPath);
+                            }
+                        }
                     }
-                    if (s.toString().contains("eval")){
-                        System.err.print(s);
-                        exit = s;
-                    }
-//
-
                 }
             }
 
-
         }
-        BFSPathFinder<Statement> paths = new BFSPathFinder<Statement>(sdg, source, exit);
-        List<Statement> shortPath = paths.find();
-        System.err.println(shortPath);
+
+
 //        System.err.println(sdg);
     }
 }
