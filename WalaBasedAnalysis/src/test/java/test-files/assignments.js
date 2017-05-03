@@ -8,4 +8,6 @@ function test(bla) {
     return same_element;
 }
 
-var breek = eval(test("bla"));
+var input = document.getElementById("form").value;
+var tmp = test(input);
+var breek = eval(tmp);

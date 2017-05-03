@@ -45,25 +45,22 @@ public class WalaTests {
 //        bg.printInstructions(entry);
 
         SDG<InstanceKey> sdg = bg.sdg(Slicer.DataDependenceOptions.NO_BASE_NO_HEAP, Slicer.ControlDependenceOptions.NONE);
-        NormalStatement source = null;
+        Statement source = null;
         for (Statement src : sdg) {
 //                System.err.println(src);
-            if (src.getNode().getMethod().toString().contains("Lassignment")) {
-                if (src.getKind() == Statement.Kind.NORMAL) {
-                    NormalStatement s = (NormalStatement) src;
-                    if (s.toString().contains("getfield")) {
-                        source = s;
-                        for (Statement dst : sdg) {
-                            if( s.equals(dst)){
-                                continue;
-                            }
-                            BFSPathFinder<Statement> paths = new BFSPathFinder<Statement>(sdg, source, dst);
-                            List<Statement> shortPath = paths.find();
-                            if (shortPath != null) {
+            if (src.getNode().getMethod().toString().contains("Lassignment")){
+                if (src.toString().contains("getfield")) {
+                    source = src;
+                    for (Statement dst : sdg) {
+                        if (src.equals(dst)) {
+                            continue;
+                        }
+                        BFSPathFinder<Statement> paths = new BFSPathFinder<Statement>(sdg, source, dst);
+                        List<Statement> shortPath = paths.find();
+                        if (shortPath != null) {
 //                                System.err.println(shortPath);
-                                System.err.println();
-                                Print.printPath(shortPath);
-                            }
+                            System.err.println();
+                            Print.printPath(shortPath);
                         }
                     }
                 }
