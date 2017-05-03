@@ -21,11 +21,13 @@ import com.ibm.wala.types.TypeReference;
 import com.ibm.wala.util.CancelException;
 import com.ibm.wala.util.WalaException;
 import com.ibm.wala.util.debug.Assertions;
+import com.ibm.wala.util.graph.traverse.BFSPathFinder;
 import com.ibm.wala.util.intset.IntSet;
 import com.ibm.wala.util.strings.Atom;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -38,9 +40,6 @@ public class BaseGraph {
 
     public BaseGraph(FileInfo file) throws IOException, WalaException, CancelException {
         this.file = file;
-
-        JavaScriptLoader.addBootstrapFile("prologue.js");
-        JavaScriptLoader.addBootstrapFile("preamble.js");
 
         JSCallGraphUtil.setTranslatorFactory(new CAstRhinoTranslatorFactory());
 
@@ -96,12 +95,13 @@ public class BaseGraph {
 
     public Statement findCallTo(CGNode n, String methodName) {
         IR ir = n.getIR();
+        SymbolTable table = ir.getSymbolTable();
         for (Iterator<SSAInstruction> it = ir.iterateAllInstructions(); it.hasNext();) {
             SSAInstruction s = it.next();
             if (s instanceof SSAAbstractInvokeInstruction) {
                 SSAAbstractInvokeInstruction call = (SSAAbstractInvokeInstruction) s;
 
-                System.err.println(call.getClass().getName().toString()); //DEBUG
+                System.err.println(call.toString(table)); //DEBUG
 
                 if (call.getCallSite().getDeclaredTarget().getName().toString().equals(methodName)) {
                     IntSet indices = ir.getCallInstructionIndices(call.getCallSite());
@@ -113,6 +113,7 @@ public class BaseGraph {
         Assertions.UNREACHABLE("failed to find call to " + methodName + " in " + n);
         return null;
     }
+
 
     //TODO return array??
     public static NormalStatement getFirstInvoke(CGNode node) {
@@ -128,5 +129,32 @@ public class BaseGraph {
         return null;
     }
 
+
+    public void analyzeSDG() throws IOException {
+        SDG<InstanceKey> sdg = sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
+        Statement source = null;
+        for (Statement src : sdg) {
+            //FIXME op het moment zie ik alleen dingen die buiten een functie gebeuren??
+            if (src.getNode().getMethod().toString().contains("Lassignment")){
+                if (src.toString().contains("getfield")) {
+                    source = src;
+                    for (Statement dst : sdg) {
+                        if (src.equals(dst)) {
+                            continue;
+                        }
+                        BFSPathFinder<Statement> paths = new BFSPathFinder<Statement>(sdg, source, dst);
+                        List<Statement> shortPath = paths.find();
+                        if (shortPath != null) {
+                            System.err.println("~~~~~~~~~~~~~~~~~~~");
+                            System.err.println(shortPath);
+                            Print.printPath(shortPath);
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
 
 }
