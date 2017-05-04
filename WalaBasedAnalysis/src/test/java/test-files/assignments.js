@@ -7,5 +7,6 @@ function test(id) {
     return field;
 }
 
+var input = document.getElementById("form").value;
 var tmp = test("id");
-var unsafe_sink = eval(tmp);
+var unsafe_sink = eval(tmp + input);
