@@ -135,6 +135,13 @@ public class BaseGraph {
         Statement source = null;
         for (Statement src : sdg) {
             //FIXME op het moment zie ik alleen dingen die buiten een functie gebeuren??
+            if (src.getKind()== Statement.Kind.NORMAL) {
+                NormalStatement ns = (NormalStatement) src;
+                SSAInstruction inst = ns.getInstruction();
+                if (inst instanceof SSAGetInstruction) {
+                    System.err.println(((SSAGetInstruction) inst).getDeclaredField().getName().toString());
+                }
+            }
             if (src.getNode().getMethod().toString().contains("Lassignment")){
                 if (src.toString().contains("getfield")) {
                     source = src;
@@ -145,9 +152,9 @@ public class BaseGraph {
                         BFSPathFinder<Statement> paths = new BFSPathFinder<Statement>(sdg, source, dst);
                         List<Statement> shortPath = paths.find();
                         if (shortPath != null) {
-                            System.err.println("~~~~~~~~~~~~~~~~~~~");
-                            System.err.println(shortPath);
-                            Print.printPath(shortPath);
+//                            System.err.println("~~~~~~~~~~~~~~~~~~~");
+//                            System.err.println(shortPath);
+//                            Print.printPath(shortPath);
                         }
                     }
                 }
