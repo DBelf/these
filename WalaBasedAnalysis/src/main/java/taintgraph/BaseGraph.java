@@ -1,5 +1,3 @@
-package taintgraph;
-
 import com.ibm.wala.cast.js.ipa.callgraph.JSCallGraphUtil;
 import com.ibm.wala.cast.js.ipa.modref.JavaScriptModRef;
 import com.ibm.wala.cast.js.loader.JavaScriptLoader;
@@ -129,15 +127,41 @@ public class BaseGraph {
         return null;
     }
 
+    public void printSDG(){
+        SDG<InstanceKey> sdg = sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
+        for (Statement statement : sdg) {
+            if (statement.getNode().getMethod().toString().contains(file.getName())) {
+                if (statement.getKind() == Statement.Kind.NORMAL) {
+                    NormalStatement ns = (NormalStatement) statement;
+                    SSAInstruction inst = ns.getInstruction();
+                    if(inst instanceof SSAGetInstruction) {
+                        System.err.println(((SSAGetInstruction) inst).getDeclaredField().getName());
+                    }
+                }
+            }
+        }
+    }
 
-    public void analyzeSDG() throws IOException {
+    public void analyze() {
+        SDG<InstanceKey> sdg = sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
+        SourceStatement sourceCheck = new SourceStatement();
+        for (Statement statement : sdg) {
+            if (sourceCheck.isCritical(statement)) {
+                System.err.println(statement);
+            }
+        }
+
+    }
+
+    //TODO fix
+    public void oldAnalyzeSDG() throws IOException {
         SDG<InstanceKey> sdg = sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
         Statement source = null;
         for (Statement src : sdg) {
             //FIXME op het moment zie ik alleen dingen die buiten een functie gebeuren??
 
-            if (src.getNode().getMethod().toString().contains("Lassignment")){
-                if (src.getKind()== Statement.Kind.NORMAL) {
+            if (src.getNode().getMethod().toString().contains(file.getName())){
+                if (src.getKind() == Statement.Kind.NORMAL) {
                     NormalStatement ns = (NormalStatement) src;
                     SSAInstruction inst = ns.getInstruction();
                     if (inst instanceof SSAGetInstruction) {

@@ -17,10 +17,6 @@ import com.ibm.wala.util.debug.Assertions;
 import com.ibm.wala.util.graph.traverse.BFSPathFinder;
 import com.ibm.wala.util.intset.IntSet;
 import com.ibm.wala.util.strings.Atom;
-import taintgraph.BaseGraph;
-import taintgraph.FileInfo;
-import taintgraph.Print;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,7 +39,7 @@ public class WalaTests {
 
         System.err.println("-----------------");
 
-        bg.analyzeSDG();
+        bg.analyze();
 //        System.err.println(bg.getSDG());
 //        System.err.println(sdg);
     }
