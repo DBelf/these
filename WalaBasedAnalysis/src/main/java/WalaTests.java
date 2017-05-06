@@ -39,7 +39,7 @@ public class WalaTests {
 
         System.err.println("-----------------");
 
-        bg.analyze();
+        bg.printSDG();
 //        System.err.println(bg.getSDG());
 //        System.err.println(sdg);
     }

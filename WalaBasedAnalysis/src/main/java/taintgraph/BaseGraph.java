@@ -134,10 +134,14 @@ public class BaseGraph {
                 if (statement.getKind() == Statement.Kind.NORMAL) {
                     NormalStatement ns = (NormalStatement) statement;
                     SSAInstruction inst = ns.getInstruction();
+                    System.err.print(inst.getClass() + "  +  ");
                     if(inst instanceof SSAGetInstruction) {
                         System.err.println(((SSAGetInstruction) inst).getDeclaredField().getName());
+                    } else if (inst instanceof JavaScriptInvoke) { //Dit wordt gemaakt als je een method invoked uit een object.
+                        System.err.println(((JavaScriptInvoke) inst).getFunction());
                     }
                 }
+                System.err.println();
             }
         }
     }
