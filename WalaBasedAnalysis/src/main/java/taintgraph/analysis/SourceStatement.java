@@ -5,20 +5,35 @@ import com.ibm.wala.ssa.SSAGetInstruction;
 import com.ibm.wala.ssa.SSAInstruction;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
  */
 public class SourceStatement implements CriticalStatement {
 
-    ArrayList<String> sourceOperations = new ArrayList<String>();
+    Set<String> sourceOperations;
 
     //TODO clean this up
     public SourceStatement() {
-        sourceOperations.add("URL");
-        sourceOperations.add("value");
-        sourceOperations.add("href");
-        sourceOperations.add("documentURI");
+        initializeSourceSet();
+
+    }
+
+    private void initializeSourceSet(){
+        sourceOperations = new HashSet<String>() {{
+            add("URL");
+            add("value");
+            add("href");
+            add("documentURI");
+            add("cookie");
+            add("URLUnencoded");
+            add("baseURI");
+            add("referrer");
+            add("global location");
+            add("hash");
+        }};
     }
 
     @Override
@@ -39,6 +54,7 @@ public class SourceStatement implements CriticalStatement {
         SSAInstruction inst = ns.getInstruction();
         if (inst instanceof SSAGetInstruction) {
             String fieldName = ((SSAGetInstruction) inst).getDeclaredField().getName().toString();
+//            System.err.println(fieldName);
             if (sourceOperations.contains(fieldName)) {
                 return true;
             }

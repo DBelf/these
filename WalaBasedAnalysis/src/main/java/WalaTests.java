@@ -35,11 +35,11 @@ public class WalaTests {
         FileInfo file = new FileInfo(path.getParent().toString(), path.getFileName().toString());
 
         BaseGraph bg = new BaseGraph(file);
-        CGNode entry = bg.getFunctionNode(null);
+        CGNode entry = bg.getScriptEntry();
 
         System.err.println("-----------------");
 
-        bg.printSDG();
+        bg.analyze();
 //        System.err.println(bg.getSDG());
 //        System.err.println(sdg);
     }

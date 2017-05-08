@@ -35,6 +35,7 @@ public class BaseGraph {
     private FileInfo file;
     private PropagationCallGraphBuilder cgb;
     private CallGraph cg;
+    private SDG<InstanceKey> sdg;
 
     public BaseGraph(FileInfo file) throws IOException, WalaException, CancelException {
         this.file = file;
@@ -42,10 +43,11 @@ public class BaseGraph {
         JSCallGraphUtil.setTranslatorFactory(new CAstRhinoTranslatorFactory());
 
         cgb = JSCallGraphBuilderUtil.makeScriptCGBuilder(file.getRoot(), file.getName());
-        this.cg = cgb.makeCallGraph(cgb.getOptions());
+        cg = cgb.makeCallGraph(cgb.getOptions());
+        sdg = sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
     }
 
-    public SDG<InstanceKey> sdg(Slicer.DataDependenceOptions data, Slicer.ControlDependenceOptions control) {
+    private SDG<InstanceKey> sdg(Slicer.DataDependenceOptions data, Slicer.ControlDependenceOptions control) {
         return new SDG<InstanceKey>(cg, cgb.getPointerAnalysis(), new JavaScriptModRef<InstanceKey>(), data, control);
     }
 
@@ -70,9 +72,9 @@ public class BaseGraph {
         }
     }
 
-    public CGNode getFunctionNode(String moduleName) {
+    public CGNode getScriptEntry() {
         Atom funAtom = Atom.findOrCreateUnicodeAtom("do");
-        String decClassName = (moduleName == null) ? "L" + file.getName() : "L" + file.getName() + "/" + moduleName;
+        String decClassName = "L" + file.getName();
 
         for (Iterator<? extends CGNode> it = cg.iterator(); it.hasNext();) {
             CGNode n = it.next();
@@ -87,7 +89,7 @@ public class BaseGraph {
         }
 
         System.err.println("call graph " + cg);
-        Assertions.UNREACHABLE("failed to find method " + decClassName);
+        Assertions.UNREACHABLE("failed to find entry method of " + decClassName);
         return null;
     }
 
@@ -113,20 +115,6 @@ public class BaseGraph {
     }
 
 
-    //TODO return array??
-    public static NormalStatement getFirstInvoke(CGNode node) {
-        IR ir = node.getIR();
-        for (SSAInstruction inst : ir.getInstructions()) {
-            if (inst instanceof JavaScriptInvoke) {
-                CallSiteReference callSite = ((JavaScriptInvoke) inst).getCallSite();
-
-                System.err.println(callSite.getDeclaredTarget().toString());
-                return new NormalStatement(node, ir.getCallInstructionIndices(callSite).intIterator().next());
-            }
-        }
-        return null;
-    }
-
     public void printSDG(){
         SDG<InstanceKey> sdg = sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
         for (Statement statement : sdg) {
@@ -136,9 +124,11 @@ public class BaseGraph {
                     SSAInstruction inst = ns.getInstruction();
                     System.err.print(inst.getClass() + "  +  ");
                     if(inst instanceof SSAGetInstruction) {
-                        System.err.println(((SSAGetInstruction) inst).getDeclaredField().getName());
+                        System.err.println("Getinst:" + ((SSAGetInstruction) inst).getDeclaredField().getName());
                     } else if (inst instanceof JavaScriptInvoke) { //Dit wordt gemaakt als je een method invoked uit een object.
-                        System.err.println(((JavaScriptInvoke) inst).getFunction());
+                        System.err.println("Invokeinst: " + ((JavaScriptInvoke) inst).getFunction());
+                    } else {
+                        System.err.println("Anything: " + inst);
                     }
                 }
                 System.err.println();
@@ -194,6 +184,6 @@ public class BaseGraph {
     }
 
     public SDG<InstanceKey> getSDG() {
-        return sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
+        return sdg;
     }
 }
