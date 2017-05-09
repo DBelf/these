@@ -13,6 +13,7 @@ import com.ibm.wala.ipa.slicer.NormalStatement;
 import com.ibm.wala.ipa.slicer.SDG;
 import com.ibm.wala.ipa.slicer.Slicer;
 import com.ibm.wala.ipa.slicer.Statement;
+import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.*;
 import com.ibm.wala.types.TypeName;
 import com.ibm.wala.types.TypeReference;
@@ -101,9 +102,10 @@ public class BaseGraph {
             if (s instanceof SSAAbstractInvokeInstruction) {
                 SSAAbstractInvokeInstruction call = (SSAAbstractInvokeInstruction) s;
 
-                System.err.println(call.toString(table)); //DEBUG
+                System.err.print(call.toString(table) + "     +    "); //DEBUG
+                System.err.print(call.getCallSite() + "\n");
 
-                if (call.getCallSite().getDeclaredTarget().getName().toString().equals(methodName)) {
+                if (call.getCallSite().getDeclaredTarget().getName().toString().contains(methodName)) {
                     IntSet indices = ir.getCallInstructionIndices(call.getCallSite());
                     Assertions.productionAssertion(indices.size() == 1, "expected 1 but got " + indices.size());
                     return new NormalStatement(n, indices.intIterator().next());
@@ -113,7 +115,6 @@ public class BaseGraph {
         Assertions.UNREACHABLE("failed to find call to " + methodName + " in " + n);
         return null;
     }
-
 
     public void printSDG(){
         SDG<InstanceKey> sdg = sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
@@ -126,7 +127,8 @@ public class BaseGraph {
                     if(inst instanceof SSAGetInstruction) {
                         System.err.println("Getinst:" + ((SSAGetInstruction) inst).getDeclaredField().getName());
                     } else if (inst instanceof JavaScriptInvoke) { //Dit wordt gemaakt als je een method invoked uit een object.
-                        System.err.println("Invokeinst: " + ((JavaScriptInvoke) inst).getFunction());
+                        System.err.print("Invokeinst: " + ((JavaScriptInvoke) inst).getCallSite());
+                        printInstructions(ns.getNode());
                     } else {
                         System.err.println("Anything: " + inst);
                     }
@@ -136,12 +138,12 @@ public class BaseGraph {
         }
     }
 
-    public void analyze() {
+    public void analyze() throws InvalidClassFileException {
         SDG<InstanceKey> sdg = sdg(Slicer.DataDependenceOptions.FULL, Slicer.ControlDependenceOptions.NONE);
         SourceStatement sourceCheck = new SourceStatement();
         for (Statement statement : sdg) {
             if (sourceCheck.isCritical(statement)) {
-                System.err.println(statement);
+                System.err.println();
             }
         }
 

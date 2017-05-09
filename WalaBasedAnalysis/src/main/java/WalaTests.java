@@ -9,6 +9,7 @@ import com.ibm.wala.ipa.callgraph.propagation.PointerAnalysis;
 import com.ibm.wala.ipa.callgraph.propagation.PropagationCallGraphBuilder;
 import com.ibm.wala.ipa.cfg.ExplodedInterproceduralCFG;
 import com.ibm.wala.ipa.slicer.*;
+import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.*;
 import com.ibm.wala.types.*;
 import com.ibm.wala.util.CancelException;
@@ -29,7 +30,7 @@ public class WalaTests {
 
 
     public static void main(String[] args) throws IOException, WalaException, IllegalArgumentException,
-            CancelException {
+            CancelException, InvalidClassFileException {
         Path path = Paths.get(args[0]);
 
         FileInfo file = new FileInfo(path.getParent().toString(), path.getFileName().toString());
@@ -37,9 +38,11 @@ public class WalaTests {
         BaseGraph bg = new BaseGraph(file);
         CGNode entry = bg.getScriptEntry();
 
-        System.err.println("-----------------");
+//        System.err.println("-----------------");
+//        Statement s = bg.findCallTo(entry, "funCall");
+//        System.err.println(s.getNode().getMethod().getSourcePosition(((NormalStatement) s).getInstructionIndex()));
 
-        bg.analyze();
+        bg.oldAnalyzeSDG();
 //        System.err.println(bg.getSDG());
 //        System.err.println(sdg);
     }

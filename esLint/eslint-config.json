@@ -1,0 +1,13 @@
+{
+  "parserOptions": {
+       "ecmaVersion": 6,
+       "sourceType": "module",
+       "ecmaFeatures": {
+           "jsx": true
+       }
+     },
+    "rules": {
+        "if-curly-formatting": 0,
+        "source-taint": 1
+    }
+}

@@ -1,6 +1,7 @@
 import com.ibm.wala.ipa.slicer.NormalStatement;
 import com.ibm.wala.ipa.slicer.Statement;
 import com.ibm.wala.ipa.slicer.Statement.Kind;
+import com.ibm.wala.shrikeCT.InvalidClassFileException;
 import com.ibm.wala.ssa.SSAGetInstruction;
 import com.ibm.wala.ssa.SSAInstruction;
 
@@ -15,12 +16,12 @@ public class SourceStatement implements CriticalStatement {
 
     Set<String> sourceOperations;
 
-    //TODO clean this up
     public SourceStatement() {
         initializeSourceSet();
 
     }
 
+    //TODO clean this up?
     private void initializeSourceSet(){
         sourceOperations = new HashSet<String>() {{
             add("URL");
@@ -33,6 +34,8 @@ public class SourceStatement implements CriticalStatement {
             add("referrer");
             add("global location");
             add("hash");
+            add("data");
+            add("search");
         }};
     }
 
@@ -40,7 +43,11 @@ public class SourceStatement implements CriticalStatement {
     public boolean isCritical(Statement s) {
         switch (s.getKind()){
             case NORMAL:
-                return isSource((NormalStatement) s);
+                try {
+                    return isSource((NormalStatement) s);
+                } catch (InvalidClassFileException e) {
+                    e.printStackTrace();
+                }
             default:
                 return false;
         }
@@ -50,12 +57,13 @@ public class SourceStatement implements CriticalStatement {
         return false;
     }
 
-    private boolean isSource(NormalStatement ns){
+    private boolean isSource(NormalStatement ns) throws InvalidClassFileException {
         SSAInstruction inst = ns.getInstruction();
         if (inst instanceof SSAGetInstruction) {
             String fieldName = ((SSAGetInstruction) inst).getDeclaredField().getName().toString();
-//            System.err.println(fieldName);
+
             if (sourceOperations.contains(fieldName)) {
+                System.err.println(ns.getNode().getMethod().getSourcePosition(ns.getInstructionIndex()));
                 return true;
             }
         }
