@@ -10,7 +10,7 @@ module.exports = {
         if (knownSources.includes(context.getSource(node))){
           switch(node.parent.type){
             case "VariableDeclarator":
-              console.log("vardec: " + node.parent.id.name);
+              console.log("vardec: " + node.parent.id.name + "  --  " + context.getScope());
               break;
             case "AssignmentExpression":
               console.log("varassign: " + node.parent.type);
