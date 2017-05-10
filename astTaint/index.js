@@ -16,7 +16,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 var fs = require('fs'),
-    esprima = require('esprima');
+    esprima = require('esprima'),
+    esgraph = require('esgraph');
 
 function traverse(node, func) {
     func(node);
@@ -73,6 +74,13 @@ function processResults(results) {
     }
 }
 
+function printNodes(code){
+  var ast = esprima.parse(code, {loc:true});
+  var cfg = esgraph(ast)
+  const dot = esgraph.dot(cfg, {counter: 0, source: code});
+  console.log(cfg);
+}
+
 if (process.argv.length < 3) {
     console.log('Usage: analyze.js file.js');
     process.exit(1);
@@ -82,5 +90,6 @@ var filename = process.argv[2];
 console.log('Reading ' + filename);
 var code = fs.readFileSync(filename, 'utf-8');
 
-analyzeCode(code);
+// analyzeCode(code);
+printNodes(code);
 console.log('Done');
