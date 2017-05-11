@@ -123,6 +123,15 @@ function leaveNode(node) {
     }
 }
 
+function testAssumption(ast) {
+    estraverse.traverse(ast, {
+        enter: function(node){
+            console.log(node.type);
+        },
+        exit: function(node){}
+    })
+}
+
 
 if (process.argv.length < 3) {
     console.log('Usage: analyze.js file.js');
@@ -134,6 +143,6 @@ console.log('Reading ' + filename);
 var code = fs.readFileSync(filename, 'utf-8');
 
 var ast = esprima.parse(code, {loc:true});
-initScope(ast);
-
+// initScope(ast);
+testAssumption(ast);
 console.log('Done');
