@@ -17,9 +17,8 @@
  */
 var fs = require('fs'),
     esprima = require('esprima'),
-    esgraph = require('esgraph'),
-    estraverse = require('estraverse');
-
+    estraverse = require('estraverse'),
+    dfatool = require('dfatool');
 
 var scopeQueue = [];
 
@@ -91,47 +90,15 @@ function printType(node) {
 
 }
 
-function initScope(ast){
-    estraverse.traverse(ast, {
-        enter: enterNode,
-        leave: leaveNode
-    });
-}
-
-function enterNode(node) {
-    if(newScopeLevel(node)) {
-        scopeQueue.push([]);
-        if (node.params){
-            var currentScope = scopeQueue[scopeQueue.length - 1];
-            for (var i = 0; i < node.params.length; i++) {
-                currentScope.push(node.params[i].name);
-            }
-        }
-    }
-
-    if(node.type === 'VariableDeclarator') {
-        var currentScope = scopeQueue[scopeQueue.length - 1];
-        currentScope.push(node.id.name);
-    }
-}
-
-function leaveNode(node) {
-    if(newScopeLevel(node)){
-        node.scope = scopeQueue.slice();
-        scopeQueue.pop();
-        console.log(node.scope);
-    }
-}
-
 function testAssumption(ast) {
     estraverse.traverse(ast, {
-        enter: function(node){
+
+        enter: function(node, parent){
             console.log(node.type);
         },
         exit: function(node){}
     })
 }
-
 
 if (process.argv.length < 3) {
     console.log('Usage: analyze.js file.js');
@@ -142,7 +109,26 @@ var filename = process.argv[2];
 console.log('Reading ' + filename);
 var code = fs.readFileSync(filename, 'utf-8');
 
-var ast = esprima.parse(code, {loc:true});
-// initScope(ast);
-testAssumption(ast);
-console.log('Done');
+// Parse AST with esprima, loc must be set true
+var ast = esprima.parse(code, {
+    loc : true
+});
+
+var globalScope = dfatool.newGlobalScope();
+dfatool.buildScope(ast, globalScope);
+
+globalScope.initialize();
+globalScope.derivation()
+
+var outline = {};
+
+// Iterate all the defined variables and inference its value
+for(var name in globalScope._defines){
+    var variable = globalScope._defines[name];
+    var value = variable.inference();
+    if( value ){
+        outline[variable.name] = value.toJSON();
+    }
+}
+
+console.log(outline);

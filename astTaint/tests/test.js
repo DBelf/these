@@ -1,8 +1,11 @@
+var non_dynamic = 1;
+var not_good = eval("script");
+var globalscope1 = document.getElementById(element).value;
+var fromglobscope = globalscope1;
 
-function readElement (element, bla){
-    var funscope = document.getElementById(element).value;
-    return funscope;
+function insideFunction(variable){
+    globalscope1 = 1;
+    return variable;
 }
 
-var globalscope1 = readElement("test");
-var globalscope2 = bla;
+var a = insideFunction(globalscope1);

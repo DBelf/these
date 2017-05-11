@@ -7,7 +7,8 @@
     "esprima": "^3.1.3",
     "walkes": "^0.2.1",
     "esgraph": "^0.2.2",
-    "estraverse": "^4.2.0"
+    "estraverse": "^4.2.0",
+    "dfatool": "^0.1.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
