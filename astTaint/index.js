@@ -91,11 +91,38 @@ function printType(node) {
 
 }
 
-function printNodes(code){
-  var ast = esprima.parse(code, {loc:true}, function (node) {newScopeLevel(node)});
-
-  // console.log(cfg);
+function initScope(ast){
+    estraverse.traverse(ast, {
+        enter: enterNode,
+        leave: leaveNode
+    });
 }
+
+function enterNode(node) {
+    if(newScopeLevel(node)) {
+        scopeQueue.push([]);
+        if (node.params){
+            var currentScope = scopeQueue[scopeQueue.length - 1];
+            for (var i = 0; i < node.params.length; i++) {
+                currentScope.push(node.params[i].name);
+            }
+        }
+    }
+
+    if(node.type === 'VariableDeclarator') {
+        var currentScope = scopeQueue[scopeQueue.length - 1];
+        currentScope.push(node.id.name);
+    }
+}
+
+function leaveNode(node) {
+    if(newScopeLevel(node)){
+        node.scope = scopeQueue.slice();
+        scopeQueue.pop();
+        console.log(node.scope);
+    }
+}
+
 
 if (process.argv.length < 3) {
     console.log('Usage: analyze.js file.js');
@@ -106,6 +133,7 @@ var filename = process.argv[2];
 console.log('Reading ' + filename);
 var code = fs.readFileSync(filename, 'utf-8');
 
-// analyzeCode(code);
-printNodes(code);
+var ast = esprima.parse(code, {loc:true});
+initScope(ast);
+
 console.log('Done');

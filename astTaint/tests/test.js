@@ -1,7 +1,8 @@
 
-function readElement (element){
-    var b = document.getElementById(element).value;
-    return b;
+function readElement (element, bla){
+    var funscope = document.getElementById(element).value;
+    return funscope;
 }
 
-var a = readElement("test");
+var globalscope1 = readElement("test");
+var globalscope2 = bla;
