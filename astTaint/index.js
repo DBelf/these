@@ -17,7 +17,11 @@
  */
 var fs = require('fs'),
     esprima = require('esprima'),
-    esgraph = require('esgraph');
+    esgraph = require('esgraph'),
+    estraverse = require('estraverse');
+
+
+var scopeQueue = [];
 
 function traverse(node, func) {
     func(node);
@@ -38,41 +42,11 @@ function traverse(node, func) {
     }
 }
 
-function analyzeCode(code) {
-    var ast = esprima.parse(code);
-    var functionsStats = {}; //1
-    var addStatsEntry = function(funcName) { //2
-        if (!functionsStats[funcName]) {
-            functionsStats[funcName] = {calls: 0, declarations:0};
-        }
-    };
-
-    traverse(ast, function(node) {
-        if (node.type === 'FunctionDeclaration') {
-            addStatsEntry(node.id.name); //3
-            functionsStats[node.id.name].declarations++;
-        } else if (node.type === 'CallExpression' && node.callee.type === 'Identifier') {
-            addStatsEntry(node.callee.name);
-            functionsStats[node.callee.name].calls++; //4
-        }
-    });
-    processResults(functionsStats);
+function newScopeLevel(node){
+    return node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression'
+        || node.type === 'Program';
 }
 
-function processResults(results) {
-    for (var name in results) {
-        if (results.hasOwnProperty(name)) {
-            var stats = results[name];
-            if (stats.declarations === 0) {
-                console.log('Function', name, 'undeclared');
-            } else if (stats.declarations > 1) {
-                console.log('Function', name, 'decalred multiple times');
-            } else if (stats.calls === 0) {
-                console.log('Function', name, 'declared but not called');
-            }
-        }
-    }
-}
 
 function memberExpressionCheck(node){
     if(node.object.callee) {
@@ -101,7 +75,6 @@ function tagSource(node) {
     switch (node.type) {
         case 'MemberExpression':
             node.isSource = memberExpressionCheck(node);
-            console.log(node);
             break;
         default:
             break;
@@ -119,8 +92,9 @@ function printType(node) {
 }
 
 function printNodes(code){
-  var ast = esprima.parse(code, {loc:true}, function (node) {tagSource(node)});
+  var ast = esprima.parse(code, {loc:true}, function (node) {newScopeLevel(node)});
 
+  // console.log(cfg);
 }
 
 if (process.argv.length < 3) {
