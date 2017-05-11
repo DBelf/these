@@ -20,7 +20,13 @@ var fs = require('fs'),
     estraverse = require('estraverse'),
     dfatool = require('dfatool');
 
-var scopeQueue = [];
+var documentSources = ['URL',
+                        'documentURI',
+                        'baseURI',
+                        'cookie',
+                        'referrer'
+];
+
 
 function traverse(node, func) {
     func(node);
@@ -41,17 +47,13 @@ function traverse(node, func) {
     }
 }
 
-function newScopeLevel(node){
-    return node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression'
-        || node.type === 'Program';
-}
-
-
 function memberExpressionCheck(node){
     if(node.object.callee) {
-        return (node.object.callee.object.name === 'document' &&
-        node.object.callee.property.name === 'getElementById' &&
-        node.property.name === 'value');
+        var documentElementValue = node.object.callee.object.name === 'document' &&
+            true;
+        
+        var fromValue = node.property.name === 'value';
+        return (documentElementValue || fromValue);
 
     }
     return false;
@@ -68,7 +70,6 @@ function isSource(node){
             break;
     }
 }
-
 
 function tagSource(node) {
     switch (node.type) {
