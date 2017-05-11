@@ -1,4 +1,4 @@
 var a;
-var b = document.getElementbyId("hm").value;
+var b = document.getElementById("hm").value;
 
 a = b;

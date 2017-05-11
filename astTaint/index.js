@@ -74,11 +74,36 @@ function processResults(results) {
     }
 }
 
+function memberExpressionCheck(node){
+    if(node.object.callee) {
+        return (node.object.callee.object.name === 'document' &&
+        node.object.callee.property.name === 'getElementById' &&
+        node.property.name === 'value');
+    }
+    return false;
+}
+
+function isSource(node){
+    switch(node.type) {
+        case 'MemberExpression':
+            console.log(memberExpressionCheck(node));
+            break;
+        default:
+            console.log(node.type);
+    }
+}
+
+function printType(node) {
+    isSource(node);
+    // if (node.type ==='CallExpression'){
+    //     console.log(node);
+    // }
+
+
+}
+
 function printNodes(code){
-  var ast = esprima.parse(code, {loc:true});
-  var cfg = esgraph(ast)
-  const dot = esgraph.dot(cfg, {counter: 0, source: code});
-  console.log(cfg);
+  var ast = esprima.parse(code, {loc:true}, function (node) {printType(node)});
 }
 
 if (process.argv.length < 3) {
