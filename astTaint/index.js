@@ -79,6 +79,7 @@ function memberExpressionCheck(node){
         return (node.object.callee.object.name === 'document' &&
         node.object.callee.property.name === 'getElementById' &&
         node.property.name === 'value');
+
     }
     return false;
 }
@@ -86,19 +87,23 @@ function memberExpressionCheck(node){
 function isSource(node){
     switch(node.type) {
         case 'MemberExpression':
-            console.log(memberExpressionCheck(node));
+
+            if(memberExpressionCheck(node)){
+                console.log('found stuff');
+            }
             break;
         default:
-            console.log(node.type);
+            break;
     }
 }
 
-function printType(node) {
-    isSource(node);
-    // if (node.type ==='CallExpression'){
-    //     console.log(node);
-    // }
+function printDeclaration(node){
 
+}
+
+function printType(node) {
+    // isSource(node);
+    console.log(node.type);
 
 }
 
