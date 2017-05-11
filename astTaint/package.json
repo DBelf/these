@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+
   "dependencies": {
     "esprima": "^3.1.3",
     "walkes": "^0.2.1",
@@ -11,11 +12,12 @@
     "dfatool": "^0.1.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "author": "Dimitri Belfor",
   "license": "ISC",
   "devDependencies": {
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "mocha": "^3.3.0"
   }
 }
