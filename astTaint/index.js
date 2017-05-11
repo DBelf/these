@@ -86,9 +86,8 @@ function memberExpressionCheck(node){
 
 function isSource(node){
     switch(node.type) {
-        case 'MemberExpression':
-
-            if(memberExpressionCheck(node)){
+        case 'VariableDeclarator':
+            if(printDeclaration(node)){
                 console.log('found stuff');
             }
             break;
@@ -97,8 +96,20 @@ function isSource(node){
     }
 }
 
-function printDeclaration(node){
 
+function tagSource(node) {
+    switch (node.type) {
+        case 'MemberExpression':
+            node.isSource = memberExpressionCheck(node);
+            console.log(node);
+            break;
+        default:
+            break;
+    }
+}
+
+function printDeclaration(node) {
+    return node.init.type === 'MemberExpression';
 }
 
 function printType(node) {
@@ -108,7 +119,8 @@ function printType(node) {
 }
 
 function printNodes(code){
-  var ast = esprima.parse(code, {loc:true}, function (node) {printType(node)});
+  var ast = esprima.parse(code, {loc:true}, function (node) {tagSource(node)});
+
 }
 
 if (process.argv.length < 3) {
