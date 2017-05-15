@@ -3,6 +3,7 @@
  */
 var astCheck = require('./ast_manipulations');
 var documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
+var valueAccessString = 'value';
 
 exports.memberExpressionCheck = function (node) {
     if (node.object.callee) {
@@ -16,19 +17,9 @@ exports.memberExpressionCheck = function (node) {
     return false;
 };
 
-var documentMemberAccess = JSON.parse(`
-                    {
-                        "type": "MemberExpression",
-                        "computed": false,
-                        "object": {
-                            "type": "Identifier",
-                            "name": "document"
-                        },
-                        "property": {
-                            "type": "Identifier",
-                            "name": "URL"
-                        }
-                    }`);
+function valueAccess(node) {
+    return astCheck.hasProperty(node, valueAccessString);
+}
 
 function documentChecks(node) {
     //sanity check
@@ -40,6 +31,5 @@ function documentChecks(node) {
         }, false);
 }
 
-documentChecks(documentMemberAccess);
-
 exports.documentChecks = documentChecks;
+exports.valueAccess = valueAccess;

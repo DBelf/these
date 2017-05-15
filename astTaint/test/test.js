@@ -37,6 +37,39 @@ var documentValue = JSON.parse(`{
 }
 }`);
 
+var valueAccessNode = JSON.parse(`
+{
+        "type": "MemberExpression",
+        "computed": false,
+        "object": {
+            "type": "CallExpression",
+            "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                    "type": "Identifier",
+                    "name": "document"
+                },
+                "property": {
+                    "type": "Identifier",
+                    "name": "getElementById"
+                }
+            },
+            "arguments": [
+                {
+                    "type": "Literal",
+                    "value": "??",
+                    "raw": "??"
+                }
+            ]
+        },
+        "property": {
+            "type": "Identifier",
+            "name": "value"
+        }
+    }
+`);
+
 var documentMemberAccess = JSON.parse(`
                     {
                         "type": "MemberExpression",
@@ -113,6 +146,10 @@ describe("Vulnerablility finder", function () {
            var value = sourceFind.documentChecks(documentMemberAccess);
            expect(value).to.equal(true);
         });
+        it("finds the value of a document element source", function(){
+            var value = sourceFind.valueAccess(valueAccessNode);
+            expect(value).to.equal(true);
+        })
     });
     describe("Potential communication sinks", function () {
         it("checks whether a property exists", function () {

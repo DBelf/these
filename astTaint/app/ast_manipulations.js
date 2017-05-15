@@ -7,14 +7,12 @@ memberExpressionCheck = function (node, identifier, property) {
     if (node.object.type === 'MemberExpression') {
         return memberExpressionCheck(node.object, identifier, property);
     }
-    return node.object.name === identifier && (node.property.name === property || node.property.value === property);
+    return node.object.name.match(identifier) && (node.property.name === property || node.property.value === property);
 }
 
+
 exports.hasProperty = function (node, name) {
-    if (node.type === 'CallExpression') {
-        return node.callee.object.property.value === name;
-    }
-    return false;
+    return node.property.name === name;
 }
 
 exports.memberExpressionCheck = memberExpressionCheck;
