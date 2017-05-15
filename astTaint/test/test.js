@@ -143,7 +143,7 @@ describe("Vulnerablility finder", function () {
             expect(value).to.equal(true);
         });
         it("finds a document source", function (){
-           var value = sourceFind.documentChecks(documentMemberAccess);
+           var value = sourceFind.generalCheck(documentMemberAccess);
            expect(value).to.equal(true);
         });
         it("finds the value of a document element source", function(){

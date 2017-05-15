@@ -21,15 +21,28 @@ function valueAccess(node) {
     return astCheck.hasProperty(node, valueAccessString);
 }
 
-function documentChecks(node) {
+function generalCheck(node) {
     //sanity check
-        var potentialSources = documentSources.map(function (sourceName) {
-            return astCheck.memberExpressionCheck(node, 'document', sourceName);
-        });
-        return potentialSources.reduce(function (acc, val) {
-            return acc || val;
-        }, false);
+    switch (node.object.name) {
+        case 'document':
+            return check(node, 'document', documentSources);
+        case 'location':
+            return check(node, 'location', locationSources);
+        default:
+            return false;
+    }
 }
 
-exports.documentChecks = documentChecks;
+function check(node, callee, sourceArray) {
+    var potentialSources = sourceArray.map(function (sourceName) {
+        return astCheck.memberExpressionCheck(node, callee, sourceName);
+    });
+    return potentialSources.reduce(function (acc, val) {
+        return acc || val;
+    }, false);
+}
+
+
+
+exports.generalCheck = generalCheck;
 exports.valueAccess = valueAccess;
