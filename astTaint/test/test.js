@@ -88,7 +88,7 @@ var messageManagerControl = JSON.parse(`{
             "kind": "let"
         }`);
 
-describe("Vulnerable source finder", function(){
+describe("Vulnerablility finder", function(){
     describe("Document sources", function () {
        it("finds the sources when doing a member call on documents", function () {
            var value = sourceFind.memberExpressionCheck(documentValue);
@@ -106,6 +106,13 @@ describe("Vulnerable source finder", function(){
            expect(value).to.equal(true);
        })
     });
+});
+
+describe("AST node analysis", function(){
+    it("finds a specific member access expression", function(){
+        var value = sinkFind.memberExpressionCheck(messageManagerControl.declarations[0].init.arguments[0], "Ci", "nsISyncMessageSender");
+        expect(value).to.equal(true);
+    })
 });
 
 
