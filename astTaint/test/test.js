@@ -89,28 +89,28 @@ var messageManagerControl = JSON.parse(`{
             "kind": "let"
         }`);
 
-describe("Vulnerablility finder", function(){
+describe("Vulnerablility finder", function () {
     describe("Document sources", function () {
-       it("finds the sources when doing a member call on documents", function () {
-           var value = sourceFind.memberExpressionCheck(documentValue);
-           expect(value).to.equal(true);
-       });
+        it("finds the sources when doing a member call on documents", function () {
+            var value = sourceFind.memberExpressionCheck(documentValue);
+            expect(value).to.equal(true);
+        });
     });
     describe("Potential communication sinks", function () {
-        it("checks whether a property exists", function(){
+        it("checks whether a property exists", function () {
             var memberNode = messageManagerControl.declarations[0].init.callee;
             var value = astCheck.memberExpressionCheck(memberNode, "Cc", "@mozilla.org/childprocessmessagemanager;1");
             expect(value).to.equal(true);
         });
-       it("finds the parts where the process takes hold of a message manager", function (){
-           var value = sinkFind.communicationManagerCheck(messageManagerControl);
-           expect(value).to.equal(true);
-       })
+        it("finds the parts where the process takes hold of a message manager", function () {
+            var value = sinkFind.communicationManagerCheck(messageManagerControl);
+            expect(value).to.equal(true);
+        })
     });
 });
 
-describe("AST node analysis", function(){
-    it("finds a specific member access expression", function(){
+describe("AST node analysis", function () {
+    it("finds a specific member access expression", function () {
         var memberNode = messageManagerControl.declarations[0].init.arguments[0];
         var value = astCheck.memberExpressionCheck(memberNode, "Ci", "nsISyncMessageSender");
         expect(value).to.equal(true);

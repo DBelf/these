@@ -36,7 +36,7 @@ function traverse(node, func) {
             if (typeof child === 'object' && child !== null) {
 
                 if (Array.isArray(child)) {
-                    child.forEach(function(node) {
+                    child.forEach(function (node) {
                         traverse(node, func);
                     });
                 } else {
@@ -47,25 +47,11 @@ function traverse(node, func) {
     }
 }
 
-function memberExpressionCheck(node){
-    if(node.object.callee) {
-        var documentElementValue = node.object.callee.object.name === 'document' &&
-            true;
 
-        var fromValue = node.property.name === 'value';
-        return (documentElementValue || fromValue);
-
-    }
-    return false;
-}
-
-
-
-
-function isSource(node){
-    switch(node.type) {
+function isSource(node) {
+    switch (node.type) {
         case 'VariableDeclarator':
-            if(printDeclaration(node)){
+            if (printDeclaration(node)) {
                 console.log('found stuff');
             }
             break;
@@ -88,19 +74,15 @@ function printDeclaration(node) {
     return node.init.type === 'MemberExpression';
 }
 
-function printType(node) {
-    // isSource(node);
-    console.log(node.type);
-
-}
 
 function testAssumption(ast) {
     estraverse.traverse(ast, {
 
-        enter: function(node, parent){
+        enter: function (node, parent) {
             console.log(node.type);
         },
-        exit: function(node){}
+        exit: function (node) {
+        }
     })
 }
 
@@ -115,7 +97,7 @@ var code = fs.readFileSync(filename, 'utf-8');
 
 // Parse AST with esprima, loc must be set true
 var ast = esprima.parse(code, {
-    loc : true
+    loc: true
 });
 
 var globalScope = dfatool.newGlobalScope();
@@ -127,14 +109,12 @@ globalScope.derivation()
 var outline = {};
 
 // Iterate all the defined variables and inference its value
-for(var name in globalScope._defines){
+for (var name in globalScope._defines) {
     var variable = globalScope._defines[name];
     var value = variable.inference();
-    if( value ){
+    if (value) {
         outline[variable.name] = value.toJSON();
     }
 }
-
-
 
 console.log(outline);

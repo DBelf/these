@@ -3,6 +3,6 @@
  */
 
 
-exports.communicationManagerCheck = function(node){
+exports.communicationManagerCheck = function (node) {
     return true;
-} 
+}
