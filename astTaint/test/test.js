@@ -139,7 +139,7 @@ var messageManagerControl = JSON.parse(`{
 describe("Vulnerablility finder", function () {
     describe("Document sources", function () {
         it("finds the sources when doing a member call on documents", function () {
-            var value = sourceFind.memberExpressionCheck(documentValue);
+            var value = sourceFind.valueAccess(documentValue);
             expect(value).to.equal(true);
         });
         it("finds a document source", function (){
@@ -157,9 +157,9 @@ describe("Vulnerablility finder", function () {
             var value = astCheck.memberExpressionCheck(memberNode, "Cc", "@mozilla.org/childprocessmessagemanager;1");
             expect(value).to.equal(true);
         });
-        it("finds the parts where the process takes hold of a message manager", function () {
-            var value = sinkFind.communicationManagerCheck(messageManagerControl);
-            expect(value).to.equal(true);
+        it("finds the identifier of the message manager", function () {
+            var value = sinkFind.findChildProcessMessageManager(messageManagerControl.declarations[0]);
+            expect(value).to.equal('cpmm');
         })
     });
 });
