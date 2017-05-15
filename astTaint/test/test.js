@@ -37,6 +37,20 @@ var documentValue = JSON.parse(`{
 }
 }`);
 
+var documentMemberAccess = JSON.parse(`
+                    {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                            "type": "Identifier",
+                            "name": "document"
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "name": "URLUnencoded"
+                        }
+                    }`);
+
 var messageManagerControl = JSON.parse(`{
             "type": "VariableDeclaration",
             "declarations": [
@@ -94,6 +108,10 @@ describe("Vulnerablility finder", function () {
         it("finds the sources when doing a member call on documents", function () {
             var value = sourceFind.memberExpressionCheck(documentValue);
             expect(value).to.equal(true);
+        });
+        it("finds a document source", function (){
+           var value = sourceFind.documentChecks(documentMemberAccess);
+           expect(value).to.equal(true);
         });
     });
     describe("Potential communication sinks", function () {

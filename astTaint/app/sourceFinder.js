@@ -16,17 +16,30 @@ exports.memberExpressionCheck = function (node) {
     return false;
 };
 
+var documentMemberAccess = JSON.parse(`
+                    {
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": {
+                            "type": "Identifier",
+                            "name": "document"
+                        },
+                        "property": {
+                            "type": "Identifier",
+                            "name": "URL"
+                        }
+                    }`);
 
-function documentSources(node) {
+function documentChecks(node) {
     //sanity check
-    if (node.type === 'MemberExpression') {
         var potentialSources = documentSources.map(function (sourceName) {
             return astCheck.memberExpressionCheck(node, 'document', sourceName);
         });
-
         return potentialSources.reduce(function (acc, val) {
-            return acc || val
+            return acc || val;
         }, false);
-    }
-    return false;
 }
+
+documentChecks(documentMemberAccess);
+
+exports.documentChecks = documentChecks;
