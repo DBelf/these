@@ -13,3 +13,5 @@ exports.memberExpressionCheck = function(node){
     }
     return false;
 };
+
+

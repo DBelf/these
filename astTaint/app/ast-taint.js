@@ -59,6 +59,9 @@ function memberExpressionCheck(node){
     return false;
 }
 
+
+
+
 function isSource(node){
     switch(node.type) {
         case 'VariableDeclarator':
