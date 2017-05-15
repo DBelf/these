@@ -97,9 +97,9 @@ describe("Vulnerablility finder", function(){
     });
     describe("Potential communication sinks", function () {
         it("checks whether a property exists", function(){
-
-           var value = sinkFind.hasProperty(messageManagerControl.declarations[0].init, "@mozilla.org/childprocessmessagemanager;1");
-           expect(value).to.equal(true);
+            var memberNode = messageManagerControl.declarations[0].init.callee.object;
+            var value = sinkFind.memberExpressionCheck(memberNode, "Cc", "@mozilla.org/childprocessmessagemanager;1");
+            expect(value).to.equal(true);
         });
        it("finds the parts where the process takes hold of a message manager", function (){
            var value = sinkFind.communicationManagerCheck(messageManagerControl);
@@ -110,7 +110,8 @@ describe("Vulnerablility finder", function(){
 
 describe("AST node analysis", function(){
     it("finds a specific member access expression", function(){
-        var value = sinkFind.memberExpressionCheck(messageManagerControl.declarations[0].init.arguments[0], "Ci", "nsISyncMessageSender");
+        var memberNode = messageManagerControl.declarations[0].init.arguments[0];
+        var value = sinkFind.memberExpressionCheck(memberNode, "Ci", "nsISyncMessageSender");
         expect(value).to.equal(true);
     })
 });
