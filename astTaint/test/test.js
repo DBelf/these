@@ -5,6 +5,7 @@ var chai = require('chai');
 var expect = chai.expect; // we are using the "expect" style of Chai
 var sourceFind = require('../app/sourceFinder');
 var sinkFind = require('../app/sinkFinder');
+var astCheck = require('../app/ast_manipulations');
 
 var documentValue = JSON.parse(`{
     "type": "MemberExpression",
@@ -97,8 +98,8 @@ describe("Vulnerablility finder", function(){
     });
     describe("Potential communication sinks", function () {
         it("checks whether a property exists", function(){
-            var memberNode = messageManagerControl.declarations[0].init.callee.object;
-            var value = sinkFind.memberExpressionCheck(memberNode, "Cc", "@mozilla.org/childprocessmessagemanager;1");
+            var memberNode = messageManagerControl.declarations[0].init.callee;
+            var value = astCheck.memberExpressionCheck(memberNode, "Cc", "@mozilla.org/childprocessmessagemanager;1");
             expect(value).to.equal(true);
         });
        it("finds the parts where the process takes hold of a message manager", function (){
@@ -111,7 +112,7 @@ describe("Vulnerablility finder", function(){
 describe("AST node analysis", function(){
     it("finds a specific member access expression", function(){
         var memberNode = messageManagerControl.declarations[0].init.arguments[0];
-        var value = sinkFind.memberExpressionCheck(memberNode, "Ci", "nsISyncMessageSender");
+        var value = astCheck.memberExpressionCheck(memberNode, "Ci", "nsISyncMessageSender");
         expect(value).to.equal(true);
     })
 });
