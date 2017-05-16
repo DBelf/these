@@ -1,11 +1,11 @@
 /**
  * Created by dimitri on 11/05/2017.
  */
-var chai = require('chai');
-var expect = chai.expect; // we are using the "expect" style of Chai
-var sourceFind = require('../app/sourceFinder');
-var sinkFinder = require('../app/sinkFinder');
-var astCheck = require('../app/ast_manipulations');
+var chai = require('chai'),
+    expect = chai.expect, // we are using the "expect" style of Chai
+    sourceFind = require('../app/source_finder'),
+    sinkFinder = require('../app/sink_finder'),
+    astCheck = require('../app/ast_manipulations');
 
 var documentValue = JSON.parse(`{
     "type": "MemberExpression",

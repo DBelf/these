@@ -1,17 +1,15 @@
 /**
  * Created by dimitri on 15/05/2017.
  */
-
 var astCheck = require('./ast_manipulations');
 
 var SinkFinder = (function () {
 
-    const BROADCAST_MESSAGE_STRING = 'broadcastMessage';
-    const SERVICES_STRING = 'Services';
+    const _BROADCAST_MESSAGE_STRING = 'broadcastMessage';
+    const _SERVICES_STRING = 'Services';
     var _messages = ['sendAsyncMessage', 'sendSyncMessage'];
     var _messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
         '@mozilla.org/parentprocessmessagemanager;1'];
-
 
     var communicationManagerCheck = function (node) {
         return true;
@@ -31,14 +29,14 @@ var SinkFinder = (function () {
         return "";
     }
 
-    var checkMessageFunction = function(node) {
+    var checkMessageFunction = function (node) {
         return true;
     }
 
     return {
-        communicationManagerCheck : communicationManagerCheck,
-        findProcessMessageManager : findProcessMessageManager,
-        checkMessageFunction : checkMessageFunction
+        communicationManagerCheck: communicationManagerCheck,
+        findProcessMessageManager: findProcessMessageManager,
+        checkMessageFunction: checkMessageFunction
     }
 })();
 
