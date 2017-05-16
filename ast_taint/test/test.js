@@ -145,7 +145,9 @@ describe('AST generation', function () {
             expect(value).to.be.undefined;
         })
         it('finds all files with the javascript extension', function () {
-
+            var path = '../';
+            var value = generateAST.collectFiles(path);
+            expect(value.length).to.be.at.least(5);
         })
     })
 
