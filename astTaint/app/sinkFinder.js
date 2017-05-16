@@ -1,27 +1,45 @@
 /**
  * Created by dimitri on 15/05/2017.
  */
-const BROADCAST_MESSAGE_STRING = 'broadcastMessage';
-const SERVICES_STRING = 'Services';
-var messages = ['sendAsyncMessage', 'sendSyncMessage'];
-var messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
-    '@mozilla.org/parentprocessmessagemanager;1'];
 
 var astCheck = require('./ast_manipulations');
 
-exports.communicationManagerCheck = function (node) {
-    return true;
-}
+var SinkFinder = (function () {
 
-exports.findChildProcessMessageManager = function (node) {
-    var potentialManager = messageManagers.map(function(propertyName){
-        return astCheck.memberExpressionCheck(node.init.callee, 'Cc', propertyName);
-    });
-    var foundManager = potentialManager.reduce(function (acc, val){
-        return acc || val;
-    }, false);
-    if(foundManager){
-        return node.id.name;
+    const BROADCAST_MESSAGE_STRING = 'broadcastMessage';
+    const SERVICES_STRING = 'Services';
+    var _messages = ['sendAsyncMessage', 'sendSyncMessage'];
+    var _messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
+        '@mozilla.org/parentprocessmessagemanager;1'];
+
+
+    var communicationManagerCheck = function (node) {
+        return true;
     }
-    return "";
-}
+
+    var findProcessMessageManager = function (node) {
+        var potentialManager = _messageManagers.map(function (propertyName) {
+            return astCheck.memberExpressionCheck(node.init.callee, 'Cc', propertyName);
+        });
+        var foundManager = potentialManager.reduce(function (acc, val) {
+            return acc || val;
+        }, false);
+
+        if (foundManager) {
+            return node.id.name;
+        }
+        return "";
+    }
+
+    var checkMessageFunction = function(node) {
+        return true;
+    }
+
+    return {
+        communicationManagerCheck : communicationManagerCheck,
+        findProcessMessageManager : findProcessMessageManager,
+        checkMessageFunction : checkMessageFunction
+    }
+})();
+
+module.exports = SinkFinder;

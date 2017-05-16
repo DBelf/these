@@ -4,7 +4,7 @@
 var chai = require('chai');
 var expect = chai.expect; // we are using the "expect" style of Chai
 var sourceFind = require('../app/sourceFinder');
-var sinkFind = require('../app/sinkFinder');
+var sinkFinder = require('../app/sinkFinder');
 var astCheck = require('../app/ast_manipulations');
 
 var documentValue = JSON.parse(`{
@@ -142,11 +142,11 @@ describe("Vulnerablility finder", function () {
             var value = sourceFind.valueAccess(documentValue);
             expect(value).to.equal(true);
         });
-        it("finds a document source", function (){
-           var value = sourceFind.generalCheck(documentMemberAccess);
-           expect(value).to.equal(true);
+        it("finds a document source", function () {
+            var value = sourceFind.generalCheck(documentMemberAccess);
+            expect(value).to.equal(true);
         });
-        it("finds the value of a document element source", function(){
+        it("finds the value of a document element source", function () {
             var value = sourceFind.valueAccess(valueAccessNode);
             expect(value).to.equal(true);
         })
@@ -158,8 +158,11 @@ describe("Vulnerablility finder", function () {
             expect(value).to.equal(true);
         });
         it("finds the identifier of the message manager", function () {
-            var value = sinkFind.findChildProcessMessageManager(messageManagerControl.declarations[0]);
+            var value = sinkFinder.findProcessMessageManager(messageManagerControl.declarations[0]);
             expect(value).to.equal('cpmm');
+        })
+        it("finds the message passing functions", function () {
+            var value = sinkFinder.checkMessageFunction();
         })
     });
 });

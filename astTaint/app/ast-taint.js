@@ -20,13 +20,6 @@ var fs = require('fs'),
     estraverse = require('estraverse'),
     dfatool = require('dfatool');
 
-var documentSources = ['URL',
-    'documentURI',
-    'baseURI',
-    'cookie',
-    'referrer'
-];
-
 
 function traverse(node, func) {
     func(node);
@@ -47,19 +40,6 @@ function traverse(node, func) {
     }
 }
 
-
-function isSource(node) {
-    switch (node.type) {
-        case 'VariableDeclarator':
-            if (printDeclaration(node)) {
-                console.log('found stuff');
-            }
-            break;
-        default:
-            break;
-    }
-}
-
 function tagSource(node) {
     switch (node.type) {
         case 'MemberExpression':
@@ -69,11 +49,6 @@ function tagSource(node) {
             break;
     }
 }
-
-function printDeclaration(node) {
-    return node.init.type === 'MemberExpression';
-}
-
 
 function testAssumption(ast) {
     estraverse.traverse(ast, {
