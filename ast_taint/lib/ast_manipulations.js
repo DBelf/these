@@ -1,6 +1,7 @@
 /**
  * Created by dimitri on 15/05/2017.
  */
+var estraverse = require('estraverse');
 
 var ASTManipulations = (function () {
 
@@ -17,17 +18,18 @@ var ASTManipulations = (function () {
         return node.property.name === name;
     }
 
-    var isOfType = function (type, node){
-        return node.type === type;
+    var isOfType = function (type){
+        return function (node) {
+            return type === node.type;
+        }
     }
 
-    var mapFunctionToNodes = function (ast, fun) {
+    var mapFunctionToNodes = function (ast, curryFunction) {
         var arr = [];
         estraverse.traverse(ast, {
-            enter: function (fun) {
-                arr.append(fun(node));
-            },
-            exit: function (node) {
+            enter: function (node) {
+                arr.push(curryFunction(node));
+                // arr.append(fun(node));
             }
         })
         return arr;

@@ -155,7 +155,6 @@ describe('AST generation', function () {
             var path = './test/ast_tests/';
             var ast = generateAST.createAST(path);
             expect(ast).to.not.be.undefined;
-            console.log(ast.type);
         })
     })
 })
@@ -199,6 +198,9 @@ describe('AST node analysis', function () {
     })
     it('Checks whether a node in the AST is Program', function () {
         var ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
+        var curriedFunction = astCheck.isOfType('Program');
+        var typeArray = astCheck.mapFunctionToNodes(ast, curriedFunction);
+        expect(typeArray.indexOf(true) != -1).to.be.true;
     })
 });
 
