@@ -8,6 +8,11 @@ var chai = require('chai'),
     astCheck = require('../lib/ast_manipulations'),
     generateAST = require('../lib/generate_ast');
 
+var reduceBoolean = function(acc, val) {
+    return acc|| val;
+};
+
+
 var documentValue = JSON.parse(`{
     "type": "MemberExpression",
     "computed": false,
@@ -172,6 +177,19 @@ describe('Vulnerablility finder', function () {
         it('finds the value of a document element source', function () {
             var value = sourceFind.valueAccess(valueAccessNode);
             expect(value).to.equal(true);
+        });
+        it('finds the document.URL source',function () {
+            var docURLAST = generateAST.astFromFile('test/ast_tests/member_expression.js');
+            var normalAST = generateAST.astFromFile('test/ast_tests/one_assignment.js');
+
+            var docMemberExpressions = astCheck.collectMemberExpressions(docURLAST);
+            var normalMemberExpressions = astCheck.collectMemberExpressions(normalAST);
+
+            var foundSource = docMemberExpressions.map(sourceFind.generalCheck);
+            var noFoundSource = normalMemberExpressions.map(sourceFind.generalCheck);
+
+            expect(foundSource.reduce(reduceBoolean, false)).to.be.true;
+            expect(noFoundSource.reduce(reduceBoolean, false)).to.be.false;
         });
     });
     describe('Potential communication sinks', function () {
