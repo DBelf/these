@@ -18,10 +18,24 @@ var ASTManipulations = (function () {
         return node.property.name === name;
     }
 
+    //Curried
     var isOfType = function (type){
         return function (node) {
             return type === node.type;
         }
+    }
+
+    var findMemberExpression = function (node) {
+        var isMemberExpression = isOfType('MemberExpression');
+
+        if (isMemberExpression(node)){
+            return node;
+        }
+    }
+
+    var collectMemberExpressions = function (ast) {
+        var memberExpressions = mapFunctionToNodes(ast, findMemberExpression);
+        return memberExpressions.filter(node => node);//Not sure of this filter
     }
 
     var mapFunctionToNodes = function (ast, curryFunction) {
@@ -29,7 +43,6 @@ var ASTManipulations = (function () {
         estraverse.traverse(ast, {
             enter: function (node) {
                 arr.push(curryFunction(node));
-                // arr.append(fun(node));
             }
         })
         return arr;
@@ -39,7 +52,8 @@ var ASTManipulations = (function () {
         memberExpressionCheck: memberExpressionCheck,
         hasProperty: hasProperty,
         mapFunctionToNodes: mapFunctionToNodes,
-        isOfType: isOfType
+        isOfType: isOfType,
+        collectMemberExpressions : collectMemberExpressions
     }
 
 })();

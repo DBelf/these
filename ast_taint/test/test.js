@@ -139,7 +139,7 @@ var messageManagerControl = JSON.parse(`{
 
 describe('AST generation', function () {
     describe('Collecting all javascript files', function () {
-        it('Can\'t find non-existing paths',function () {
+        it('Can\'t find non-existing paths', function () {
             var falsePath = ''
             var value = generateAST.collectFiles(falsePath);
             expect(value).to.be.undefined;
@@ -172,7 +172,7 @@ describe('Vulnerablility finder', function () {
         it('finds the value of a document element source', function () {
             var value = sourceFind.valueAccess(valueAccessNode);
             expect(value).to.equal(true);
-        })
+        });
     });
     describe('Potential communication sinks', function () {
         it('checks whether a property exists', function () {
@@ -195,13 +195,17 @@ describe('AST node analysis', function () {
         var memberNode = messageManagerControl.declarations[0].init.arguments[0];
         var value = astCheck.memberExpressionCheck(memberNode, 'Ci', 'nsISyncMessageSender');
         expect(value).to.equal(true);
-    })
-    it('Checks whether a node in the AST is Program', function () {
+    });
+    it('checks whether the first node in the AST is Program', function () {
         var ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
-        var curriedFunction = astCheck.isOfType('Program');
-        var typeArray = astCheck.mapFunctionToNodes(ast, curriedFunction);
-        expect(typeArray.indexOf(true) != -1).to.be.true;
-    })
+        var typeArray = astCheck.mapFunctionToNodes(ast, astCheck.isOfType('Program'));
+        expect(typeArray[0]).to.be.true;
+    });
+    it('finds all memberexpressions in the ast', function () {
+        var ast = generateAST.astFromFile('test/ast_tests/member_expression.js');
+        var memberExpression = astCheck.collectMemberExpressions(ast);
+        expect(memberExpression).to.have.lengthOf(1);
+    });
 });
 
 
