@@ -163,7 +163,7 @@ describe('Vulnerablility finder', function () {
             expect(foundSource.reduce(astCheck.reduceBoolean, false)).to.equal(true);
         });
         it('finds a source within a function', function () {
-            var ast = generateAST.astFromFile('test/ast_tests/source-in-function.js');
+            var ast = generateAST.astFromFile('test/ast_tests/source_in_function.js');
             var declarations = astCheck.collectDeclarations(ast);
             var foundSource = declarations.map(sourceFind.checkDeclaration);
             expect(foundSource.reduce(astCheck.reduceBoolean, false)).to.equal(true);

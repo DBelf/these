@@ -11,6 +11,7 @@ var Scope = function () {
         return {
             'scope_level': 'global',
             'declared_variables': identifiers || [],
+            'assigned_variables': identifiers || [],
             'scopes': scopes || []
         }
     }
@@ -18,7 +19,8 @@ var Scope = function () {
     var TEMPLATE_SCOPE = function (identifiers, scopes) {
         return {
             'declared_variables': identifiers || [],
-            'scopes': scopes
+            'assigned_variables': identifiers || [],
+            'scopes': scopes || []
         }
     }
 
@@ -65,27 +67,55 @@ var Scope = function () {
     }
 
     var constructScope = function (ast) {
-        var currentScope;
+        var currentScope = [];
 
         estraverse.traverse(ast, {
                 enter: function (node) {
                     switch (node.type) {
                         case 'Program':
-                            currentScope = TEMPLATE_GLOBAL_SCOPE();
+                            currentScope.push(TEMPLATE_GLOBAL_SCOPE());
                             break;
                         case 'VariableDeclarator':
+                            console.log('entering vardec');
                             var variableDeclaration = TEMPLATE_VARIABLE_DECLARATION(node.name, node.init);
-                            currentScope.declared_variables.push(variableDeclaration);
+                            currentScope[currentScope.length - 1].declared_variables.push(variableDeclaration);
+                            break;
+                        case 'AssignmentExpression':
+                            var left = node.left;
+                            var right = node.right;
+                            var operator = node.operator;
+                            var assignment = TEMPLATE_VARIABLE_ASSIGNMENT(left, right, operator);
+                            currentScope[currentScope.length - 1].assigned_variables.push(assignment);
+                            break;
+                        case 'FunctionDeclaration':
+                            var newScope = TEMPLATE_SCOPE();
+                            currentScope.push(newScope);
+                            console.log('entering function');
+                            break;
+                        case 'BlockStatement':
+                            console.log('entering block');
+                            break;
+                        default:
+                            break;
+                    }
+                },
+                leave: function(node) {
+                    switch(node.type){
+                        case 'FunctionDeclaration':
+                            lastScope = currentScope.pop();
+                            currentScope[currentScope.length - 1].scopes.push(lastScope);
+                            console.log('exiting function');
+                            break;
+                        default:
                             break;
                     }
                 }
-
             }
         );
-        return currentScope;
+        return currentScope.pop();
     }
 
-    var ast = generateAST.astFromFile('../test/ast_tests/one_assignment.js');
+    var ast = generateAST.astFromFile('../test/ast_tests/source_in_function.js');
     console.log(constructScope(ast));
     return {
         constructScope: constructScope
