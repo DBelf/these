@@ -9,6 +9,8 @@ var GenerateAST = (function () {
     var _EXTENSION = '.js';
     var _DEFAULT_DIRECTORY = 'tmp'
     var _DEFAULT_FILENAME = 'tmp.js';
+    var _FULLPATH = _DEFAULT_DIRECTORY + '/' + _DEFAULT_FILENAME;
+
 
     var collectFiles = function (parentPath) {
         var filesInPath = [];
@@ -46,7 +48,7 @@ var GenerateAST = (function () {
 
     var createDefault = function () {
         createDirectory(_DEFAULT_DIRECTORY);
-        fs.writeFile(_DEFAULT_DIRECTORY + '/' + _DEFAULT_FILENAME, '', (err) => {
+        fs.writeFile(_FULLPATH, '', (err) => {
             console.log(err);
         });
     }
@@ -66,17 +68,25 @@ var GenerateAST = (function () {
         if (!destination) {
            createDefault();
         } else if (~destination.indexOf('.js')) {//bitwise ~ makes it true or false
+            _FULLPATH = destination;
             createWithFilePath(destination);
         } else {
-            createWithFilePath(destination.concat(_DEFAULT_FILENAME));
+            //TODO check whether forwardslash is in destination name.
+            _FULLPATH = destination.concat(_DEFAULT_FILENAME);
+            createWithFilePath();
         }
     }
 
-
-    var appendToFile = function (file, destination) {
-
+    var appendToFile = function (filePath) {
+        fs.readFile(filePath, 'utf8', function (err, data) {
+            if (err) {
+                return console.log(err);
+            }
+            fs.appendFile(_FULLPATH, data, function (err) {
+                if (err) throw err;
+            });
+        });
     }
-    
     return {
         collectFiles: collectFiles
     }
