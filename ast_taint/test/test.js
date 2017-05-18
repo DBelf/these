@@ -153,20 +153,20 @@ describe('Vulnerablility finder', function () {
             var foundSource = docMemberExpressions.map(sourceFind.generalCheck);
             var noFoundSource = normalMemberExpressions.map(sourceFind.generalCheck);
 
-            expect(foundSource.reduce(reduceBoolean, false)).to.be.true;
-            expect(noFoundSource.reduce(reduceBoolean, false)).to.be.false;
+            expect(foundSource.reduce(astCheck.reduceBoolean, false)).to.be.true;
+            expect(noFoundSource.reduce(astCheck.reduceBoolean, false)).to.be.false;
         });
         it('finds the value of a document element source', function () {
             var ast = generateAST.astFromFile('test/ast_tests/value_access.js');
             var declarations = astCheck.collectDeclarations(ast);
             var foundSource = declarations.map(sourceFind.checkDeclaration);
-            expect(foundSource.reduce(reduceBoolean, false)).to.equal(true);
+            expect(foundSource.reduce(astCheck.reduceBoolean, false)).to.equal(true);
         });
         it('finds a source within a function', function () {
             var ast = generateAST.astFromFile('test/ast_tests/source-in-function.js');
             var declarations = astCheck.collectDeclarations(ast);
             var foundSource = declarations.map(sourceFind.checkDeclaration);
-            expect(foundSource.reduce(reduceBoolean, false)).to.equal(true);
+            expect(foundSource.reduce(astCheck.reduceBoolean, false)).to.equal(true);
         })
     });
     describe('Potential communication sinks', function () {
