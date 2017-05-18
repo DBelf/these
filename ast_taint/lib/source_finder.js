@@ -31,7 +31,7 @@ var SourceFinder = (function () {
                 //Not sure if i can just include the valueaccess here
                 return generalCheck(node.init) || valueAccess(node.init);
             default:
-                return;
+                return false;
         }
     }
 

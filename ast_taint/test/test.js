@@ -145,7 +145,7 @@ describe('Vulnerablility finder', function () {
 
         it('finds the document.URL source', function () {
             var docURLAST = generateAST.astFromFile('test/ast_tests/member_expression.js');
-            var normalAST = generateAST.astFromFile('test/ast_tests/one_assignment.js');
+            var normalAST = generateAST.astFromFile('test/ast_tests/member_access.js');
 
             var docMemberExpressions = astCheck.collectMemberExpressions(docURLAST);
             var normalMemberExpressions = astCheck.collectMemberExpressions(normalAST);
@@ -153,20 +153,20 @@ describe('Vulnerablility finder', function () {
             var foundSource = docMemberExpressions.map(sourceFind.generalCheck);
             var noFoundSource = normalMemberExpressions.map(sourceFind.generalCheck);
 
-            expect(foundSource.reduce(astCheck.reduceBoolean, false)).to.be.true;
-            expect(noFoundSource.reduce(astCheck.reduceBoolean, false)).to.be.false;
+            expect(true).to.be.oneOf(foundSource);
+            expect(false).to.be.oneOf(noFoundSource);
         });
         it('finds the value of a document element source', function () {
             var ast = generateAST.astFromFile('test/ast_tests/value_access.js');
             var declarations = astCheck.collectDeclarations(ast);
             var foundSource = declarations.map(sourceFind.checkDeclaration);
-            expect(foundSource.reduce(astCheck.reduceBoolean, false)).to.equal(true);
+            expect(true).to.be.oneOf(foundSource);
         });
         it('finds a source within a function', function () {
             var ast = generateAST.astFromFile('test/ast_tests/source_in_function.js');
             var declarations = astCheck.collectDeclarations(ast);
             var foundSource = declarations.map(sourceFind.checkDeclaration);
-            expect(foundSource.reduce(astCheck.reduceBoolean, false)).to.equal(true);
+            expect(true).to.be.oneOf(foundSource);
         })
     });
     describe('Potential communication sinks', function () {
