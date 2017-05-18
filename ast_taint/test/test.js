@@ -43,53 +43,6 @@ var documentValue = JSON.parse(`{
 }
 }`);
 
-var valueAccessNode = JSON.parse(`
-{
-        "type": "MemberExpression",
-        "computed": false,
-        "object": {
-            "type": "CallExpression",
-            "callee": {
-                "type": "MemberExpression",
-                "computed": false,
-                "object": {
-                    "type": "Identifier",
-                    "name": "document"
-                },
-                "property": {
-                    "type": "Identifier",
-                    "name": "getElementById"
-                }
-            },
-            "arguments": [
-                {
-                    "type": "Literal",
-                    "value": "??",
-                    "raw": "??"
-                }
-            ]
-        },
-        "property": {
-            "type": "Identifier",
-            "name": "value"
-        }
-    }
-`);
-
-var documentMemberAccess = JSON.parse(`
-                    {
-                        "type": "MemberExpression",
-                        "computed": false,
-                        "object": {
-                            "type": "Identifier",
-                            "name": "document"
-                        },
-                        "property": {
-                            "type": "Identifier",
-                            "name": "URLUnencoded"
-                        }
-                    }`);
-
 var messageManagerControl = JSON.parse(`{
             "type": "VariableDeclaration",
             "declarations": [

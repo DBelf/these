@@ -28,10 +28,8 @@ var SourceFinder = (function () {
     var checkDeclaration = function (node) {
         switch (node.init.type) {
             case 'MemberExpression':
-                console.log(node.init);
-                return generalCheck(node.init)
+                return generalCheck(node.init) || valueAccess(node.init);
             case 'CallExpression':
-                console.log('Implement me');
                 break;
             default:
                 return;
