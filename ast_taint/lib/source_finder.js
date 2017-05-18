@@ -28,9 +28,8 @@ var SourceFinder = (function () {
     var checkDeclaration = function (node) {
         switch (node.init.type) {
             case 'MemberExpression':
+                //Not sure if i can just include the valueaccess here
                 return generalCheck(node.init) || valueAccess(node.init);
-            case 'CallExpression':
-                break;
             default:
                 return;
         }
@@ -52,9 +51,7 @@ var SourceFinder = (function () {
         var potentialSources = sourceArray.map(function (sourceName) {
             return astCheck.memberExpressionCheck(node, callee, sourceName);
         });
-        return potentialSources.reduce(function (acc, val) {
-            return acc || val;
-        }, false);
+        return potentialSources.reduce(astCheck.reduceBoolean, false);
     }
 
     return {

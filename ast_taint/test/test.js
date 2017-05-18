@@ -8,11 +8,6 @@ var chai = require('chai'),
     astCheck = require('../lib/ast_manipulations'),
     generateAST = require('../lib/generate_ast');
 
-var reduceBoolean = function (acc, val) {
-    return acc || val;
-};
-
-
 var documentValue = JSON.parse(`{
     "type": "MemberExpression",
     "computed": false,
@@ -147,6 +142,7 @@ describe('Vulnerablility finder', function () {
             var value = sourceFind.valueAccess(documentValue);
             expect(value).to.equal(true);
         });
+
         it('finds the document.URL source', function () {
             var docURLAST = generateAST.astFromFile('test/ast_tests/member_expression.js');
             var normalAST = generateAST.astFromFile('test/ast_tests/one_assignment.js');
@@ -162,10 +158,16 @@ describe('Vulnerablility finder', function () {
         });
         it('finds the value of a document element source', function () {
             var ast = generateAST.astFromFile('test/ast_tests/value_access.js');
-            var declarations = astCheck.collectDeclarations(ast);// var value = sourceFind.valueAccess(valueAccessNode);
+            var declarations = astCheck.collectDeclarations(ast);
             var foundSource = declarations.map(sourceFind.checkDeclaration);
             expect(foundSource.reduce(reduceBoolean, false)).to.equal(true);
         });
+        it('finds a source within a function', function () {
+            var ast = generateAST.astFromFile('test/ast_tests/source-in-function.js');
+            var declarations = astCheck.collectDeclarations(ast);
+            var foundSource = declarations.map(sourceFind.checkDeclaration);
+            expect(foundSource.reduce(reduceBoolean, false)).to.equal(true);
+        })
     });
     describe('Potential communication sinks', function () {
         it('checks whether a property exists', function () {

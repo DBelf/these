@@ -19,9 +19,7 @@ var SinkFinder = (function () {
         var potentialManager = _messageManagers.map(function (propertyName) {
             return astCheck.memberExpressionCheck(node.init.callee, 'Cc', propertyName);
         });
-        var foundManager = potentialManager.reduce(function (acc, val) {
-            return acc || val;
-        }, false);
+        var foundManager = potentialManager.reduce(astCheck.reduceBoolean, false);
 
         if (foundManager) {
             return node.id.name;

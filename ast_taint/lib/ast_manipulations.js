@@ -5,6 +5,10 @@ var estraverse = require('estraverse');
 
 var ASTManipulations = (function () {
 
+    var reduceBoolean = function (acc, val) {
+        return acc || val;
+    };
+
     var memberExpressionCheck = function (node, identifier, property) {
         if (node.object.type === 'MemberExpression') {
             return memberExpressionCheck(node.object, identifier, property);
@@ -67,7 +71,8 @@ var ASTManipulations = (function () {
         mapFunctionToNodes: mapFunctionToNodes,
         isOfType: isOfType,
         collectMemberExpressions: collectMemberExpressions,
-        collectDeclarations: collectDeclarations
+        collectDeclarations: collectDeclarations,
+        reduceBoolean: reduceBoolean
     }
 
 })();
