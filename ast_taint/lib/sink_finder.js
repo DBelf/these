@@ -1,7 +1,7 @@
 /**
  * Created by dimitri on 15/05/2017.
  */
-var astCheck = require('./ast_manipulations');
+var astCheck = require('./utils');
 
 var SinkFinder = (function () {
 

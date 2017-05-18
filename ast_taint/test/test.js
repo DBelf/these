@@ -5,7 +5,7 @@ var chai = require('chai'),
     expect = chai.expect, // we are using the "expect" style of Chai
     sourceFind = require('../lib/source_finder'),
     sinkFinder = require('../lib/sink_finder'),
-    astCheck = require('../lib/ast_manipulations'),
+    astCheck = require('../lib/utils'),
     generateAST = require('../lib/generate_ast');
 
 var documentValue = JSON.parse(`{

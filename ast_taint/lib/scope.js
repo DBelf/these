@@ -67,29 +67,29 @@ var Scope = function () {
     }
 
     var constructScope = function (ast) {
-        var currentScope = [];
+        var scopeQueue = [];
 
         estraverse.traverse(ast, {
                 enter: function (node) {
                     switch (node.type) {
                         case 'Program':
-                            currentScope.push(TEMPLATE_GLOBAL_SCOPE());
+                            scopeQueue.push(TEMPLATE_GLOBAL_SCOPE());
                             break;
                         case 'VariableDeclarator':
                             console.log('entering vardec');
                             var variableDeclaration = TEMPLATE_VARIABLE_DECLARATION(node.name, node.init);
-                            currentScope[currentScope.length - 1].declared_variables.push(variableDeclaration);
+                            scopeQueue[scopeQueue.length - 1].declared_variables.push(variableDeclaration);
                             break;
                         case 'AssignmentExpression':
                             var left = node.left;
                             var right = node.right;
                             var operator = node.operator;
                             var assignment = TEMPLATE_VARIABLE_ASSIGNMENT(left, right, operator);
-                            currentScope[currentScope.length - 1].assigned_variables.push(assignment);
+                            scopeQueue[scopeQueue.length - 1].assigned_variables.push(assignment);
                             break;
                         case 'FunctionDeclaration':
                             var newScope = TEMPLATE_SCOPE();
-                            currentScope.push(newScope);
+                            scopeQueue.push(newScope);
                             console.log('entering function');
                             break;
                         case 'BlockStatement':
@@ -102,8 +102,8 @@ var Scope = function () {
                 leave: function(node) {
                     switch(node.type){
                         case 'FunctionDeclaration':
-                            lastScope = currentScope.pop();
-                            currentScope[currentScope.length - 1].scopes.push(lastScope);
+                            lastScope = scopeQueue.pop();
+                            scopeQueue[scopeQueue.length - 1].scopes.push(lastScope);
                             console.log('exiting function');
                             break;
                         default:
@@ -112,7 +112,7 @@ var Scope = function () {
                 }
             }
         );
-        return currentScope.pop();
+        return scopeQueue.pop();
     }
 
     var ast = generateAST.astFromFile('../test/ast_tests/source_in_function.js');
