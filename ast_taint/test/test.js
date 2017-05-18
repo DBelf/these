@@ -8,8 +8,8 @@ var chai = require('chai'),
     astCheck = require('../lib/ast_manipulations'),
     generateAST = require('../lib/generate_ast');
 
-var reduceBoolean = function(acc, val) {
-    return acc|| val;
+var reduceBoolean = function (acc, val) {
+    return acc || val;
 };
 
 
@@ -164,21 +164,37 @@ describe('AST generation', function () {
     })
 })
 
+
+describe('AST node analysis', function () {
+    it('finds a specific member access expression', function () {
+        var memberNode = messageManagerControl.declarations[0].init.arguments[0];
+        var value = astCheck.memberExpressionCheck(memberNode, 'Ci', 'nsISyncMessageSender');
+        expect(value).to.equal(true);
+    });
+    it('checks whether the first node in the AST is Program', function () {
+        var ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
+        var typeArray = astCheck.mapFunctionToNodes(ast, astCheck.isOfType('Program'));
+        expect(typeArray[0]).to.be.true;
+    });
+    it('finds all memberexpressions in the ast', function () {
+        var ast = generateAST.astFromFile('test/ast_tests/member_expression.js');
+        var memberExpression = astCheck.collectMemberExpressions(ast);
+        expect(memberExpression).to.have.lengthOf(1);
+    });
+    it ('finds all variable declarations', function () {
+        var ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
+        var declaration = astCheck.collectDeclarations(ast);
+        expect(declaration).to.have.lengthOf(1);
+    })
+});
+
 describe('Vulnerablility finder', function () {
     describe('Document sources', function () {
         it('finds the sources when doing a member call on documents', function () {
             var value = sourceFind.valueAccess(documentValue);
             expect(value).to.equal(true);
         });
-        it('finds a document source', function () {
-            var value = sourceFind.generalCheck(documentMemberAccess);
-            expect(value).to.equal(true);
-        });
-        it('finds the value of a document element source', function () {
-            var value = sourceFind.valueAccess(valueAccessNode);
-            expect(value).to.equal(true);
-        });
-        it('finds the document.URL source',function () {
+        it('finds the document.URL source', function () {
             var docURLAST = generateAST.astFromFile('test/ast_tests/member_expression.js');
             var normalAST = generateAST.astFromFile('test/ast_tests/one_assignment.js');
 
@@ -190,6 +206,12 @@ describe('Vulnerablility finder', function () {
 
             expect(foundSource.reduce(reduceBoolean, false)).to.be.true;
             expect(noFoundSource.reduce(reduceBoolean, false)).to.be.false;
+        });
+        it('finds the value of a document element source', function () {
+            var ast = generateAST.astFromFile('test/ast_tests/value_access.js');
+            var declarations = astCheck.collectDeclarations(ast);// var value = sourceFind.valueAccess(valueAccessNode);
+            var foundSource = declarations.map(sourceFind.checkDeclaration);
+            expect(foundSource.reduce(reduceBoolean, false)).to.equal(true);
         });
     });
     describe('Potential communication sinks', function () {
@@ -208,23 +230,6 @@ describe('Vulnerablility finder', function () {
     });
 });
 
-describe('AST node analysis', function () {
-    it('finds a specific member access expression', function () {
-        var memberNode = messageManagerControl.declarations[0].init.arguments[0];
-        var value = astCheck.memberExpressionCheck(memberNode, 'Ci', 'nsISyncMessageSender');
-        expect(value).to.equal(true);
-    });
-    it('checks whether the first node in the AST is Program', function () {
-        var ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
-        var typeArray = astCheck.mapFunctionToNodes(ast, astCheck.isOfType('Program'));
-        expect(typeArray[0]).to.be.true;
-    });
-    it('finds all memberexpressions in the ast', function () {
-        var ast = generateAST.astFromFile('test/ast_tests/member_expression.js');
-        var memberExpression = astCheck.collectMemberExpressions(ast);
-        expect(memberExpression).to.have.lengthOf(1);
-    });
-});
 
 
 

@@ -25,6 +25,19 @@ var SourceFinder = (function () {
         return astCheck.hasProperty(node, _NAME_ACCESS_STRING);
     }
 
+    var checkDeclaration = function (node) {
+        switch (node.init.type) {
+            case 'MemberExpression':
+                console.log(node.init);
+                return generalCheck(node.init)
+            case 'CallExpression':
+                console.log('Implement me');
+                break;
+            default:
+                return;
+        }
+    }
+
     var generalCheck = function (node) {
         //sanity check
         switch (node.object.name) {
@@ -50,7 +63,8 @@ var SourceFinder = (function () {
         valueAccess: valueAccess,
         dataAccess: dataAccess,
         nameAccess: nameAccess,
-        generalCheck: generalCheck
+        generalCheck: generalCheck,
+        checkDeclaration: checkDeclaration
     }
 
 })();

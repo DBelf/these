@@ -19,7 +19,7 @@ var ASTManipulations = (function () {
     }
 
     //Curried
-    var isOfType = function (type){
+    var isOfType = function (type) {
         return function (node) {
             return type === node.type;
         }
@@ -28,9 +28,22 @@ var ASTManipulations = (function () {
     var findMemberExpression = function (node) {
         var isMemberExpression = isOfType('MemberExpression');
 
-        if (isMemberExpression(node)){
+        if (isMemberExpression(node)) {
             return node;
         }
+    }
+
+    var findDeclaration = function (node) {
+        var isDeclaration = isOfType('VariableDeclarator');
+
+        if (isDeclaration(node)) {
+            return node;
+        }
+    }
+
+    var collectDeclarations = function (ast) {
+        var declarations = mapFunctionToNodes(ast, findDeclaration);
+        return declarations.filter(node => node);
     }
 
     var collectMemberExpressions = function (ast) {
@@ -53,7 +66,8 @@ var ASTManipulations = (function () {
         hasProperty: hasProperty,
         mapFunctionToNodes: mapFunctionToNodes,
         isOfType: isOfType,
-        collectMemberExpressions : collectMemberExpressions
+        collectMemberExpressions: collectMemberExpressions,
+        collectDeclarations: collectDeclarations
     }
 
 })();
