@@ -17,23 +17,24 @@ var GenerateAST = (function () {
         }
     }
 
+    var astFromFile = function (filePath) {
+        var code = fs.readFileSync(filePath, 'utf-8');
+        var ast = esprima.parse(code, {
+            loc: true
+        });
+        return ast;
+    }
+
     var createAST = function (parentPath, destination) {
         var filesInPath = gatherFiles(parentPath);
         createTmpDir(destination);
         gatherCode(filesInPath);
-        var code = fs.readFileSync(_FULLPATH, 'utf-8');
-
-        var ast = esprima.parse(code, {
-            loc: true
-        });
-
-        console.log(ast);
+        ast = astFromFile(_FULLPATH);
         return ast;
     }
 
     var gatherFiles = function (parentPath) {
         var filesInPath = [];
-
         if (!fs.existsSync(parentPath)) {
             // console.log("no dir ",path); //DEBUG
             return;
@@ -83,6 +84,7 @@ var GenerateAST = (function () {
         });
     }
 
+    //FIXME calling this somehow prints null??
     var createTmpDir = function (destination) {
         if (!destination) {
             createDefault();
@@ -98,9 +100,7 @@ var GenerateAST = (function () {
 
     var appendToFile = function (filePath) {
         fs.readFile(filePath, 'utf8', function (err, data) {
-            if (err) {
-                return console.log(err);
-            }
+            if (err) throw err;
             fs.appendFile(_FULLPATH, data, function (err) {
                 if (err) throw err;
             });
@@ -109,7 +109,8 @@ var GenerateAST = (function () {
 
     return {
         collectFiles: gatherFiles,
-        createAST: createAST
+        createAST: createAST,
+        astFromFile: astFromFile
     }
 })();
 

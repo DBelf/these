@@ -3,10 +3,10 @@
  */
 var chai = require('chai'),
     expect = chai.expect, // we are using the "expect" style of Chai
-    sourceFind = require('../app/source_finder'),
-    sinkFinder = require('../app/sink_finder'),
-    astCheck = require('../app/ast_manipulations'),
-    generateAST = require('../app/generate_ast');
+    sourceFind = require('../lib/source_finder'),
+    sinkFinder = require('../lib/sink_finder'),
+    astCheck = require('../lib/ast_manipulations'),
+    generateAST = require('../lib/generate_ast');
 
 var documentValue = JSON.parse(`{
     "type": "MemberExpression",
@@ -155,7 +155,7 @@ describe('AST generation', function () {
             var path = './test/ast_tests/';
             var ast = generateAST.createAST(path);
             expect(ast).to.not.be.undefined;
-
+            console.log(ast.type);
         })
     })
 })
@@ -196,6 +196,9 @@ describe('AST node analysis', function () {
         var memberNode = messageManagerControl.declarations[0].init.arguments[0];
         var value = astCheck.memberExpressionCheck(memberNode, 'Ci', 'nsISyncMessageSender');
         expect(value).to.equal(true);
+    })
+    it('Checks whether a node in the AST is Program', function () {
+        var ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
     })
 });
 

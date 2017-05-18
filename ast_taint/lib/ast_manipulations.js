@@ -17,9 +17,27 @@ var ASTManipulations = (function () {
         return node.property.name === name;
     }
 
+    var isOfType = function (type, node){
+        return node.type === type;
+    }
+
+    var mapFunctionToNodes = function (ast, fun) {
+        var arr = [];
+        estraverse.traverse(ast, {
+            enter: function (fun) {
+                arr.append(fun(node));
+            },
+            exit: function (node) {
+            }
+        })
+        return arr;
+    }
+
     return {
         memberExpressionCheck: memberExpressionCheck,
-        hasProperty: hasProperty
+        hasProperty: hasProperty,
+        mapFunctionToNodes: mapFunctionToNodes,
+        isOfType: isOfType
     }
 
 })();
