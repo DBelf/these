@@ -154,7 +154,7 @@ describe('Vulnerablility finder', function () {
             var noFoundSource = normalMemberExpressions.map(sourceFind.generalCheck);
 
             expect(true).to.be.oneOf(foundSource);
-            expect(false).to.be.oneOf(noFoundSource);
+            expect(true).to.not.be.oneOf(noFoundSource);
         });
         it('finds the value of a document element source', function () {
             var ast = generateAST.astFromFile('test/ast_tests/value_access.js');
