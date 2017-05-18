@@ -150,7 +150,14 @@ describe('AST generation', function () {
             expect(value.length).to.be.at.least(5);
         })
     })
+    describe('Creates an AST', function () {
+        it('Creates an AST from one file', function () {
+            var path = './test/ast_tests/';
+            var ast = generateAST.createAST(path);
+            expect(ast).to.not.be.undefined;
 
+        })
+    })
 })
 
 describe('Vulnerablility finder', function () {

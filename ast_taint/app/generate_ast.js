@@ -11,8 +11,27 @@ var GenerateAST = (function () {
     var _DEFAULT_FILENAME = 'tmp.js';
     var _FULLPATH = _DEFAULT_DIRECTORY + '/' + _DEFAULT_FILENAME;
 
+    var gatherCode = function (filesInPath) {
+        for (var i = 0; i < filesInPath.length; i++) {
+            appendToFile(filesInPath[i]);
+        }
+    }
 
-    var collectFiles = function (parentPath) {
+    var createAST = function (parentPath, destination) {
+        var filesInPath = gatherFiles(parentPath);
+        createTmpDir(destination);
+        gatherCode(filesInPath);
+        var code = fs.readFileSync(_FULLPATH, 'utf-8');
+
+        var ast = esprima.parse(code, {
+            loc: true
+        });
+
+        console.log(ast);
+        return ast;
+    }
+
+    var gatherFiles = function (parentPath) {
         var filesInPath = [];
 
         if (!fs.existsSync(parentPath)) {
@@ -27,7 +46,7 @@ var GenerateAST = (function () {
             var stat = fs.lstatSync(filename);
 
             if (stat.isDirectory()) {
-                filesInPath = filesInPath.concat(collectFiles(filename, _EXTENSION)); //recurse
+                filesInPath = filesInPath.concat(gatherFiles(filename, _EXTENSION)); //recurse
             }
             else if (filename.indexOf(_EXTENSION) >= 0) {
                 // console.log('-- found: ', filename); //DEBUG
@@ -64,9 +83,9 @@ var GenerateAST = (function () {
         });
     }
 
-    var createFile = function (destination) {
+    var createTmpDir = function (destination) {
         if (!destination) {
-           createDefault();
+            createDefault();
         } else if (~destination.indexOf('.js')) {//bitwise ~ makes it true or false
             _FULLPATH = destination;
             createWithFilePath(destination);
@@ -87,8 +106,10 @@ var GenerateAST = (function () {
             });
         });
     }
+
     return {
-        collectFiles: collectFiles
+        collectFiles: gatherFiles,
+        createAST: createAST
     }
 })();
 
