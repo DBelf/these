@@ -3,6 +3,7 @@
  */
 
 var inScope = document.value;
+var shouldNotappear = 3;
 var reassign;
 reassign = inScope;
 

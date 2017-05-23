@@ -116,7 +116,7 @@ describe('AST generation', function () {
 describe('AST node analysis', function () {
     it('finds a specific member access expression', function () {
         var memberNode = messageManagerControl.declarations[0].init.arguments[0];
-        var value = astCheck.memberExpressionCheck(memberNode, 'Ci', 'nsISyncMessageSender');
+        var value = astCheck.memberExpressionCheck(memberNode, '', 'nsISyncMessageSender');
         expect(value).to.equal(true);
     });
     it('checks whether the first node in the AST is Program', function () {
@@ -172,7 +172,7 @@ describe('Vulnerablility finder', function () {
     describe('Potential communication sinks', function () {
         it('checks whether a property exists', function () {
             var memberNode = messageManagerControl.declarations[0].init.callee;
-            var value = astCheck.memberExpressionCheck(memberNode, 'Cc', '@mozilla.org/childprocessmessagemanager;1');
+            var value = astCheck.memberExpressionCheck(memberNode, '', '@mozilla.org/childprocessmessagemanager;1');
             expect(value).to.equal(true);
         });
         it('finds the identifier of the message manager', function () {

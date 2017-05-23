@@ -9,6 +9,8 @@ var estraverse = require('estraverse'),
 
 var Scope = function () {
 
+    var knownSinks = [];
+
     var _scopeChain = [];
     var _isVarDeclaration = utils.isOfType('VariableDeclarator');
     var _isVarAssignment = utils.isOfType('AssignmentExpression');
@@ -27,7 +29,7 @@ var Scope = function () {
             enter: enter,
             leave, leave
         });
-        return _scopeChain;
+        return knownSinks;
     }
 
     var enter = function(node){
@@ -40,6 +42,7 @@ var Scope = function () {
                 currentScope.push(node.id.name);//TODO decide whether I'll use whole node or just the id
             }
         }
+
         if(_isVarAssignment(node)){
             var currentScope = getLast(_scopeChain);
             if (checkAssignment(node)) {
@@ -50,7 +53,10 @@ var Scope = function () {
     }
 
     var leave = function (node) {
-        
+        if (newScope(node)){
+            //Check for paths?
+            knownSinks.push(_scopeChain.pop());
+        }
     }
 
     var checkDeclaration = function (node) {
