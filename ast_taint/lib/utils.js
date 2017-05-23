@@ -61,7 +61,7 @@ var ASTManipulations = (function () {
             enter: function (node) {
                 arr.push(curryFunction(node));
             }
-        })
+        });
         return arr;
     }
 

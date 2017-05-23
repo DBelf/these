@@ -6,7 +6,8 @@ var chai = require('chai'),
     sourceFind = require('../lib/source_finder'),
     sinkFinder = require('../lib/sink_finder'),
     astCheck = require('../lib/utils'),
-    generateAST = require('../lib/generate_ast');
+    generateAST = require('../lib/generate_ast'),
+    scopeAnalysis = require('../lib/scope');
 
 var documentValue = JSON.parse(`{
     "type": "MemberExpression",
@@ -114,7 +115,7 @@ describe('AST generation', function () {
 
 describe('AST node analysis', function () {
     it('finds a specific member access expression', function () {
-        var memberNode = messageManagerControl.variable_declarations[0].init.arguments[0];
+        var memberNode = messageManagerControl.declarations[0].init.arguments[0];
         var value = astCheck.memberExpressionCheck(memberNode, 'Ci', 'nsISyncMessageSender');
         expect(value).to.equal(true);
     });
@@ -170,12 +171,12 @@ describe('Vulnerablility finder', function () {
     });
     describe('Potential communication sinks', function () {
         it('checks whether a property exists', function () {
-            var memberNode = messageManagerControl.variable_declarations[0].init.callee;
+            var memberNode = messageManagerControl.declarations[0].init.callee;
             var value = astCheck.memberExpressionCheck(memberNode, 'Cc', '@mozilla.org/childprocessmessagemanager;1');
             expect(value).to.equal(true);
         });
         it('finds the identifier of the message manager', function () {
-            var value = sinkFinder.findProcessMessageManager(messageManagerControl.variable_declarations[0]);
+            var value = sinkFinder.findProcessMessageManager(messageManagerControl.declarations[0]);
             expect(value).to.equal('cpmm');
         })
         it('finds the message passing functions', function () {
@@ -184,6 +185,14 @@ describe('Vulnerablility finder', function () {
     });
 });
 
+describe('Scope Analysis', function () {
+    it('can find a reassigned source within the scope', function () {
+        var ast = generateAST.astFromFile('test/ast_tests/scoped_source_reassign.js');
+        var sources = scopeAnalysis.analyzeScope(ast);
+        console.log(sources);
+        expect(sources).to.have.lengthOf(2);
+    })
+})
 
 
 

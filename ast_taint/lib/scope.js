@@ -10,8 +10,9 @@ var estraverse = require('estraverse'),
 var Scope = function () {
 
     var _scopeChain = [];
-    var _isVarDeclaration = utils.isOfType('VariableDeclaration');
+    var _isVarDeclaration = utils.isOfType('VariableDeclarator');
     var _isVarAssignment = utils.isOfType('AssignmentExpression');
+    var _isIdentifier = utils.isOfType('Identifier');
     var _isProgram = utils.isOfType('Program');
     var _isFunctionDeclaration = utils.isOfType('FunctionDeclaration');
     var _isFunctionExpression = utils.isOfType('FunctionExpression');
@@ -20,12 +21,13 @@ var Scope = function () {
         return array[array.length - 1];
     }
     
-    var createScope = function (ast) {
+    var analyzeScope = function (ast) {
         _scopeChain = [];
         estraverse.traverse(ast, {
             enter: enter,
             leave, leave
         });
+        return _scopeChain;
     }
 
     var enter = function(node){
@@ -34,13 +36,37 @@ var Scope = function () {
         }
         if (_isVarDeclaration(node)){
             var currentScope = getLast(_scopeChain);
-            if(sourceFinder.checkDeclaration(node)){
-                currentScope.push(node.id);
+            if(sourceFinder.checkDeclaration(node)){//Only push known sources onto the current scope
+                currentScope.push(node.id.name);//TODO decide whether I'll use whole node or just the id
             }
         }
         if(_isVarAssignment(node)){
-
+            var currentScope = getLast(_scopeChain);
+            checkAssignment(node);
         }
+    }
+    
+    var leave = function (node) {
+        
+    }
+    
+    var checkAssignment = function (node) {
+        var currentScope = getLast(_scopeChain);
+
+        if (_isIdentifier(node.right)){//Already detected variable is reassigned
+            var declaredSources = _scopeChain.map(function(scope){
+                return isInScope(node.right, scope);
+            });
+            if (declaredSources.reduce(utils.reduceBoolean, false)){
+               currentScope.push(node.left.name);
+               return;
+            }
+        }
+
+    }
+
+    var isInScope = function (node, currentScope) {
+        return ~currentScope.indexOf(node.name);
     }
 
     var newScope = function (node) {
@@ -48,9 +74,9 @@ var Scope = function () {
                 _isFunctionExpression(node) ||
                 _isProgram(node);
     }
-
-    var ast = generateAST.astFromFile('../test/ast_tests/source_in_function.js');
-
     return {
+        analyzeScope: analyzeScope
     }
 }();
+
+module.exports = Scope;

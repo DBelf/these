@@ -26,6 +26,9 @@ var SourceFinder = (function () {
     }
 
     var checkDeclaration = function (node) {
+        if (node.init === null) {
+            return false;
+        }
         switch (node.init.type) {
             case 'MemberExpression':
                 //Not sure if i can just include the value access here
