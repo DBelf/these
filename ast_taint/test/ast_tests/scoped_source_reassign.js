@@ -5,3 +5,5 @@
 var inScope = document.value;
 var reassign;
 reassign = inScope;
+
+var otherReassign = reassign;

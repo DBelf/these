@@ -189,8 +189,7 @@ describe('Scope Analysis', function () {
     it('can find a reassigned source within the scope', function () {
         var ast = generateAST.astFromFile('test/ast_tests/scoped_source_reassign.js');
         var sources = scopeAnalysis.analyzeScope(ast);
-        console.log(sources);
-        expect(sources).to.have.lengthOf(2);
+        expect(sources[0]).to.have.lengthOf(3);
     })
 })
 

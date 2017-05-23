@@ -13,6 +13,14 @@ var SourceFinder = (function () {
     var _documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
     var _locationSources = ['href', 'search', 'hash', 'pathname'];
 
+    var TEMPLATE_SOURCE = function (id, original_type, location) {
+        return {
+            'id': id,
+            'type': original_type,
+            'loc': location
+        }
+    }
+
     var valueAccess = function (node) {
         return astCheck.hasProperty(node, _VALUE_ACCESS_STRING);
     }

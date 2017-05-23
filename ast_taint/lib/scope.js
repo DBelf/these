@@ -36,37 +36,51 @@ var Scope = function () {
         }
         if (_isVarDeclaration(node)){
             var currentScope = getLast(_scopeChain);
-            if(sourceFinder.checkDeclaration(node)){//Only push known sources onto the current scope
+            if(checkDeclaration(node)){//Only push known sources onto the current scope
                 currentScope.push(node.id.name);//TODO decide whether I'll use whole node or just the id
             }
         }
         if(_isVarAssignment(node)){
             var currentScope = getLast(_scopeChain);
-            checkAssignment(node);
+            if (checkAssignment(node)) {
+                currentScope.push(node.left.name);
+            }
+
         }
     }
-    
+
     var leave = function (node) {
         
     }
-    
-    var checkAssignment = function (node) {
-        var currentScope = getLast(_scopeChain);
 
-        if (_isIdentifier(node.right)){//Already detected variable is reassigned
-            var declaredSources = _scopeChain.map(function(scope){
-                return isInScope(node.right, scope);
-            });
-            if (declaredSources.reduce(utils.reduceBoolean, false)){
-               currentScope.push(node.left.name);
-               return;
-            }
+    var checkDeclaration = function (node) {
+        if (node.init === null) {
+            return false;
         }
-
+        switch (node.init.type) {
+            case 'Identifier':
+                return identifierInScope(node.init.name);
+            default:
+                return sourceFinder.checkDeclaration(node);
+        }
     }
 
-    var isInScope = function (node, currentScope) {
-        return ~currentScope.indexOf(node.name);
+    var checkAssignment = function(node){
+        if (_isIdentifier(node.right)){
+            return identifierInScope(node.right.name);
+        }
+        return false;
+    }
+
+    var identifierInScope = function (identifier) {
+        var declaredSources = _scopeChain.map(function(scope){
+            return isInScope(identifier, scope);
+        });
+        return (declaredSources.reduce(utils.reduceBoolean, false));
+    }
+
+    var isInScope = function (identifier, currentScope) {
+        return ~currentScope.indexOf(identifier);
     }
 
     var newScope = function (node) {
