@@ -112,10 +112,9 @@ describe('AST generation', function () {
     })
 })
 
-
 describe('AST node analysis', function () {
     it('finds a specific member access expression', function () {
-        var memberNode = messageManagerControl.declarations[0].init.arguments[0];
+        var memberNode = messageManagerControl.variable_declarations[0].init.arguments[0];
         var value = astCheck.memberExpressionCheck(memberNode, 'Ci', 'nsISyncMessageSender');
         expect(value).to.equal(true);
     });
@@ -124,12 +123,12 @@ describe('AST node analysis', function () {
         var typeArray = astCheck.mapFunctionToNodes(ast, astCheck.isOfType('Program'));
         expect(typeArray[0]).to.be.true;
     });
-    it('finds all memberexpressions in the ast', function () {
+    it('finds all member expressions in the ast', function () {
         var ast = generateAST.astFromFile('test/ast_tests/member_expression.js');
         var memberExpression = astCheck.collectMemberExpressions(ast);
         expect(memberExpression).to.have.lengthOf(1);
     });
-    it ('finds all variable declarations', function () {
+    it ('finds all variable variable_declarations', function () {
         var ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
         var declaration = astCheck.collectDeclarations(ast);
         expect(declaration).to.have.lengthOf(1);
@@ -171,12 +170,12 @@ describe('Vulnerablility finder', function () {
     });
     describe('Potential communication sinks', function () {
         it('checks whether a property exists', function () {
-            var memberNode = messageManagerControl.declarations[0].init.callee;
+            var memberNode = messageManagerControl.variable_declarations[0].init.callee;
             var value = astCheck.memberExpressionCheck(memberNode, 'Cc', '@mozilla.org/childprocessmessagemanager;1');
             expect(value).to.equal(true);
         });
         it('finds the identifier of the message manager', function () {
-            var value = sinkFinder.findProcessMessageManager(messageManagerControl.declarations[0]);
+            var value = sinkFinder.findProcessMessageManager(messageManagerControl.variable_declarations[0]);
             expect(value).to.equal('cpmm');
         })
         it('finds the message passing functions', function () {

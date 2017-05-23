@@ -15,7 +15,7 @@ var SinkFinder = (function () {
         return true;
     }
 
-    var findProcessMessageManager = function (node) {
+    var findProcessMessageManager = function (node, parent) {
         var potentialManager = _messageManagers.map(function (propertyName) {
             return astCheck.memberExpressionCheck(node.init.callee, 'Cc', propertyName);
         });

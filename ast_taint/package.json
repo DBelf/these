@@ -9,7 +9,8 @@
     "walkes": "^0.2.1",
     "esgraph": "^0.2.2",
     "estraverse": "^4.2.0",
-    "dfatool": "^0.1.1"
+    "dfatool": "^0.1.1",
+    "escope": "^3.6.0"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec"
