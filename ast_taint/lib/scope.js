@@ -65,16 +65,31 @@ var Scope = function () {
        return sourceFinder.checkDeclaration(node) ? node.id.name : '' ;
     }
 
-    //Recursive check over all child scopes.
+    var findUsesInFunction = function(identifier, scope){
+        
+    }
 
+    //TODO Only works on global atm.
+    var findUsesInScope = function (identifier, scope) {
+        var scopeBody = scope.block.body;
+        var uses = [];
+        for (var i = 0; i < scopeBody.length; i++){
+            console.log(scopeBody[i]);
+        }
+        return uses;
+    }
+
+    //Recursive check over all child scopes.
 
     var createScope = function (ast) {
         var scopeManager = escope.analyze(ast);
         return scopeManager;
     }
 
-    // var ast = generateAST.astFromFile('../test/ast_tests/scoped_sources.js');
-    // console.log(sourcesInFile(ast));
+    var ast = generateAST.astFromFile('../test/ast_tests/source_reassign.js');
+    var globalScope = createScope(ast).scopes[0];
+    var sources = sourcesInFile(ast);
+    console.log(findUsesInScope(sources[0], globalScope));
 
 
     return {
