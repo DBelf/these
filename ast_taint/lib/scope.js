@@ -79,6 +79,7 @@ var Scope = function () {
                     uses = uses.concat(declarationAlias(scopeBody[i], identifier));
                     break;
                 case 'ExpressionStatement':
+                    uses = uses.concat(expressionAlias(scopeBody[i], identifier));
                     break;
                 default:
                     break;
@@ -86,14 +87,22 @@ var Scope = function () {
         }
         return uses.filter(n => n !== '');
     }
-    //Recursive check over all child scopes.
+
+    var expressionAlias = function (node, identifier){
+        var expression = node.expression;
+
+        if(utils.assignmentPointsTo(expression, identifier)){
+            return expression.left.name;
+        }
+        return '';
+    }
 
     var declarationAlias = function (node, identifier){
         var declarations = node.declarations;
         var aliases = [];
         for (var i = 0; i < declarations.length; i++ ) {
             if (declarations[i].init !== null) {
-                if (utils.declarationAssignsTo(declarations[i], identifier)) {
+                if (utils.declarationPointsTo(declarations[i], identifier)) {
                     aliases.push(declarations[i].id.name);
                 }
             }
@@ -111,12 +120,11 @@ var Scope = function () {
     var sources = sourcesInFile(ast);
     console.log(findUsesInScope(sources[0], globalScope));
 
-
     return {
         sourcesInGlobalScope: sourcesInGlobalScope,
         sourcesInFile: sourcesInFile,
         createScope: createScope
     }
 }();
-
+//TODO Recursive check over all child scopes??
 module.exports = Scope;

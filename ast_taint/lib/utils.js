@@ -29,7 +29,16 @@ var ASTManipulations = (function () {
         }
     }
 
-    var declarationAssignsTo = function (node, identifier) {
+    var assignmentPointsTo = function(node, identifier) {
+        var isIdentifier = isOfType('Identifier');
+
+        if(isIdentifier(node.right)){
+            return node.right.name === identifier;
+        }
+        return false;
+    }
+
+    var declarationPointsTo = function (node, identifier) {
         var isIdentifier = isOfType('Identifier');
 
         if(isIdentifier(node.init)){
@@ -76,7 +85,8 @@ var ASTManipulations = (function () {
 
     return {
         memberExpressionCheck: memberExpressionCheck,
-        declarationAssignsTo: declarationAssignsTo,
+        declarationPointsTo: declarationPointsTo,
+        assignmentPointsTo: assignmentPointsTo,
         findDeclaration: findDeclaration,
         hasProperty: hasProperty,
         mapFunctionToNodes: mapFunctionToNodes,
