@@ -66,7 +66,7 @@ var Scope = function () {
     }
 
     var findUsesInFunction = function(identifier, scope){
-        
+
     }
 
     //TODO Only works on global atm.
@@ -74,12 +74,32 @@ var Scope = function () {
         var scopeBody = scope.block.body;
         var uses = [];
         for (var i = 0; i < scopeBody.length; i++){
-            console.log(scopeBody[i]);
+            switch (scopeBody[i].type){
+                case 'VariableDeclaration':
+                    uses = uses.concat(declarationAlias(scopeBody[i], identifier));
+                    break;
+                case 'ExpressionStatement':
+                    break;
+                default:
+                    break;
+            }
         }
-        return uses;
+        return uses.filter(n => n !== '');
     }
-
     //Recursive check over all child scopes.
+
+    var declarationAlias = function (node, identifier){
+        var declarations = node.declarations;
+        var aliases = [];
+        for (var i = 0; i < declarations.length; i++ ) {
+            if (declarations[i].init !== null) {
+                if (utils.declarationAssignsTo(declarations[i], identifier)) {
+                    aliases.push(declarations[i].id.name);
+                }
+            }
+        }
+        return aliases;
+    }
 
     var createScope = function (ast) {
         var scopeManager = escope.analyze(ast);

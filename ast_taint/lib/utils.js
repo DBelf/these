@@ -29,6 +29,15 @@ var ASTManipulations = (function () {
         }
     }
 
+    var declarationAssignsTo = function (node, identifier) {
+        var isIdentifier = isOfType('Identifier');
+
+        if(isIdentifier(node.init)){
+            return node.init.name === identifier;
+        }
+        return false;
+    }
+
     var findMemberExpression = function (node) {
         var isMemberExpression = isOfType('MemberExpression');
 
@@ -67,6 +76,8 @@ var ASTManipulations = (function () {
 
     return {
         memberExpressionCheck: memberExpressionCheck,
+        declarationAssignsTo: declarationAssignsTo,
+        findDeclaration: findDeclaration,
         hasProperty: hasProperty,
         mapFunctionToNodes: mapFunctionToNodes,
         isOfType: isOfType,

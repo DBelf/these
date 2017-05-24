@@ -5,9 +5,6 @@ var astCheck = require('./utils');
 
 var SourceFinder = (function () {
     //Source access strings
-    const _VALUE_ACCESS_STRING = 'value';
-    const _DATA_ACCESS_STRING = 'data';
-    const _NAME_ACCESS_STRING = 'name';
     const _ACCESS_STRINGS = ['value', 'data', 'name'];
     //Arrays with the vulnerable member accesses
     var _documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
@@ -19,18 +16,6 @@ var SourceFinder = (function () {
             'type': original_type,
             'loc': location
         }
-    }
-
-    var valueAccess = function (node) {
-        return astCheck.hasProperty(node, _VALUE_ACCESS_STRING);
-    }
-
-    var dataAccess = function (node) {
-        return astCheck.hasProperty(node, _DATA_ACCESS_STRING);
-    }
-
-    var nameAccess = function (node) {
-        return astCheck.hasProperty(node, _NAME_ACCESS_STRING);
     }
 
     var checkMemberAccess = function (node) {
