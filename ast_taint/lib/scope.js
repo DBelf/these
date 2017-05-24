@@ -10,93 +10,59 @@ var estraverse = require('estraverse'),
 
 var Scope = function () {
 
-    var knownSinks = [];
+    var TEMPLATE_SCOPE_MANAGER_WRAPPER = function (scope) {
+        return {
+            scope: scope,
+            knownSources: [],
+            knownSinks: []
+        }
+    }
 
-    var _scopeChain = [];
-    var _isVarDeclaration = utils.isOfType('VariableDeclarator');
-    var _isVarAssignment = utils.isOfType('AssignmentExpression');
-    var _isIdentifier = utils.isOfType('Identifier');
-    var _isProgram = utils.isOfType('Program');
-    var _isFunctionDeclaration = utils.isOfType('FunctionDeclaration');
-    var _isFunctionExpression = utils.isOfType('FunctionExpression');
+    var sourcesInGlobalScope = function (ast) {
+        var scopeManager = createScope(ast);
+        globalScope = scopeManager.acquire(ast);
+        return sourcesInScope(globalScope);
+    }
     
-    var getLast = function (array) {
-        return array[array.length - 1];
-    }
     
-    var analyzeScope = function (ast) {
-        _scopeChain = [];
-        estraverse.traverse(ast, {
-            enter: enter,
-            leave, leave
-        });
-        return knownSinks;
+    var sourcesInScope = function (scope) {
+        var sources = []
+        var variablesInScope = scope.variables;
+        for (var i = 0; i < variablesInScope.length; i++) {//Starts at 1 because the first element is ??
+            var defs = variablesInScope[i];
+            var definedSource = checkDefsForSources(defs.defs);
+            sources = sources.concat(definedSource);
+        }
+        return sources.filter(n => n !== '');
     }
 
-    var enter = function(node){
-        if(newScope(node)){
-            _scopeChain.push([]);
-        }
-        if (_isVarDeclaration(node)){
-            var currentScope = getLast(_scopeChain);
-            if(checkDeclaration(node)){//Only push known sources onto the current scope
-                currentScope.push(node.id.name);//TODO decide whether I'll use whole node or just the id
-            }
-        }
-
-        if(_isVarAssignment(node)){
-            var currentScope = getLast(_scopeChain);
-            if (checkAssignment(node)) {
-                currentScope.push(node.left.name);
-            }
-
+    var checkDefsForSources = function (definition) {
+        var variableDefNode = definition[0].node;
+        if(variableDefNode.type === 'VariableDeclarator') {
+            return sourceId(variableDefNode);
         }
     }
 
-    var leave = function (node) {
-        if (newScope(node)){
-            //Check for paths?
-            knownSinks.push(_scopeChain.pop());
-        }
+    //Returns the identifier of a source, or nothing if the node isn't a source.
+    var sourceId = function(node){
+       return sourceFinder.checkDeclaration(node) ? node.id.name : '' ;
     }
 
-    var checkDeclaration = function (node) {
-        if (node.init === null) {
-            return false;
-        }
-        switch (node.init.type) {
-            case 'Identifier':
-                return identifierInScope(node.init.name);
-            default:
-                return sourceFinder.checkDeclaration(node);
-        }
+    //Recursive check over all child scopes.
+
+
+    var createScope = function (ast) {
+        var scopeManager = escope.analyze(ast);
+        return scopeManager;
     }
 
-    var checkAssignment = function(node){
-        if (_isIdentifier(node.right)){
-            return identifierInScope(node.right.name);
-        }
-        return false;
-    }
+    // var ast = generateAST.astFromFile('../test/ast_tests/member_expression.js');
+    // console.log(sourcesInGlobalScope(ast));
 
-    var identifierInScope = function (identifier) {
-        var declaredSources = _scopeChain.map(function(scope){
-            return isInScope(identifier, scope);
-        });
-        return (declaredSources.reduce(utils.reduceBoolean, false));
-    }
 
-    var isInScope = function (identifier, currentScope) {
-        return ~currentScope.indexOf(identifier);
-    }
-
-    var newScope = function (node) {
-        return _isFunctionDeclaration(node) ||
-                _isFunctionExpression(node) ||
-                _isProgram(node);
-    }
     return {
-        analyzeScope: analyzeScope
+        sourcesInGlobalScope: sourcesInGlobalScope,
+        createScope: createScope
     }
 }();
 

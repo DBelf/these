@@ -12,4 +12,5 @@ var otherReassign = reassign;
 function name() {
     var scopedReassign = inScope;
 }
+
 var outOfScope = scopedReassign;
