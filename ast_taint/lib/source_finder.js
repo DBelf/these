@@ -50,6 +50,13 @@ var SourceFinder = (function () {
         }
     }
 
+    var returnsSource = function (node, identifier) {
+        if(typeof identifier !== 'undefined'){
+            return node.argument.name === identifier;
+        }
+
+    }
+
     var checkForSource = function (node, callee, sourceArray) {
         var potentialSources = sourceArray.map(function (sourceName) {
             return astCheck.memberExpressionCheck(node, callee, sourceName);

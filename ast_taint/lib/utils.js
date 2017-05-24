@@ -29,6 +29,15 @@ var ASTManipulations = (function () {
         }
     }
 
+    var identifierUsedInReturn = function (identifier, node) {
+        var isIdentifier = isOfType('Identifier');
+
+        if(isIdentifier(node.argument)){
+            return node.argument.name === identifier;
+        }
+        return false;
+    }
+
     var assignmentPointsTo = function(node, identifier) {
         var isIdentifier = isOfType('Identifier');
 
@@ -85,6 +94,7 @@ var ASTManipulations = (function () {
 
     return {
         memberExpressionCheck: memberExpressionCheck,
+        identifierUsedInReturn: identifierUsedInReturn,
         declarationPointsTo: declarationPointsTo,
         assignmentPointsTo: assignmentPointsTo,
         findDeclaration: findDeclaration,
