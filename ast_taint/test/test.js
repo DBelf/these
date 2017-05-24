@@ -186,10 +186,15 @@ describe('Vulnerablility finder', function () {
 });
 
 describe('Scope Analysis', function () {
-    it('can find a reassigned source within the scope', function () {
+    it('can find a source within the global scope', function () {
         var ast = generateAST.astFromFile('test/ast_tests/scoped_source_reassign.js');
         var sources = scopeAnalysis.sourcesInGlobalScope(ast);
         expect(sources).to.have.lengthOf(1);
+    })
+    it('can find all sources within a file', function () {
+        var ast = generateAST.astFromFile('test/ast_tests/scoped_sources.js');
+        var sources = scopeAnalysis.sourcesInFile(ast);
+        expect(sources).to.have.lengthOf(2);//TODO changeme
     })
 })
 

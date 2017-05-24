@@ -23,19 +23,35 @@ var Scope = function () {
         globalScope = scopeManager.acquire(ast);
         return sourcesInScope(globalScope);
     }
-    
-    
-    var sourcesInScope = function (scope) {
-        var sources = []
-        var variablesInScope = scope.variables;
-        for (var i = 0; i < variablesInScope.length; i++) {//Starts at 1 because the first element is ??
-            var defs = variablesInScope[i];
-            var definedSource = checkDefsForSources(defs.defs);
-            sources = sources.concat(definedSource);
+
+    var sourcesInFile = function (ast) {
+        var scopeManager = createScope(ast);
+        var scopes = scopeManager.scopes;
+        var sources = [];
+        for (var i = 0; i < scopeManager.scopes.length; i++){
+            var foundSources = sourcesInScope(scopes[i]);
+            sources = sources.concat(foundSources);
         }
         return sources.filter(n => n !== '');
     }
 
+    var sourcesInScope = function (scope) {
+        var sources = []
+        var variablesInScope = scope.variables;
+        for (var i = 0; i < variablesInScope.length; i++) {
+            var defs = variablesInScope[i];
+            if (defs.name === 'arguments') {
+                continue;
+            }
+            var definedSource = checkDefsForSources(defs.defs);
+            sources = sources.concat(definedSource);
+
+        }
+
+        return sources.filter(n => n !== '');
+    }
+
+    //Dispatch and switch on the type???
     var checkDefsForSources = function (definition) {
         var defNode = definition[0].node;
         if(defNode.type === 'VariableDeclarator') {
@@ -57,12 +73,13 @@ var Scope = function () {
         return scopeManager;
     }
 
-    var ast = generateAST.astFromFile('../test/ast_tests/scoped_source_reassign.js');
-    console.log(sourcesInGlobalScope(ast));
+    // var ast = generateAST.astFromFile('../test/ast_tests/scoped_sources.js');
+    // console.log(sourcesInFile(ast));
 
 
     return {
         sourcesInGlobalScope: sourcesInGlobalScope,
+        sourcesInFile: sourcesInFile,
         createScope: createScope
     }
 }();
