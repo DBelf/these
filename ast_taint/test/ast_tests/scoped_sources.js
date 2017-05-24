@@ -5,4 +5,7 @@ var outerScopedVar = document.value;
 
 function innerScope() {
     var innerScopedVar = document.value;
+    for (var i = 0; i < 2; i++){
+        var nestedScopedVar = document.value;
+    }
 }

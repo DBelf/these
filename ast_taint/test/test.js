@@ -194,7 +194,7 @@ describe('Scope Analysis', function () {
     it('can find all sources within a file', function () {
         var ast = generateAST.astFromFile('test/ast_tests/scoped_sources.js');
         var sources = scopeAnalysis.sourcesInFile(ast);
-        expect(sources).to.have.lengthOf(2);//TODO changeme
+        expect(sources).to.have.lengthOf(3);//TODO changeme
     })
 })
 
