@@ -65,13 +65,24 @@ var Scope = function () {
        return sourceFinder.checkDeclaration(node) ? node.id.name : '' ;
     }
 
-    var findUsesInFunction = function(identifier, scope){
+    // var pointsToInFunctionBody = function(identifier, scope){
+    //     scopeBody = scope.block.body.body;
+    //     return pointsToInScopeBody(identifier, scopeBody);
+    // }
 
+    var pointsToInScope = function(identifier, scope) {
+        switch (scope.type){
+            case 'global':
+                return pointsToInScopeBody(identifier, scope.block.body);
+            case 'function':
+                return pointsToInScopeBody(identifier, scope.block.body.body);
+            default:
+                return;
+                break;
+        }
     }
-
-    //TODO Only works on global atm.
-    var findUsesInScope = function (identifier, scope) {
-        var scopeBody = scope.block.body;
+    //TODO Only works on global atm.??
+    var pointsToInScopeBody = function (identifier, scopeBody) {
         var uses = [];
         for (var i = 0; i < scopeBody.length; i++){
             switch (scopeBody[i].type){
@@ -115,10 +126,10 @@ var Scope = function () {
         return scopeManager;
     }
 
-    var ast = generateAST.astFromFile('../test/ast_tests/source_reassign.js');
+    var ast = generateAST.astFromFile('../test/ast_tests/simple_scoped_reassign.js');
     var globalScope = createScope(ast).scopes[0];
     var sources = sourcesInFile(ast);
-    console.log(findUsesInScope(sources[0], globalScope));
+    console.log(pointsToInScope(sources[0], globalScope));
 
     return {
         sourcesInGlobalScope: sourcesInGlobalScope,
@@ -126,5 +137,6 @@ var Scope = function () {
         createScope: createScope
     }
 }();
+    
 //TODO Recursive check over all child scopes??
 module.exports = Scope;
