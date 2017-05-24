@@ -8,7 +8,7 @@ var SourceFinder = (function () {
     const _VALUE_ACCESS_STRING = 'value';
     const _DATA_ACCESS_STRING = 'data';
     const _NAME_ACCESS_STRING = 'name';
-
+    const _ACCESS_STRINGS = ['value', 'data', 'name'];
     //Arrays with the vulnerable member accesses
     var _documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
     var _locationSources = ['href', 'search', 'hash', 'pathname'];
@@ -33,6 +33,13 @@ var SourceFinder = (function () {
         return astCheck.hasProperty(node, _NAME_ACCESS_STRING);
     }
 
+    var checkMemberAccess = function (node) {
+        var valueAccessed = _ACCESS_STRINGS.map(function (string) {
+            return astCheck.hasProperty(node, string);
+        });
+        return valueAccessed.reduce(astCheck.reduceBoolean, false);
+    }
+
     var checkDeclaration = function (node) {
         if (node.init === null) {
             return false;
@@ -40,7 +47,7 @@ var SourceFinder = (function () {
         switch (node.init.type) {
             case 'MemberExpression':
                 //Not sure if i can just include the value access here
-                return generalCheck(node.init) || valueAccess(node.init);
+                return generalCheck(node.init) || checkMemberAccess(node.init);
             default:
                 return false;
         }
@@ -66,9 +73,7 @@ var SourceFinder = (function () {
     }
 
     return {
-        valueAccess: valueAccess,
-        dataAccess: dataAccess,
-        nameAccess: nameAccess,
+        checkMemberAccess: checkMemberAccess,
         generalCheck: generalCheck,
         checkDeclaration: checkDeclaration
     }

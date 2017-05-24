@@ -139,7 +139,7 @@ describe('AST node analysis', function () {
 describe('Vulnerablility finder', function () {
     describe('Document sources', function () {
         it('finds the sources when doing a member call on documents', function () {
-            var value = sourceFind.valueAccess(documentValue);
+            var value = sourceFind.checkMemberAccess(documentValue);
             expect(value).to.equal(true);
         });
 

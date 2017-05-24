@@ -5,7 +5,8 @@
 var estraverse = require('estraverse'),
     generateAST = require('./generate_ast'),
     utils = require('./utils'),
-    sourceFinder = require('./source_finder');
+    sourceFinder = require('./source_finder'),
+    escope = require('escope');
 
 var Scope = function () {
 

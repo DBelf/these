@@ -25,7 +25,7 @@ var SinkFinder = (function () {
         for (var i = 0; i < services; i++) {
             _servicesProperties.map(function (propertyName) {
                 return astCheck.memberExpressionCheck(node.init.callee, '', propertyName);
-            })
+            });
         }
     }
 
