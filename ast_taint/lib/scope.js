@@ -37,10 +37,11 @@ var Scope = function () {
     }
 
     var checkDefsForSources = function (definition) {
-        var variableDefNode = definition[0].node;
-        if(variableDefNode.type === 'VariableDeclarator') {
-            return sourceId(variableDefNode);
+        var defNode = definition[0].node;
+        if(defNode.type === 'VariableDeclarator') {
+            return sourceId(defNode);
         }
+        return '';
     }
 
     //Returns the identifier of a source, or nothing if the node isn't a source.
@@ -56,8 +57,8 @@ var Scope = function () {
         return scopeManager;
     }
 
-    // var ast = generateAST.astFromFile('../test/ast_tests/member_expression.js');
-    // console.log(sourcesInGlobalScope(ast));
+    var ast = generateAST.astFromFile('../test/ast_tests/scoped_source_reassign.js');
+    console.log(sourcesInGlobalScope(ast));
 
 
     return {
