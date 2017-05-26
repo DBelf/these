@@ -1,7 +1,7 @@
 /**
  * Created by dimitri on 15/05/2017.
  */
-var astCheck = require('./utils');
+var astCheck = require('./Utils');
 
 var SinkFinder = (function () {
 

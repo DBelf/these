@@ -1,15 +1,24 @@
-/* eslint-disable no-use-before-define */
 /**
  * Created by dimitri on 15/05/2017.
  */
 const estraverse = require('estraverse');
 
-const ASTManipulations = (function () {
+const ASTManipulations = (function utilities() {
   const reduceBoolean = function (acc, val) {
     return acc || val;
   };
 
-  var memberExpressionCheck = function (node, identifier, property) {
+  const mapFunctionToNodes = function (ast, curryFunction) {
+    const arr = [];
+    estraverse.traverse(ast, {
+      enter(node) {
+        arr.push(curryFunction(node));
+      },
+    });
+    return arr;
+  };
+
+  const memberExpressionCheck = function (node, identifier, property) {
     if (node.object.type === 'MemberExpression') {
       return memberExpressionCheck(node.object, identifier, property);
     }
@@ -24,7 +33,7 @@ const ASTManipulations = (function () {
 
     // Curried
   const isOfType = function (type) {
-    return function (node) {
+    return function newCheck(node) {
       return type === node.type;
     };
   };
@@ -82,15 +91,6 @@ const ASTManipulations = (function () {
     return memberExpressions.filter(node => node);// Not sure of this filter
   };
 
-  var mapFunctionToNodes = function (ast, curryFunction) {
-    const arr = [];
-    estraverse.traverse(ast, {
-      enter(node) {
-        arr.push(curryFunction(node));
-      },
-    });
-    return arr;
-  };
 
   return {
     memberExpressionCheck,

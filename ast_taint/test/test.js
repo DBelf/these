@@ -1,15 +1,15 @@
 /**
  * Created by dimitri on 11/05/2017.
  */
-var chai = require('chai'),
-    expect = chai.expect, // we are using the "expect" style of Chai
-    sourceFind = require('../lib/source_finder'),
-    sinkFinder = require('../lib/sink_finder'),
-    astCheck = require('../lib/utils'),
-    generateAST = require('../lib/generate_ast'),
-    scopeAnalysis = require('../lib/scope');
+let chai = require('chai'),
+  expect = chai.expect, // we are using the "expect" style of Chai
+  sourceFind = require('../lib/SourceFinder'),
+  sinkFinder = require('../lib/SinkFinder'),
+  astCheck = require('../lib/Utils'),
+  generateAST = require('../lib/GenerateAST'),
+  scopeAnalysis = require('../lib/Scope');
 
-var documentValue = JSON.parse(`{
+const documentValue = JSON.parse(`{
     "type": "MemberExpression",
     "computed": false,
     "object": {
@@ -39,7 +39,7 @@ var documentValue = JSON.parse(`{
 }
 }`);
 
-var messageManagerControl = JSON.parse(`{
+const messageManagerControl = JSON.parse(`{
             "type": "VariableDeclaration",
             "declarations": [
                 {
@@ -91,112 +91,110 @@ var messageManagerControl = JSON.parse(`{
             "kind": "let"
         }`);
 
-describe('AST generation', function () {
-    describe('Collecting all javascript files', function () {
-        it('Can\'t find non-existing paths', function () {
-            var falsePath = ''
-            var value = generateAST.collectFiles(falsePath);
-            expect(value).to.be.undefined;
-        })
-        it('finds all files with the javascript extension', function () {
-            var path = '../';
-            var value = generateAST.collectFiles(path);
-            expect(value.length).to.be.at.least(5);
-        })
-    })
-    describe('Creates an AST', function () {
-        it('Creates an AST from one file', function () {
-            var path = './test/ast_tests/';
-            var ast = generateAST.createAST(path);
-            expect(ast).to.not.be.undefined;
-        })
-    })
-})
-
-describe('AST node analysis', function () {
-    it('finds a specific member access expression', function () {
-        var memberNode = messageManagerControl.declarations[0].init.arguments[0];
-        var value = astCheck.memberExpressionCheck(memberNode, '', 'nsISyncMessageSender');
-        expect(value).to.equal(true);
+describe('AST generation', () => {
+  describe('Collecting all javascript files', () => {
+    it('Can\'t find non-existing paths', () => {
+      const falsePath = '';
+      const value = generateAST.collectFiles(falsePath);
+      expect(value).to.be.undefined;
     });
-    it('checks whether the first node in the AST is Program', function () {
-        var ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
-        var typeArray = astCheck.mapFunctionToNodes(ast, astCheck.isOfType('Program'));
-        expect(typeArray[0]).to.be.true;
+    it('finds all files with the javascript extension', () => {
+      const path = '../';
+      const value = generateAST.collectFiles(path);
+      expect(value.length).to.be.at.least(5);
     });
-    it('finds all member expressions in the ast', function () {
-        var ast = generateAST.astFromFile('test/ast_tests/member_expression.js');
-        var memberExpression = astCheck.collectMemberExpressions(ast);
-        expect(memberExpression).to.have.lengthOf(1);
+  });
+  describe('Creates an AST', () => {
+    it('Creates an AST from one file', () => {
+      const path = './test/ast_tests/';
+      const ast = generateAST.createAST(path);
+      expect(ast).to.not.be.undefined;
     });
-    it ('finds all variable variable_declarations', function () {
-        var ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
-        var declaration = astCheck.collectDeclarations(ast);
-        expect(declaration).to.have.lengthOf(1);
-    })
+  });
 });
 
-describe('Vulnerablility finder', function () {
-    describe('Document sources', function () {
-        it('finds the sources when doing a member call on documents', function () {
-            var value = sourceFind.checkMemberAccess(documentValue);
-            expect(value).to.equal(true);
-        });
-
-        it('finds the document.URL source', function () {
-            var docURLAST = generateAST.astFromFile('test/ast_tests/member_expression.js');
-            var normalAST = generateAST.astFromFile('test/ast_tests/member_access.js');
-
-            var docMemberExpressions = astCheck.collectMemberExpressions(docURLAST);
-            var normalMemberExpressions = astCheck.collectMemberExpressions(normalAST);
-
-            var foundSource = docMemberExpressions.map(sourceFind.generalCheck);
-            var noFoundSource = normalMemberExpressions.map(sourceFind.generalCheck);
-
-            expect(true).to.be.oneOf(foundSource);
-            expect(true).to.not.be.oneOf(noFoundSource);
-        });
-        it('finds the value of a document element source', function () {
-            var ast = generateAST.astFromFile('test/ast_tests/value_access.js');
-            var declarations = astCheck.collectDeclarations(ast);
-            var foundSource = declarations.map(sourceFind.checkDeclaration);
-            expect(true).to.be.oneOf(foundSource);
-        });
-        it('finds a source within a function', function () {
-            var ast = generateAST.astFromFile('test/ast_tests/source_in_function.js');
-            var declarations = astCheck.collectDeclarations(ast);
-            var foundSource = declarations.map(sourceFind.checkDeclaration);
-            expect(true).to.be.oneOf(foundSource);
-        })
-    });
-    describe('Potential communication sinks', function () {
-        it('checks whether a property exists', function () {
-            var memberNode = messageManagerControl.declarations[0].init.callee;
-            var value = astCheck.memberExpressionCheck(memberNode, '', '@mozilla.org/childprocessmessagemanager;1');
-            expect(value).to.equal(true);
-        });
-        it('finds the identifier of the message manager', function () {
-            var value = sinkFinder.findProcessMessageManager(messageManagerControl.declarations[0]);
-            expect(value).to.equal('cpmm');
-        })
-        it('finds the message passing functions', function () {
-            var value = sinkFinder.checkMessageFunction();
-        })
-    });
+describe('AST node analysis', () => {
+  it('finds a specific member access expression', () => {
+    const memberNode = messageManagerControl.declarations[0].init.arguments[0];
+    const value = astCheck.memberExpressionCheck(memberNode, '', 'nsISyncMessageSender');
+    expect(value).to.equal(true);
+  });
+  it('checks whether the first node in the AST is Program', () => {
+    const ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
+    const typeArray = astCheck.mapFunctionToNodes(ast, astCheck.isOfType('Program'));
+    expect(typeArray[0]).to.be.true;
+  });
+  it('finds all member expressions in the ast', () => {
+    const ast = generateAST.astFromFile('test/ast_tests/member_expression.js');
+    const memberExpression = astCheck.collectMemberExpressions(ast);
+    expect(memberExpression).to.have.lengthOf(1);
+  });
+  it('finds all variable variable_declarations', () => {
+    const ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
+    const declaration = astCheck.collectDeclarations(ast);
+    expect(declaration).to.have.lengthOf(1);
+  });
 });
 
-describe('Scope Analysis', function () {
-    it('can find a source within the global scope', function () {
-        var ast = generateAST.astFromFile('test/ast_tests/scoped_source_reassign.js');
-        var sources = scopeAnalysis.sourcesInGlobalScope(ast);
-        expect(sources).to.have.lengthOf(1);
-    })
-    it('can find all sources within a file', function () {
-        var ast = generateAST.astFromFile('test/ast_tests/scoped_sources.js');
-        var sources = scopeAnalysis.sourcesInFile(ast);
-        expect(sources).to.have.lengthOf(3);//TODO changeme
-    })
-})
+describe('Vulnerablility finder', () => {
+  describe('Document sources', () => {
+    it('finds the sources when doing a member call on documents', () => {
+      const value = sourceFind.checkMemberAccess(documentValue);
+      expect(value).to.equal(true);
+    });
 
+    it('finds the document.URL source', () => {
+      const docURLAST = generateAST.astFromFile('test/ast_tests/member_expression.js');
+      const normalAST = generateAST.astFromFile('test/ast_tests/member_access.js');
 
+      const docMemberExpressions = astCheck.collectMemberExpressions(docURLAST);
+      const normalMemberExpressions = astCheck.collectMemberExpressions(normalAST);
+
+      const foundSource = docMemberExpressions.map(sourceFind.generalCheck);
+      const noFoundSource = normalMemberExpressions.map(sourceFind.generalCheck);
+
+      expect(true).to.be.oneOf(foundSource);
+      expect(true).to.not.be.oneOf(noFoundSource);
+    });
+    it('finds the value of a document element source', () => {
+      const ast = generateAST.astFromFile('test/ast_tests/value_access.js');
+      const declarations = astCheck.collectDeclarations(ast);
+      const foundSource = declarations.map(sourceFind.checkDeclaration);
+      expect(true).to.be.oneOf(foundSource);
+    });
+    it('finds a source within a function', () => {
+      const ast = generateAST.astFromFile('test/ast_tests/source_in_function.js');
+      const declarations = astCheck.collectDeclarations(ast);
+      const foundSource = declarations.map(sourceFind.checkDeclaration);
+      expect(true).to.be.oneOf(foundSource);
+    });
+  });
+  describe('Potential communication sinks', () => {
+    it('checks whether a property exists', () => {
+      const memberNode = messageManagerControl.declarations[0].init.callee;
+      const value = astCheck.memberExpressionCheck(memberNode, '', '@mozilla.org/childprocessmessagemanager;1');
+      expect(value).to.equal(true);
+    });
+    it('finds the identifier of the message manager', () => {
+      const value = sinkFinder.findProcessMessageManager(messageManagerControl.declarations[0]);
+      expect(value).to.equal('cpmm');
+    });
+    it('finds the message passing functions', () => {
+      const value = sinkFinder.checkMessageFunction();
+    });
+  });
+});
+
+describe('Scope Analysis', () => {
+  it('can find a source within the global scope', () => {
+    const ast = generateAST.astFromFile('test/ast_tests/scoped_source_reassign.js');
+    const sources = scopeAnalysis.sourcesInGlobalScope(ast);
+    expect(sources).to.have.lengthOf(1);
+  });
+  it('can find all sources within a file', () => {
+    const ast = generateAST.astFromFile('test/ast_tests/scoped_sources.js');
+    const sources = scopeAnalysis.sourcesInFile(ast);
+    expect(sources).to.have.lengthOf(3);// TODO changeme
+  });
+});
 
