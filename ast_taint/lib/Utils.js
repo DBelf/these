@@ -57,6 +57,7 @@ const ASTManipulations = (function utilities() {
   };
 
   const declarationPointsTo = function (node, identifier) {
+    console.log(node);
     const isIdentifier = isOfType('Identifier');
 
     if (isIdentifier(node.init)) {
