@@ -21,9 +21,7 @@ const GenerateAST = (function generate() {
   };
 
   const gatherCode = function (filesInPath) {
-    for (let i = 0; i < filesInPath.length; i++) {
-      appendToFile(filesInPath[i]);
-    }
+    filesInPath.forEach(file => appendToFile(file));
   };
 
   const astFromFile = function (filePath) {
@@ -34,18 +32,15 @@ const GenerateAST = (function generate() {
     return ast;
   };
 
-
   const gatherFiles = function (parentPath) {
     let filesInPath = [];
     if (!fs.existsSync(parentPath)) {
       // console.log("no dir ",path); //DEBUG
-      return;
+      return filesInPath;
     }
-
     const files = fs.readdirSync(parentPath);
-
-    for (let i = 0; i < files.length; i++) {
-      const filename = path.join(parentPath, files[i]);
+    files.forEach((filePath) => {
+      const filename = path.join(parentPath, filePath);
       const stat = fs.lstatSync(filename);
 
       if (stat.isDirectory()) {
@@ -54,17 +49,17 @@ const GenerateAST = (function generate() {
         // console.log('-- found: ', filename); //DEBUG
         filesInPath.push(filename);
       }
-    }
+    });
     return filesInPath;
   };
 
   const createDirectory = function (dirPath) {
     const splitPath = dirPath.split('/');
-    for (let i = 0; i < splitPath.length; i++) {
-      if (!fs.existsSync(splitPath[i])) {
-        fs.mkdirSync(splitPath[i]);
+    splitPath.forEach((pathPart) => {
+      if (!fs.existsSync(pathPart)) {
+        fs.mkdirSync(pathPart);
       }
-    }
+    });
   };
 
   const createDefault = function () {

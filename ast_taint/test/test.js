@@ -6,7 +6,7 @@ let chai = require('chai'),
   sourceFind = require('../lib/SourceFinder'),
   sinkFinder = require('../lib/SinkFinder'),
   astCheck = require('../lib/Utils'),
-  generateAST = require('../lib/GenerateAST'),
+  GenerateAST = require('../lib/GenerateAST'),
   scopeAnalysis = require('../lib/Scope');
 
 const documentValue = JSON.parse(`{
@@ -95,19 +95,19 @@ describe('AST generation', () => {
   describe('Collecting all javascript files', () => {
     it('Can\'t find non-existing paths', () => {
       const falsePath = '';
-      const value = generateAST.collectFiles(falsePath);
-      expect(value).to.be.undefined;
+      const value = GenerateAST.collectFiles(falsePath);
+      expect(value).to.be.empty;
     });
     it('finds all files with the javascript extension', () => {
       const path = '../';
-      const value = generateAST.collectFiles(path);
+      const value = GenerateAST.collectFiles(path);
       expect(value.length).to.be.at.least(5);
     });
   });
   describe('Creates an AST', () => {
     it('Creates an AST from one file', () => {
       const path = './test/ast_tests/';
-      const ast = generateAST.createAST(path);
+      const ast = GenerateAST.createAST(path);
       expect(ast).to.not.be.undefined;
     });
   });
@@ -120,17 +120,17 @@ describe('AST node analysis', () => {
     expect(value).to.equal(true);
   });
   it('checks whether the first node in the AST is Program', () => {
-    const ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
+    const ast = GenerateAST.astFromFile('test/ast_tests/one_assignment.js');
     const typeArray = astCheck.mapFunctionToNodes(ast, astCheck.isOfType('Program'));
     expect(typeArray[0]).to.be.true;
   });
   it('finds all member expressions in the ast', () => {
-    const ast = generateAST.astFromFile('test/ast_tests/member_expression.js');
+    const ast = GenerateAST.astFromFile('test/ast_tests/member_expression.js');
     const memberExpression = astCheck.collectMemberExpressions(ast);
     expect(memberExpression).to.have.lengthOf(1);
   });
   it('finds all variable variable_declarations', () => {
-    const ast = generateAST.astFromFile('test/ast_tests/one_assignment.js');
+    const ast = GenerateAST.astFromFile('test/ast_tests/one_assignment.js');
     const declaration = astCheck.collectDeclarations(ast);
     expect(declaration).to.have.lengthOf(1);
   });
@@ -144,8 +144,8 @@ describe('Vulnerablility finder', () => {
     });
 
     it('finds the document.URL source', () => {
-      const docURLAST = generateAST.astFromFile('test/ast_tests/member_expression.js');
-      const normalAST = generateAST.astFromFile('test/ast_tests/member_access.js');
+      const docURLAST = GenerateAST.astFromFile('test/ast_tests/member_expression.js');
+      const normalAST = GenerateAST.astFromFile('test/ast_tests/member_access.js');
 
       const docMemberExpressions = astCheck.collectMemberExpressions(docURLAST);
       const normalMemberExpressions = astCheck.collectMemberExpressions(normalAST);
@@ -157,13 +157,13 @@ describe('Vulnerablility finder', () => {
       expect(true).to.not.be.oneOf(noFoundSource);
     });
     it('finds the value of a document element source', () => {
-      const ast = generateAST.astFromFile('test/ast_tests/value_access.js');
+      const ast = GenerateAST.astFromFile('test/ast_tests/value_access.js');
       const declarations = astCheck.collectDeclarations(ast);
       const foundSource = declarations.map(sourceFind.checkDeclaration);
       expect(true).to.be.oneOf(foundSource);
     });
     it('finds a source within a function', () => {
-      const ast = generateAST.astFromFile('test/ast_tests/source_in_function.js');
+      const ast = GenerateAST.astFromFile('test/ast_tests/source_in_function.js');
       const declarations = astCheck.collectDeclarations(ast);
       const foundSource = declarations.map(sourceFind.checkDeclaration);
       expect(true).to.be.oneOf(foundSource);
@@ -187,14 +187,20 @@ describe('Vulnerablility finder', () => {
 
 describe('Scope Analysis', () => {
   it('can find a source within the global scope', () => {
-    const ast = generateAST.astFromFile('test/ast_tests/scoped_source_reassign.js');
+    const ast = GenerateAST.astFromFile('test/ast_tests/scoped_source_reassign.js');
     const sources = scopeAnalysis.sourcesInGlobalScope(ast);
     expect(sources).to.have.lengthOf(1);
   });
   it('can find all sources within a file', () => {
-    const ast = generateAST.astFromFile('test/ast_tests/scoped_sources.js');
+    const ast = GenerateAST.astFromFile('test/ast_tests/scoped_sources.js');
     const sources = scopeAnalysis.sourcesInFile(ast);
     expect(sources).to.have.lengthOf(3);// TODO changeme
+  });
+  it('can find functions returning a source', () => {
+    const ast = GenerateAST.astFromFile('test/ast_tests/function_returns_source.js');
+    const functionScope = scopeAnalysis.createScope(ast).scopes[1];
+    const returnedSource = scopeAnalysis.functionReturnsSource(functionScope);
+    expect(returnedSource).to.be.true;
   });
 });
 

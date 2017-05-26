@@ -7,15 +7,7 @@ const Utils = require('./Utils');
 const SourceFinder = require('./SourceFinder');
 const escope = require('escope');
 
-const Scope = (function exported() {
-  const TEMPLATE_SCOPE_MANAGER_WRAPPER = function (scope) {
-    return {
-      scope,
-      knownSources: [],
-      knownSinks: [],
-    };
-  };
-
+const Scope = (function scoping() {
   const createScope = function (ast) {
     const scopeManager = escope.analyze(ast);
     return scopeManager;
@@ -33,12 +25,12 @@ const Scope = (function exported() {
   };
 
   const sourcesInScope = function (scope) {
-    let sources = [];
     // Filter the arguments passed, when it is a function.
     const variablesInScope = scope.variables.filter(variable => variable.name !== 'arguments');
-    variablesInScope.forEach((variable) => {
-      sources = sources.concat(checkDefsForSources(variable.defs));
-    });
+    const sources = variablesInScope.reduce((acc, variable) => {
+      const arr = acc.concat(checkDefsForSources(variable.defs));
+      return arr;
+    }, []);
     return sources.filter(n => n !== '');
   };
 
@@ -51,20 +43,18 @@ const Scope = (function exported() {
   const sourcesInFile = function (ast) {
     const scopeManager = createScope(ast);
     const scopes = scopeManager.scopes;
-    let sources = [];
-    for (let i = 0; i < scopeManager.scopes.length; i++) {
-      const foundSources = sourcesInScope(scopes[i]);
-      sources = sources.concat(foundSources);
-    }
+
+    const sources = scopes.reduce((acc, scope) => acc.concat(sourcesInScope(scope)), []);
     return sources.filter(n => n !== '');
   };
 
+  //Breaks on arrowexpressions
   const getScopeBody = function (scope) {
-    switch (scope.type) {
-      case 'function':
-        return scope.block.body.body;
+    switch (scope.block.type) {
+      case 'FunctionDeclaration':
+        return [].concat(scope.block.body.body);
       default:
-        return scope.block.body;
+        return [].concat(scope.block.body);
     }
   };
 
@@ -108,26 +98,11 @@ const Scope = (function exported() {
   };
 
   const findAllAliases = function (sourceArr, scope) {
-    const aliases = [];
-    sourceArr.forEach((alias) => {
-      aliases.push(pointsToInScope(alias, scope));
-    });
-    return aliases;
+    return sourceArr.filter(alias => pointsToInScope(alias, scope));
   };
 
   const findReturnsInScope = function (scope) {
-    let returnStatements = [];
-    const scopeBody = getScopeBody(scope);
-    scopeBody.forEach((statement) => {
-      switch (statement.type) {
-        case 'ReturnStatement':
-          returnStatements = returnStatements.concat(statement);
-          break;
-        default:
-          break;
-      }
-    });
-    return returnStatements;
+    return getScopeBody(scope).filter(statement => statement.type === 'ReturnStatement');
   };
 
   const returnPointsToSources = function (sources, returnStatement) {
@@ -149,15 +124,14 @@ const Scope = (function exported() {
     return returnsSource.reduce(Utils.reduceBoolean, false);
   };
 
-  //
-  // const ast = generateAST.astFromFile('../test/ast_tests/function_return.js');
+  // const ast = GenerateAST.astFromFile('../test/ast_tests/function_returns_source.js');
   // const currentScope = createScope(ast).scopes[1];
-  // const sources = sourcesInFile(ast);
-  // console.log(functionReturnsSource(currentScope));
+  // console.log(getScopeBody(currentScope));
 
   return {
     sourcesInGlobalScope,
     sourcesInFile,
+    functionReturnsSource,
     createScope,
   };
 }());

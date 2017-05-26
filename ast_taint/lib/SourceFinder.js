@@ -1,7 +1,7 @@
 /**
  * Created by dimitri on 11/05/2017.
  */
-const astCheck = require('./Utils');
+const Utils = require('./Utils');
 
 const SourceFinder = (function sourceFinder() {
     // Source access strings
@@ -12,7 +12,7 @@ const SourceFinder = (function sourceFinder() {
 
   const checkForSource = function (node, callee, potentialSources) {
     const sources = potentialSources.filter((potential) => {
-      const source = astCheck.memberExpressionCheck(node, callee, potential);
+      const source = Utils.memberExpressionCheck(node, callee, potential);
       return source;
     });
     return sources.length > 0;
@@ -31,7 +31,7 @@ const SourceFinder = (function sourceFinder() {
   };
 
   const checkMemberAccess = function (node) {
-    const valueAccessed = ACCESS_STRINGS.filter(string => astCheck.hasProperty(node, string));
+    const valueAccessed = ACCESS_STRINGS.filter(string => Utils.hasProperty(node, string));
     return valueAccessed.length > 0;
   };
 

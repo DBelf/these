@@ -1,58 +1,51 @@
 /**
  * Created by dimitri on 15/05/2017.
  */
-var astCheck = require('./Utils');
+const Utils = require('./Utils');
 
-var SinkFinder = (function () {
+const SinkFinder = (function sinkFinder() {
+  const BROADCAST_MESSAGE_STRING = 'broadcastMessage';
+  const SERVICES_STRING = 'Services';
+  const messages = ['sendAsyncMessage', 'sendSyncMessage'];
+  const servicesProperties = ['cpmm', 'ppm'];
+  const messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
+    '@mozilla.org/parentprocessmessagemanager;1', '@mozilla.org/globalmessagemanager;1'];
 
-    const _BROADCAST_MESSAGE_STRING = 'broadcastMessage';
-    const _SERVICES_STRING = 'Services';
-    var _messages = ['sendAsyncMessage', 'sendSyncMessage'];
-    var _servicesProperties = ['cpmm', 'ppm'];
-    var _messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
-        '@mozilla.org/parentprocessmessagemanager;1', '@mozilla.org/globalmessagemanager;1'];
+  const componentClassCheck = function (node) {
+    const potentialManager = messageManagers.map(propertyName => Utils.memberExpressionCheck(node.init.callee, '', propertyName));
+    return potentialManager.reduce(Utils.reduceBoolean, false);
+  };
 
-    var componentClassCheck = function (node) {
-        var potentialManager = _messageManagers.map(function (propertyName) {
-            return astCheck.memberExpressionCheck(node.init.callee, '', propertyName);
-        });
-        return potentialManager.reduce(astCheck.reduceBoolean, false);
+    // TODO finish this, not even sure if this is needed
+  const servicesCheck = function (node, servicesAliases) {
+    const services = servicesAliases.concat(SERVICES_STRING);
+    for (let i = 0; i < services; i++) {
+      servicesProperties.map(propertyName => Utils.memberExpressionCheck(node.init.callee, '', propertyName));
     }
+  };
 
-    //TODO finish this, not even sure if this is needed
-    var servicesCheck = function (node, servicesAliases) {
-        var services = servicesAliases.concat(_SERVICES_STRING);
-        for (var i = 0; i < services; i++) {
-            _servicesProperties.map(function (propertyName) {
-                return astCheck.memberExpressionCheck(node.init.callee, '', propertyName);
-            });
-        }
-    }
+  const sinkMessage = function (node) {
+    const potentialSink = messages.map(messageType => Utils.memberExpressionCheck(node, '', messageType));
+    return potentialSink.reduce(Utils.reduceBoolean, false);
+  };
 
-    var sinkMessage = function (node) {
-        var potentialSink = _messages.map(function (messageType) {
-            return astCheck.memberExpressionCheck(node, '', messageType);
-        });
-        return potentialSink.reduce(astCheck.reduceBoolean, false);
+  const findProcessMessageManager = function (node, parent) {
+    const foundManager = componentClassCheck(node);
+    if (foundManager) {
+      return node.id.name;
     }
+    return '';
+  };
 
-    var findProcessMessageManager = function (node, parent) {
-        var foundManager = componentClassCheck(node);
-        if (foundManager) {
-            return node.id.name;
-        }
-        return "";
-    }
+  const checkMessageFunction = function (node) {
+    return true;
+  };
 
-    var checkMessageFunction = function (node) {
-        return true;
-    }
-
-    return {
-        communicationManagerCheck: componentClassCheck,
-        findProcessMessageManager: findProcessMessageManager,
-        checkMessageFunction: checkMessageFunction
-    }
-})();
+  return {
+    communicationManagerCheck: componentClassCheck,
+    findProcessMessageManager,
+    checkMessageFunction,
+  };
+}());
 
 module.exports = SinkFinder;
