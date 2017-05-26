@@ -7,4 +7,5 @@ var globalReassign = globalSource;
 
 function name() {
     var scopedReassign = globalSource;
+    return scopedReassign;
 }

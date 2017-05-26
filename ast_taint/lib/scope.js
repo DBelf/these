@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /**
  * Created by dimitri on 18/05/2017.
  */
@@ -19,7 +20,7 @@ const Scope = (function () {
   const sourcesInGlobalScope = function (ast) {
     const scopeManager = this.createScope(ast);
     const currentScope = scopeManager.acquire(ast);
-    return this.sourcesInScope(currentScope);
+    return sourcesInScope(currentScope);
   };
 
   const sourcesInFile = function (ast) {
@@ -103,15 +104,13 @@ const Scope = (function () {
   };
 
   const declarationAlias = function (node, identifier) {
-    const declarations = node.declarations;
-    const aliases = [];
-    declarations.forEach((declaration) => {
+    let aliases = [];
+    const declarations = node.declarations.filter((declaration) => {
       if (declaration !== null) {
-        if (utils.declarationPointsTo(declaration, identifier)) {
-          aliases.push(declaration.id.name);
-        }
-      }
+        return utils.declarationPointsTo(declaration, identifier);
+      } return false;
     });
+    aliases = aliases.concat(declarations.map(declaration => declaration.id.name));
     return aliases;
   };
 
@@ -123,7 +122,7 @@ const Scope = (function () {
     return aliases;
   };
 
-  const findReturnsInScope = function (scope) {
+  const findReturnsInScope = function(scope) {
     let returnStatements = [];
     const scopeBody = getScopeBody(scope);
     for (let i = 1; i < scopeBody.length; i++) {
@@ -150,7 +149,7 @@ const Scope = (function () {
     return returnsSource.reduce(utils.reduceBoolean, false);
   };
 
-  var createScope = function (ast) {
+  const createScope = function (ast) {
     const scopeManager = escope.analyze(ast);
     return scopeManager;
   };

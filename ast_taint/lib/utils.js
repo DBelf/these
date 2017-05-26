@@ -1,111 +1,110 @@
+/* eslint-disable no-use-before-define */
 /**
  * Created by dimitri on 15/05/2017.
  */
-var estraverse = require('estraverse');
+const estraverse = require('estraverse');
 
-var ASTManipulations = (function () {
+const ASTManipulations = (function () {
+  const reduceBoolean = function (acc, val) {
+    return acc || val;
+  };
 
-    var reduceBoolean = function (acc, val) {
-        return acc || val;
-    };
-
-    var memberExpressionCheck = function (node, identifier, property) {
-        if (node.object.type === 'MemberExpression') {
-            return memberExpressionCheck(node.object, identifier, property);
-        }
-        return node.object.name.match(identifier)
+  var memberExpressionCheck = function (node, identifier, property) {
+    if (node.object.type === 'MemberExpression') {
+      return memberExpressionCheck(node.object, identifier, property);
+    }
+    return node.object.name.match(identifier)
             && (node.property.name === property
             || node.property.value === property);
+  };
+
+  const hasProperty = function (node, name) {
+    return node.property.name === name;
+  };
+
+    // Curried
+  const isOfType = function (type) {
+    return function (node) {
+      return type === node.type;
+    };
+  };
+
+  const identifierUsedInReturn = function (identifier, node) {
+    const isIdentifier = isOfType('Identifier');
+
+    if (isIdentifier(node.argument)) {
+      return node.argument.name === identifier;
     }
+    return false;
+  };
 
-    var hasProperty = function (node, name) {
-        return node.property.name === name;
+  const assignmentPointsTo = function (node, identifier) {
+    const isIdentifier = isOfType('Identifier');
+
+    if (isIdentifier(node.right)) {
+      return node.right.name === identifier;
     }
+    return false;
+  };
 
-    //Curried
-    var isOfType = function (type) {
-        return function (node) {
-            return type === node.type;
-        }
+  const declarationPointsTo = function (node, identifier) {
+    const isIdentifier = isOfType('Identifier');
+
+    if (isIdentifier(node.init)) {
+      return node.init.name === identifier;
     }
+    return false;
+  };
 
-    var identifierUsedInReturn = function (identifier, node) {
-        var isIdentifier = isOfType('Identifier');
+  const findMemberExpression = function (node) {
+    const isMemberExpression = isOfType('MemberExpression');
 
-        if(isIdentifier(node.argument)){
-            return node.argument.name === identifier;
-        }
-        return false;
+    if (isMemberExpression(node)) {
+      return node;
     }
+  };
 
-    var assignmentPointsTo = function(node, identifier) {
-        var isIdentifier = isOfType('Identifier');
+  const findDeclaration = function (node) {
+    const isDeclaration = isOfType('VariableDeclarator');
 
-        if(isIdentifier(node.right)){
-            return node.right.name === identifier;
-        }
-        return false;
+    if (isDeclaration(node)) {
+      return node;
     }
+  };
 
-    var declarationPointsTo = function (node, identifier) {
-        var isIdentifier = isOfType('Identifier');
+  const collectDeclarations = function (ast) {
+    const declarations = mapFunctionToNodes(ast, findDeclaration);
+    return declarations.filter(node => node);
+  };
 
-        if(isIdentifier(node.init)){
-            return node.init.name === identifier;
-        }
-        return false;
-    }
+  const collectMemberExpressions = function (ast) {
+    const memberExpressions = mapFunctionToNodes(ast, findMemberExpression);
+    return memberExpressions.filter(node => node);// Not sure of this filter
+  };
 
-    var findMemberExpression = function (node) {
-        var isMemberExpression = isOfType('MemberExpression');
+  var mapFunctionToNodes = function (ast, curryFunction) {
+    const arr = [];
+    estraverse.traverse(ast, {
+      enter(node) {
+        arr.push(curryFunction(node));
+      },
+    });
+    return arr;
+  };
 
-        if (isMemberExpression(node)) {
-            return node;
-        }
-    }
-
-    var findDeclaration = function (node) {
-        var isDeclaration = isOfType('VariableDeclarator');
-
-        if (isDeclaration(node)) {
-            return node;
-        }
-    }
-
-    var collectDeclarations = function (ast) {
-        var declarations = mapFunctionToNodes(ast, findDeclaration);
-        return declarations.filter(node => node);
-    }
-
-    var collectMemberExpressions = function (ast) {
-        var memberExpressions = mapFunctionToNodes(ast, findMemberExpression);
-        return memberExpressions.filter(node => node);//Not sure of this filter
-    }
-
-    var mapFunctionToNodes = function (ast, curryFunction) {
-        var arr = [];
-        estraverse.traverse(ast, {
-            enter: function (node) {
-                arr.push(curryFunction(node));
-            }
-        });
-        return arr;
-    }
-
-    return {
-        memberExpressionCheck: memberExpressionCheck,
-        identifierUsedInReturn: identifierUsedInReturn,
-        declarationPointsTo: declarationPointsTo,
-        assignmentPointsTo: assignmentPointsTo,
-        findDeclaration: findDeclaration,
-        hasProperty: hasProperty,
-        mapFunctionToNodes: mapFunctionToNodes,
-        isOfType: isOfType,
-        collectMemberExpressions: collectMemberExpressions,
-        collectDeclarations: collectDeclarations,
-        reduceBoolean: reduceBoolean
-    }
-
-})();
+  return {
+    memberExpressionCheck,
+    identifierUsedInReturn,
+    declarationPointsTo,
+    assignmentPointsTo,
+    findDeclaration,
+    hasProperty,
+    mapFunctionToNodes,
+    isOfType,
+    collectMemberExpressions,
+    collectDeclarations,
+    reduceBoolean,
+  };
+}());
 
 module.exports = ASTManipulations;
