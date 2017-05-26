@@ -54,7 +54,7 @@ var SourceFinder = (function () {
         if(typeof identifier !== 'undefined'){
             return node.argument.name === identifier;
         }
-
+        return false;
     }
 
     var checkForSource = function (node, callee, sourceArray) {

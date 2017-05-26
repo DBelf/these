@@ -20,8 +20,8 @@ var Scope = function () {
 
     var sourcesInGlobalScope = function (ast) {
         var scopeManager = createScope(ast);
-        globalScope = scopeManager.acquire(ast);
-        return sourcesInScope(globalScope);
+        currentScope = scopeManager.acquire(ast);
+        return sourcesInScope(currentScope);
     }
 
     var sourcesInFile = function (ast) {
@@ -145,9 +145,15 @@ var Scope = function () {
 
     var functionReturnsSource = function (scope) {
         var sourcesInFunction = sourcesInScope(scope);
+        var returnsInFunction = findReturnsInScope(scope);
         sourcesInFunction = sourcesInFunction.concat(findAllAliases(sourcesInFunction, scope));
-        var returnsSource = sourcesInFunction.map(function (sourceIdentifier) {
-
+        var returnsSource = returnsInFunction.map(function (returnStatement) {
+            for (var i = 0; i < sourcesInFunction.length; i++){
+                if (utils.identifierUsedInReturn(sourcesInFunction[i], returnStatement)) {
+                    return true;
+                }
+            }
+            return false;
         });
         return returnsSource.reduce(utils.reduceBoolean, false);
     }
@@ -158,9 +164,9 @@ var Scope = function () {
     }
 
     var ast = generateAST.astFromFile('../test/ast_tests/function_return.js');
-    var globalScope = createScope(ast).scopes[1];
+    var currentScope = createScope(ast).scopes[1];
     var sources = sourcesInFile(ast);
-    console.log(functionReturnsSource(globalScope));
+    console.log(functionReturnsSource(currentScope));
 
     return {
         sourcesInGlobalScope: sourcesInGlobalScope,
