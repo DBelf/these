@@ -198,7 +198,7 @@ describe('Scope Analysis', () => {
   });
   it('can find functions returning a source', () => {
     const ast = GenerateAST.astFromFile('test/ast_tests/function_returns_source.js');
-    const functionScope = scopeAnalysis.createScope(ast).scopes[1];
+    const functionScope = scopeAnalysis.createScope(ast).scopes[2];
     const returnedSource = scopeAnalysis.functionReturnsSource(functionScope);
     expect(returnedSource).to.be.true;
   });

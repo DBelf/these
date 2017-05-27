@@ -151,11 +151,11 @@ const Scope = (function scoping() {
     return returnsSource.reduce(Utils.reduceBoolean, false);
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/source_reassign.js');
-  const currentScope = createScope(ast).scopes[0];
-  const sourceArr = filterSourceVariables(currentScope);
-  console.log(sourceArr);
-  console.log(findAllAliases(sourceArr, currentScope));
+  // const ast = GenerateAST.astFromFile('../test/ast_tests/source_reassign.js');
+  // const currentScope = createScope(ast).scopes[0];
+  // const sourceArr = filterSourceVariables(currentScope);
+  // console.log(sourceArr);
+  // console.log(findAllAliases(sourceArr, currentScope));
 
   return {
     sourcesInGlobalScope,
