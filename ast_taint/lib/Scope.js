@@ -95,6 +95,7 @@ const Scope = (function scoping() {
         return Utils.declarationPointsTo(declaration, identifier);
       } return false;
     });
+
     aliases = aliases.concat(declarations.map(declaration => declaration.id.name));
     return aliases;
   };
@@ -106,6 +107,7 @@ const Scope = (function scoping() {
       switch (element.type) {
         case 'VariableDeclaration':
           uses = uses.concat(declarationAlias(element, identifier));
+
           break;
         case 'ExpressionStatement':
           uses = uses.concat(expressionAlias(element, identifier));
@@ -123,8 +125,7 @@ const Scope = (function scoping() {
   };
 
   const findAllAliases = function (sourceArr, scope) {
-    console.log(sourceArr.filter(alias => pointsToInScope(alias, scope)));
-    return sourceArr.filter(alias => pointsToInScope(alias, scope));
+    return sourceArr.reduce((acc, alias) => acc.concat(pointsToInScope(alias, scope)), []);
   };
 
   const findReturnsInScope = function (scope) {

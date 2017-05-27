@@ -34,7 +34,7 @@ const ASTManipulations = (function utilities() {
     // Curried
   const isOfType = function (type) {
     return function newCheck(node) {
-      return type === node.type;
+      return node !== null ? type === node.type : false;
     };
   };
 
@@ -57,7 +57,6 @@ const ASTManipulations = (function utilities() {
   };
 
   const declarationPointsTo = function (node, identifier) {
-    console.log(node);
     const isIdentifier = isOfType('Identifier');
 
     if (isIdentifier(node.init)) {
