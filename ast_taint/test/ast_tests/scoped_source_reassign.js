@@ -11,6 +11,7 @@ var otherReassign = reassign;//Is not found yet?
 
 function name() {
     var scopedReassign = inScope;
+    return scopedReassign;
 }
 
 var outOfScope = scopedReassign;

@@ -46,55 +46,9 @@ const Scope = (function scoping() {
     return sources.filter(n => (n.identifier !== null) && n !== '');
   };
 
-  const sourcesInGlobalScope = function (ast) {
-    const scopeManager = createScope(ast);
-    const currentScope = scopeManager.acquire(ast);
-    return filterSourceVariables(currentScope);
-  };
-
-  const getScopeParameters = function (scope) {
-    return scope.block.params;
-  };
-// TODO make this do the full test?
-  const analyzeGlobalScope = function (scope) {
-    const body = getScopeBody(scope);
-    const sources = filterSourceVariables(scope);
-
-    return true;
-  };
-
-  const analyzeFunction = function (scope) {
-    // Collect sources within a function.
-    // Check whether the function returns any sources.
-    // Return new functionSource.
-    const body = getScopeBody(scope);
-    const sources = filterSourceVariables(scope);
-    functionReturnsSource(scope);
-    sources;
-  };
-
-  const analyzeScope = function (scope) {
-    switch (scope.type) {
-      case 'function':
-        return analyzeFunction(scope);
-      default:
-        return filterSourceVariables(scope);
-    }
-    // Takes a scope and checks whether it is vulnerable.
-  };
-
   const checkParams = function (params) {
     return params.filter(parameter => (parameter.object !== undefined ?
         SourceFinder.generalCheck(parameter) : false));
-  };
-
-  const analyzeArrowFunction = function (scope) {
-    const body = getScopeBody(scope);
-    // check the parameters of the arrowfunction on whether they are sources
-    const parameterSources = checkParams(getScopeParameters(scope));
-    const sources = filterSourceVariables(scope);
-    const sourceExpressions = body.filter(statement => SourceFinder.generalCheck(statement));
-    console.log(sourceExpressions);
   };
 
   const expressionAlias = function (node, identifier) {
@@ -155,13 +109,64 @@ const Scope = (function scoping() {
     return returnsSource;
   };
 
-  const functionReturnsSource = function (scope) {
-    let sourcesInFunction = filterSourceVariables(scope);
+  const functionReturnsSource = function (scope, sourcesInScope) {
     const returnsInFunction = findReturnsInScope(scope);
-    sourcesInFunction = sourcesInFunction.concat(findPointsTo(sourcesInFunction, scope));
+    const sourcesInFunction = findPointsTo(sourcesInScope, scope).concat(sourcesInScope);
     const returnsSource = returnsInFunction.map(returnStatement => (
       returnPointsToSources(sourcesInFunction, returnStatement)));
     return returnsSource.reduce(Utils.reduceBoolean, false);
+  };
+
+  const analyzeArrowFunction = function (scope) {
+    const body = getScopeBody(scope);
+    // check the parameters of the arrowfunction on whether they are sources
+    const parameterSources = checkParams(getScopeParameters(scope));
+    const sources = filterSourceVariables(scope);
+    const sourceExpressions = body.filter(statement => SourceFinder.generalCheck(statement));
+    console.log(sourceExpressions);
+  };
+
+  const sourcesInGlobalScope = function (ast) {
+    const scopeManager = createScope(ast);
+    const currentScope = scopeManager.acquire(ast);
+    return filterSourceVariables(currentScope);
+  };
+
+  const getScopeParameters = function (scope) {
+    return scope.block.params;
+  };
+// TODO make this do the full test?
+  const analyzeGlobalScope = function (scope) {
+    const body = getScopeBody(scope);
+    const sources = filterSourceVariables(scope);
+
+    return true;
+  };
+
+  const analyzeFunction = function (scope, upperScopeSources) {
+    // Collect sources within a function.
+    // Check whether the function returns any sources.
+    // Return new functionSource.
+    const body = getScopeBody(scope);
+    const sourcesInFunction = filterSourceVariables(scope);
+    const sourcesInScope = sourcesInFunction.concat(upperScopeSources);
+
+    return functionReturnsSource(scope, sourcesInScope) ?
+      sourcesInFunction.push(SourceFinder.FUNCTION_SOURCE(
+        scope.block.id.name,
+        sourcesInFunction,
+        scope.block.loc))
+      : sourcesInFunction;
+  };
+
+  const analyzeScope = function (scope) {
+    switch (scope.type) {
+      case 'function':
+        return analyzeFunction(scope);
+      default:
+        return filterSourceVariables(scope);
+    }
+    // Takes a scope and checks whether it is vulnerable.
   };
 
   /**
@@ -179,7 +184,6 @@ const Scope = (function scoping() {
     return scope.childScopes.reduce((acc, childScope) => (
       acc.concat(checkChildScope(childScope, aliasesInScope))), []);
   };
-
 
   const sourcesInFile = function (ast) {
     const scopeManager = createScope(ast);
