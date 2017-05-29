@@ -59,13 +59,17 @@ const Scope = (function scoping() {
     }
   };
 
+  const getScopeParameters = function (scope) {
+    return scope.block.params;
+  };
+
   const analyzeScope = function (scope) {
     // Takes a scope and checks whether it is vulnerable.
 
 
   };
 
-  //TODO make this do the full test?
+  // TODO make this do the full test?
   const analyzeGlobalScope = function (scope) {
     const body = getScopeBody(scope);
     const sources = filterSourceVariables(scope);
@@ -75,29 +79,37 @@ const Scope = (function scoping() {
 
   const analyzeFunction = function (scope) {
     const body = getScopeBody(scope);
-    let sources = filterSourceVariables(scope);
+    const sources = filterSourceVariables(scope);
     sources;
+  };
 
+  const checkParams = function (params) {
+    return params.filter(parameter => (parameter.object !== undefined ?
+        SourceFinder.generalCheck(parameter) : false));
   };
 
   const analyzeArrowFunction = function (scope) {
-
+    const body = getScopeBody(scope);
+    // check the parameters of the arrowfunction on whether they are sources
+    const parameterSources = checkParams(getScopeParameters(scope));
+    const sources = filterSourceVariables(scope);
+    const sourceExpressions = body.filter(statement => SourceFinder.generalCheck(statement));
+    console.log(sourceExpressions);
   };
+
   const expressionAlias = function (node, identifier) {
     const expression = node.expression;
     return Utils.assignmentPointsTo(expression, identifier) ? expression.left.name : '';
   };
 
   const declarationAlias = function (node, identifier) {
-    let aliases = [];
     const declarations = node.declarations.filter((declaration) => {
       if (declaration.type !== null) {
         return Utils.declarationPointsTo(declaration, identifier);
       } return false;
     });
 
-    aliases = aliases.concat(declarations.map(declaration => declaration.id.name));
-    return aliases;
+    return declarations.reduce((acc, declaration) => acc.concat(declaration.id.name), []);
   };
 
 // Not sure whether this works for nested forloops.
@@ -107,7 +119,6 @@ const Scope = (function scoping() {
       switch (element.type) {
         case 'VariableDeclaration':
           uses = uses.concat(declarationAlias(element, identifier));
-
           break;
         case 'ExpressionStatement':
           uses = uses.concat(expressionAlias(element, identifier));
@@ -124,7 +135,7 @@ const Scope = (function scoping() {
     return pointsToInScopeBody(identifier, scopeBody);
   };
 
-  const findAllAliases = function (sourceArr, scope) {
+  const findPointsTo = function (sourceArr, scope) {
     return sourceArr.reduce((acc, alias) => acc.concat(pointsToInScope(alias, scope)), []);
   };
 
@@ -143,7 +154,7 @@ const Scope = (function scoping() {
   const functionReturnsSource = function (scope) {
     let sourcesInFunction = filterSourceVariables(scope);
     const returnsInFunction = findReturnsInScope(scope);
-    sourcesInFunction = sourcesInFunction.concat(findAllAliases(sourcesInFunction, scope));
+    sourcesInFunction = sourcesInFunction.concat(findPointsTo(sourcesInFunction, scope));
     const returnsSource = returnsInFunction.map((returnStatement) => {
       const pointsToSource = returnPointsToSources(sourcesInFunction, returnStatement);
       return pointsToSource;
@@ -151,8 +162,9 @@ const Scope = (function scoping() {
     return returnsSource.reduce(Utils.reduceBoolean, false);
   };
 
-  // const ast = GenerateAST.astFromFile('../test/ast_tests/source_reassign.js');
-  // const currentScope = createScope(ast).scopes[0];
+  const ast = GenerateAST.astFromFile('../test/ast_tests/arrow_source.js');
+  const currentScope = createScope(ast).scopes[1];
+  analyzeArrowFunction(currentScope);
   // const sourceArr = filterSourceVariables(currentScope);
   // console.log(sourceArr);
   // console.log(findAllAliases(sourceArr, currentScope));

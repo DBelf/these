@@ -19,14 +19,13 @@ const SourceFinder = (function sourceFinder() {
   };
 
   const generalCheck = function (node) {
-    // sanity check
     switch (node.object.name) {
       case 'document':
         return checkForSource(node, 'document', documentSources);
       case 'location':
         return checkForSource(node, 'location', locationSources);
       default:
-        return false;
+        return checkMemberAccess(node);
     }
   };
 
