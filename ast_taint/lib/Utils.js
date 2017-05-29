@@ -91,7 +91,6 @@ const ASTManipulations = (function utilities() {
     return memberExpressions.filter(node => node);// Not sure of this filter
   };
 
-
   return {
     memberExpressionCheck,
     identifierUsedInReturn,

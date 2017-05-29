@@ -18,6 +18,11 @@ const SourceFinder = (function sourceFinder() {
     return sources.length > 0;
   };
 
+  const checkMemberAccess = function (node) {
+    const valueAccessed = ACCESS_STRINGS.filter(string => Utils.hasProperty(node, string));
+    return valueAccessed.length > 0;
+  };
+
   const generalCheck = function (node) {
     switch (node.object.name) {
       case 'document':
@@ -27,11 +32,6 @@ const SourceFinder = (function sourceFinder() {
       default:
         return checkMemberAccess(node);
     }
-  };
-
-  const checkMemberAccess = function (node) {
-    const valueAccessed = ACCESS_STRINGS.filter(string => Utils.hasProperty(node, string));
-    return valueAccessed.length > 0;
   };
 
   const checkDeclaration = function (node) {

@@ -16,7 +16,7 @@ const SinkFinder = (function sinkFinder() {
     return potentialManager.reduce(Utils.reduceBoolean, false);
   };
 
-    // TODO finish this, not even sure if this is needed
+  // TODO finish this, not even sure if this is needed
   const servicesCheck = function (node, servicesAliases) {
     const services = servicesAliases.concat(SERVICES_STRING);
     for (let i = 0; i < services; i++) {
@@ -29,13 +29,10 @@ const SinkFinder = (function sinkFinder() {
     return potentialSink.reduce(Utils.reduceBoolean, false);
   };
 
-  const findProcessMessageManager = function (node, parent) {
-    const foundManager = componentClassCheck(node);
-    if (foundManager) {
-      return node.id.name;
-    }
-    return '';
-  };
+  // const checkMessagePayload = function (node) {
+  //   const messageArguments = node.expression.arguments;
+  //
+  // }
 
   const checkMessageFunction = function (node) {
     return true;

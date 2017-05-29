@@ -13,6 +13,16 @@ const Scope = (function scoping() {
     return scopeManager;
   };
 
+  // Breaks on arrowexpressions
+  const getScopeBody = function (scope) {
+    switch (scope.block.type) {
+      case 'FunctionDeclaration':
+        return [].concat(scope.block.body.body);
+      default:
+        return [].concat(scope.block.body);
+    }
+  };
+
   // Returns the identifier of a source, or nothing if the node isn't a source.
   const sourceId = function (node) {
     return SourceFinder.checkDeclaration(node) ? node.id.name : '';
@@ -41,32 +51,15 @@ const Scope = (function scoping() {
     return filterSourceVariables(currentScope);
   };
 
-  const sourcesInFile = function (ast) {
-    const scopeManager = createScope(ast);
-    const scopes = scopeManager.scopes;
-
-    const sources = scopes.reduce((acc, scope) => acc.concat(filterSourceVariables(scope)), []);
-    return sources.filter(n => n !== '');
-  };
-
-  // Breaks on arrowexpressions
-  const getScopeBody = function (scope) {
-    switch (scope.block.type) {
-      case 'FunctionDeclaration':
-        return [].concat(scope.block.body.body);
-      default:
-        return [].concat(scope.block.body);
-    }
-  };
 
   const getScopeParameters = function (scope) {
     return scope.block.params;
   };
 
   const analyzeScope = function (scope) {
+
+    return filterSourceVariables(scope);
     // Takes a scope and checks whether it is vulnerable.
-
-
   };
 
   // TODO make this do the full test?
@@ -130,13 +123,13 @@ const Scope = (function scoping() {
     return uses.filter(n => n !== '');
   };
 
-  const pointsToInScope = function (identifier, scope) {
+  const aliasInScope = function (identifier, scope) {
     const scopeBody = getScopeBody(scope);
     return pointsToInScopeBody(identifier, scopeBody);
   };
 
   const findPointsTo = function (sourceArr, scope) {
-    return sourceArr.reduce((acc, alias) => acc.concat(pointsToInScope(alias, scope)), []);
+    return sourceArr.reduce((acc, alias) => acc.concat(aliasInScope(alias, scope)), []);
   };
 
   const findReturnsInScope = function (scope) {
@@ -162,11 +155,44 @@ const Scope = (function scoping() {
     return returnsSource.reduce(Utils.reduceBoolean, false);
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/arrow_source.js');
-  const currentScope = createScope(ast).scopes[1];
-  analyzeArrowFunction(currentScope);
-  // const sourceArr = filterSourceVariables(currentScope);
-  // console.log(sourceArr);
+  /**
+   * Checks whether the sources are used in a child scope.
+   */
+  const findNestedSources = function checkChildScope(scope, identifiers = []) {
+    // const newSources =
+    const aliasesInScope = identifiers.reduce((acc, identifier) => (
+      acc.concat(aliasInScope(identifier, scope))), identifiers);
+    if (scope.childScopes.length < 1) {
+      // All accumulated identifiers on the current scope level are checked
+      return aliasesInScope;
+    }
+    return scope.childScopes.reduce((acc, childScope) => (
+      acc.concat(checkChildScope(childScope, aliasesInScope))), []);
+  };
+
+  const sourcesInFile = function (ast) {
+    const scopeManager = createScope(ast);
+    const scopes = scopeManager.scopes;
+    // Check whether variables are sources
+    // Check whether Functions return sources
+
+    // Check arrowFunctions
+    // ??
+    const sourceVariables = scopes.reduce((acc, scope) => (
+      acc.concat(filterSourceVariables(scope))), []);
+    const functionSources = scopes.filter((scope) => {
+      const functionReturns = (scope.type === 'function') ? functionReturnsSource(scope) : false;
+      return functionReturns;
+    });
+    console.log(functionSources.map(functionScope => functionScope.block.id.name));
+    return sourceVariables.filter(n => n !== '');
+  };
+
+  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_sources.js');
+  const currentScope = createScope(ast).scopes[0];
+  // console.log(currentScope);
+  const sourceArr = filterSourceVariables(currentScope);
+  console.log(findNestedSources(currentScope, sourceArr));
   // console.log(findAllAliases(sourceArr, currentScope));
 
   return {
