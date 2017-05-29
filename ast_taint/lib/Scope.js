@@ -18,6 +18,8 @@ const Scope = (function scoping() {
     switch (scope.block.type) {
       case 'FunctionDeclaration':
         return [].concat(scope.block.body.body);
+      case 'FunctionExpression':
+        return [].concat(scope.block.body.body);
       default:
         return [].concat(scope.block.body);
     }
@@ -48,7 +50,7 @@ const Scope = (function scoping() {
 
   const checkParams = function (params) {
     return params.filter(parameter => (parameter.object !== undefined ?
-        SourceFinder.generalCheck(parameter) : false));
+      SourceFinder.generalCheck(parameter) : false));
   };
 
   const expressionAlias = function (node, identifier) {
@@ -61,13 +63,14 @@ const Scope = (function scoping() {
     const declarations = node.declarations.filter((declaration) => {
       if (declaration.type !== null) {
         return Utils.declarationPointsTo(declaration, identifier);
-      } return false;
+      }
+      return false;
     });
 
     return declarations.reduce((acc, declaration) => (
       acc.concat(
         SourceFinder.DECLARED_SOURCE(declaration.id.name, declaration.type, declaration.loc))
-      ), []);
+    ), []);
   };
 
 // Not sure whether this works for nested forloops.
@@ -115,7 +118,9 @@ const Scope = (function scoping() {
 
     const returnsSource = returnsInFunction.map(returnStatement => (
       returnPointsToSources(sourcesInFunction, returnStatement)));
-    return returnsSource.reduce(Utils.reduceBoolean, false);
+    return returnsSource.reduce(Utils.reduceBoolean, false) ||
+      returnsInFunction.filter(
+        returnStatement => SourceFinder.returnAccessesSource(returnStatement));
   };
 
   const analyzeArrowFunction = function (scope) {
@@ -143,15 +148,17 @@ const Scope = (function scoping() {
     return true;
   };
 
+  //FIXME Does NOT!! check whether the parameters of the function are used in a bad way.
   const analyzeFunction = function (scope, upperScopeSources) {
     // Collect sources within a function.
     // Check whether the function returns any sources.
     // Return new functionSource.
     const sourcesInFunction = filterSourceVariables(scope);
     const sourcesInScope = sourcesInFunction.concat(upperScopeSources);
+    const functionName = scope.block.id !== null ? scope.block.id.name : 'anonymous';
     return functionReturnsSource(scope, sourcesInScope) ?
       sourcesInFunction.concat(SourceFinder.FUNCTION_SOURCE(
-        scope.block.id.name,
+        functionName,
         sourcesInFunction,
         scope.block.loc))
       : sourcesInFunction;
@@ -201,7 +208,7 @@ const Scope = (function scoping() {
     return sourceVariables.filter(n => n !== null);
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_source_reassign.js');
+  const ast = GenerateAST.astFromFile('../test/ast_tests/listener_function.js');
   const currentScope = createScope(ast).scopes[0];
   // console.log(currentScope);
   console.log(nestedVariableSources(currentScope));

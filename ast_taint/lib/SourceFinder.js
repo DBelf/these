@@ -10,7 +10,6 @@ const SourceFinder = (function sourceFinder() {
   const documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
   const locationSources = ['href', 'search', 'hash', 'pathname'];
 
-
   const SOURCE_TEMPLATE = function (identifier, type, loc) {
     return {
       identifier,
@@ -57,6 +56,10 @@ const SourceFinder = (function sourceFinder() {
     }
   };
 
+  const returnAccessesSource = function (node) {
+    return checkMemberAccess(node.argument);
+  };
+
   const checkDeclaration = function (node) {
     if (node.init === null) {
       return false;
@@ -70,14 +73,6 @@ const SourceFinder = (function sourceFinder() {
     }
   };
 
-  const returnsSource = function (node, identifier) {
-    if (typeof identifier !== 'undefined') {
-      return node.argument.name === identifier;
-    }
-    return false;
-  };
-
-
   return {
     checkMemberAccess,
     ASSIGNED_SOURCE,
@@ -85,6 +80,7 @@ const SourceFinder = (function sourceFinder() {
     FUNCTION_SOURCE,
     generalCheck,
     checkDeclaration,
+    returnAccessesSource,
   };
 }());
 

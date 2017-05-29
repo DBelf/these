@@ -8,4 +8,7 @@ function innerScope() {
     for (var i = 0; i < 2; i++){
         var nestedScopeVar = document.value;
     }
+    return innerScopedVar;
 }
+
+var returnedTaint = innterScope();
