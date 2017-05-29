@@ -25,14 +25,14 @@ const Scope = (function scoping() {
 
   // Returns the identifier of a source, or nothing if the node isn't a source.
   const sourceId = function (node) {
-    return SourceFinder.checkDeclaration(node) ? node.id.name : '';
+    return SourceFinder.checkDeclaration(node) ? node.id.name : null;
   };
 
   // Dispatch and switch on the type???
   const checkDefsForSources = function (definition) {
     const defNode = definition[0].node;
     const isVariableDeclarator = Utils.isOfType('VariableDeclarator');
-    return isVariableDeclarator(defNode) ? sourceId(defNode) : '';
+    return isVariableDeclarator(defNode) ? SourceFinder.SOURCE_TEMPLATE(sourceId(defNode), 'VariableDeclarator', defNode.loc) : '';
   };
 
   const filterSourceVariables = function (scope) {
@@ -42,7 +42,7 @@ const Scope = (function scoping() {
       const arr = acc.concat(checkDefsForSources(variable.defs));
       return arr;
     }, []);
-    return sources.filter(n => n !== '');
+    return sources.filter(n => (n.identifier !== null) && n !== '');
   };
 
   const sourcesInGlobalScope = function (ast) {
@@ -57,7 +57,6 @@ const Scope = (function scoping() {
   };
 
   const analyzeScope = function (scope) {
-
     return filterSourceVariables(scope);
     // Takes a scope and checks whether it is vulnerable.
   };
@@ -92,7 +91,7 @@ const Scope = (function scoping() {
 
   const expressionAlias = function (node, identifier) {
     const expression = node.expression;
-    return Utils.assignmentPointsTo(expression, identifier) ? expression.left.name : '';
+    return Utils.assignmentPointsTo(expression, identifier) ? SourceFinder.SOURCE_TEMPLATE(expression.left.name, expression.type, expression.loc) : null;
   };
 
   const declarationAlias = function (node, identifier) {
@@ -102,7 +101,7 @@ const Scope = (function scoping() {
       } return false;
     });
 
-    return declarations.reduce((acc, declaration) => acc.concat(declaration.id.name), []);
+    return declarations.reduce((acc, declaration) => acc.concat(SourceFinder.SOURCE_TEMPLATE(declaration.id.name, declaration.type, declaration.loc)), []);
   };
 
 // Not sure whether this works for nested forloops.
@@ -120,12 +119,13 @@ const Scope = (function scoping() {
           break;
       }
     });
-    return uses.filter(n => n !== '');
+    return uses.filter(n => n !== null);
   };
 
-  const aliasInScope = function (identifier, scope) {
+  const aliasInScope = function (source, scope) {
     const scopeBody = getScopeBody(scope);
-    return pointsToInScopeBody(identifier, scopeBody);
+    const sourceIdentifier = source.identifier;
+    return pointsToInScopeBody(sourceIdentifier, scopeBody);
   };
 
   const findPointsTo = function (sourceArr, scope) {
@@ -155,8 +155,9 @@ const Scope = (function scoping() {
   /**
    * Checks whether the sources are used in a child scope.
    */
-  const findNestedSources = function checkChildScope(scope, identifiers = []) {
-    const newSources = analyzeScope(scope).concat(identifiers);
+  const findNestedSources = function checkChildScope(scope, sources = []) {
+    const newSources = analyzeScope(scope).concat(sources);
+    // console.log(newSources);
     const aliasesInScope = newSources.reduce((acc, identifier) => (
       acc.concat(aliasInScope(identifier, scope))), newSources);
     if (scope.childScopes.length < 1) {
@@ -182,12 +183,13 @@ const Scope = (function scoping() {
       return functionReturns;
     });
     console.log(functionSources.map(functionScope => functionScope.block.id.name));
-    return sourceVariables.filter(n => n !== '');
+    return sourceVariables.filter(n => n !== null);
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_source_reassign.js');
+  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_sources.js');
   const currentScope = createScope(ast).scopes[0];
   // console.log(currentScope);
+ 
   console.log(findNestedSources(currentScope));
   // console.log(findAllAliases(sourceArr, currentScope));
 

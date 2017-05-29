@@ -7,7 +7,7 @@ var shouldNotappear = 3;
 var reassign;
 reassign = inScope;
 
-var otherReassign = reassign;
+var otherReassign = reassign;//Is not found yet?
 
 function name() {
     var scopedReassign = inScope;

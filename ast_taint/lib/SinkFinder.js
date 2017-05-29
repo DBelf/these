@@ -11,6 +11,7 @@ const SinkFinder = (function sinkFinder() {
   const messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
     '@mozilla.org/parentprocessmessagemanager;1', '@mozilla.org/globalmessagemanager;1'];
 
+
   const componentClassCheck = function (node) {
     const potentialManager = messageManagers.map(propertyName => Utils.memberExpressionCheck(node.init.callee, '', propertyName));
     return potentialManager.reduce(Utils.reduceBoolean, false);

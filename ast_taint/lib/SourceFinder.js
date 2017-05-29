@@ -10,6 +10,15 @@ const SourceFinder = (function sourceFinder() {
   const documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
   const locationSources = ['href', 'search', 'hash', 'pathname'];
 
+
+  const SOURCE_TEMPLATE = function (identifier, type, loc) {
+    return {
+      identifier,
+      type,
+      loc,
+    };
+  };
+
   const checkForSource = function (node, callee, potentialSources) {
     const sources = potentialSources.filter((potential) => {
       const source = Utils.memberExpressionCheck(node, callee, potential);
@@ -57,6 +66,7 @@ const SourceFinder = (function sourceFinder() {
 
   return {
     checkMemberAccess,
+    SOURCE_TEMPLATE,
     generalCheck,
     checkDeclaration,
   };
