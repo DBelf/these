@@ -208,7 +208,7 @@ const Scope = (function scoping() {
     return sourceVariables.filter(n => n !== null);
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/listener_function.js');
+  const ast = GenerateAST.astFromFile('../test/ast_tests/declared_listener_function.js');
   const currentScope = createScope(ast).scopes[0];
   // console.log(currentScope);
   console.log(nestedVariableSources(currentScope));
