@@ -104,7 +104,7 @@ const Scope = (function scoping() {
 
   const returnPointsToSources = function (sources, returnStatement) {
     const returnsSource = sources.reduce((acc, source) => (
-      acc || Utils.identifierUsedInReturn(source, returnStatement))
+      acc || Utils.identifierUsedInReturn(source.identifier, returnStatement))
       , false);
     return returnsSource;
   };
@@ -112,6 +112,7 @@ const Scope = (function scoping() {
   const functionReturnsSource = function (scope, sourcesInScope) {
     const returnsInFunction = findReturnsInScope(scope);
     const sourcesInFunction = findPointsTo(sourcesInScope, scope).concat(sourcesInScope);
+
     const returnsSource = returnsInFunction.map(returnStatement => (
       returnPointsToSources(sourcesInFunction, returnStatement)));
     return returnsSource.reduce(Utils.reduceBoolean, false);
@@ -139,7 +140,6 @@ const Scope = (function scoping() {
   const analyzeGlobalScope = function (scope) {
     const body = getScopeBody(scope);
     const sources = filterSourceVariables(scope);
-
     return true;
   };
 
@@ -147,22 +147,20 @@ const Scope = (function scoping() {
     // Collect sources within a function.
     // Check whether the function returns any sources.
     // Return new functionSource.
-    const body = getScopeBody(scope);
     const sourcesInFunction = filterSourceVariables(scope);
     const sourcesInScope = sourcesInFunction.concat(upperScopeSources);
-
     return functionReturnsSource(scope, sourcesInScope) ?
-      sourcesInFunction.push(SourceFinder.FUNCTION_SOURCE(
+      sourcesInFunction.concat(SourceFinder.FUNCTION_SOURCE(
         scope.block.id.name,
         sourcesInFunction,
         scope.block.loc))
       : sourcesInFunction;
   };
 
-  const analyzeScope = function (scope) {
+  const analyzeScope = function (scope, upperScopeSources = []) {
     switch (scope.type) {
       case 'function':
-        return analyzeFunction(scope);
+        return analyzeFunction(scope, upperScopeSources);
       default:
         return filterSourceVariables(scope);
     }
@@ -173,7 +171,7 @@ const Scope = (function scoping() {
    * Checks whether the sources are used in a child scope.
    */
   const nestedVariableSources = function checkChildScope(scope, sources = []) {
-    const newSources = analyzeScope(scope).concat(sources);
+    const newSources = analyzeScope(scope, sources).concat(sources);
 
     const aliasesInScope = newSources.reduce((acc, identifier) => (
       acc.concat(aliasInScope(identifier, scope))), newSources);
@@ -203,7 +201,7 @@ const Scope = (function scoping() {
     return sourceVariables.filter(n => n !== null);
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_sources.js');
+  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_source_reassign.js');
   const currentScope = createScope(ast).scopes[0];
   // console.log(currentScope);
   console.log(nestedVariableSources(currentScope));
