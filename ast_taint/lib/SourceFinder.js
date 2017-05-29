@@ -19,6 +19,20 @@ const SourceFinder = (function sourceFinder() {
     };
   };
 
+  const DECLARED_SOURCE = function (identifier, loc) {
+    return SOURCE_TEMPLATE(identifier, 'VariableDeclarator', loc);
+  };
+
+  const ASSIGNED_SOURCE = function (identifier, loc) {
+    return SOURCE_TEMPLATE(identifier, 'Assigned', loc);
+  };
+
+  const FUNCTION_SOURCE = function (identifier, sources, loc) {
+    const source = SOURCE_TEMPLATE(identifier, 'FunctionDeclaration', loc);
+    source.sources = sources;
+    return source;
+  };
+
   const checkForSource = function (node, callee, potentialSources) {
     const sources = potentialSources.filter((potential) => {
       const source = Utils.memberExpressionCheck(node, callee, potential);
@@ -66,7 +80,9 @@ const SourceFinder = (function sourceFinder() {
 
   return {
     checkMemberAccess,
-    SOURCE_TEMPLATE,
+    ASSIGNED_SOURCE,
+    DECLARED_SOURCE,
+    FUNCTION_SOURCE,
     generalCheck,
     checkDeclaration,
   };

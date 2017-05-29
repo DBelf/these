@@ -32,7 +32,8 @@ const Scope = (function scoping() {
   const checkDefsForSources = function (definition) {
     const defNode = definition[0].node;
     const isVariableDeclarator = Utils.isOfType('VariableDeclarator');
-    return isVariableDeclarator(defNode) ? SourceFinder.SOURCE_TEMPLATE(sourceId(defNode), 'VariableDeclarator', defNode.loc) : '';
+    return isVariableDeclarator(defNode) ?
+      SourceFinder.DECLARED_SOURCE(sourceId(defNode), 'VariableDeclarator', defNode.loc) : '';
   };
 
   const filterSourceVariables = function (scope) {
@@ -51,17 +52,10 @@ const Scope = (function scoping() {
     return filterSourceVariables(currentScope);
   };
 
-
   const getScopeParameters = function (scope) {
     return scope.block.params;
   };
-
-  const analyzeScope = function (scope) {
-    return filterSourceVariables(scope);
-    // Takes a scope and checks whether it is vulnerable.
-  };
-
-  // TODO make this do the full test?
+// TODO make this do the full test?
   const analyzeGlobalScope = function (scope) {
     const body = getScopeBody(scope);
     const sources = filterSourceVariables(scope);
@@ -70,9 +64,23 @@ const Scope = (function scoping() {
   };
 
   const analyzeFunction = function (scope) {
+    // Collect sources within a function.
+    // Check whether the function returns any sources.
+    // Return new functionSource.
     const body = getScopeBody(scope);
     const sources = filterSourceVariables(scope);
+    functionReturnsSource(scope);
     sources;
+  };
+
+  const analyzeScope = function (scope) {
+    switch (scope.type) {
+      case 'function':
+        return analyzeFunction(scope);
+      default:
+        return filterSourceVariables(scope);
+    }
+    // Takes a scope and checks whether it is vulnerable.
   };
 
   const checkParams = function (params) {
@@ -91,7 +99,8 @@ const Scope = (function scoping() {
 
   const expressionAlias = function (node, identifier) {
     const expression = node.expression;
-    return Utils.assignmentPointsTo(expression, identifier) ? SourceFinder.SOURCE_TEMPLATE(expression.left.name, expression.type, expression.loc) : null;
+    return Utils.assignmentPointsTo(expression, identifier) ?
+      SourceFinder.ASSIGNED_SOURCE(expression.left.name, expression.type, expression.loc) : null;
   };
 
   const declarationAlias = function (node, identifier) {
@@ -101,7 +110,10 @@ const Scope = (function scoping() {
       } return false;
     });
 
-    return declarations.reduce((acc, declaration) => acc.concat(SourceFinder.SOURCE_TEMPLATE(declaration.id.name, declaration.type, declaration.loc)), []);
+    return declarations.reduce((acc, declaration) => (
+      acc.concat(
+        SourceFinder.DECLARED_SOURCE(declaration.id.name, declaration.type, declaration.loc))
+      ), []);
   };
 
 // Not sure whether this works for nested forloops.
@@ -155,9 +167,9 @@ const Scope = (function scoping() {
   /**
    * Checks whether the sources are used in a child scope.
    */
-  const findNestedSources = function checkChildScope(scope, sources = []) {
+  const nestedVariableSources = function checkChildScope(scope, sources = []) {
     const newSources = analyzeScope(scope).concat(sources);
-    // console.log(newSources);
+
     const aliasesInScope = newSources.reduce((acc, identifier) => (
       acc.concat(aliasInScope(identifier, scope))), newSources);
     if (scope.childScopes.length < 1) {
@@ -167,6 +179,7 @@ const Scope = (function scoping() {
     return scope.childScopes.reduce((acc, childScope) => (
       acc.concat(checkChildScope(childScope, aliasesInScope))), []);
   };
+
 
   const sourcesInFile = function (ast) {
     const scopeManager = createScope(ast);
@@ -189,8 +202,7 @@ const Scope = (function scoping() {
   const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_sources.js');
   const currentScope = createScope(ast).scopes[0];
   // console.log(currentScope);
- 
-  console.log(findNestedSources(currentScope));
+  console.log(nestedVariableSources(currentScope));
   // console.log(findAllAliases(sourceArr, currentScope));
 
   return {
