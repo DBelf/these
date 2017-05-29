@@ -137,10 +137,9 @@ const Scope = (function scoping() {
   };
 
   const returnPointsToSources = function (sources, returnStatement) {
-    const returnsSource = sources.reduce((acc, source) => {
-      const value = acc || Utils.identifierUsedInReturn(source, returnStatement);
-      return value;
-    }, false);
+    const returnsSource = sources.reduce((acc, source) => (
+      acc || Utils.identifierUsedInReturn(source, returnStatement))
+      , false);
     return returnsSource;
   };
 
@@ -148,10 +147,8 @@ const Scope = (function scoping() {
     let sourcesInFunction = filterSourceVariables(scope);
     const returnsInFunction = findReturnsInScope(scope);
     sourcesInFunction = sourcesInFunction.concat(findPointsTo(sourcesInFunction, scope));
-    const returnsSource = returnsInFunction.map((returnStatement) => {
-      const pointsToSource = returnPointsToSources(sourcesInFunction, returnStatement);
-      return pointsToSource;
-    });
+    const returnsSource = returnsInFunction.map(returnStatement => (
+      returnPointsToSources(sourcesInFunction, returnStatement)));
     return returnsSource.reduce(Utils.reduceBoolean, false);
   };
 
@@ -159,9 +156,9 @@ const Scope = (function scoping() {
    * Checks whether the sources are used in a child scope.
    */
   const findNestedSources = function checkChildScope(scope, identifiers = []) {
-    // const newSources =
-    const aliasesInScope = identifiers.reduce((acc, identifier) => (
-      acc.concat(aliasInScope(identifier, scope))), identifiers);
+    const newSources = analyzeScope(scope).concat(identifiers);
+    const aliasesInScope = newSources.reduce((acc, identifier) => (
+      acc.concat(aliasInScope(identifier, scope))), newSources);
     if (scope.childScopes.length < 1) {
       // All accumulated identifiers on the current scope level are checked
       return aliasesInScope;
@@ -188,11 +185,10 @@ const Scope = (function scoping() {
     return sourceVariables.filter(n => n !== '');
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_sources.js');
+  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_source_reassign.js');
   const currentScope = createScope(ast).scopes[0];
   // console.log(currentScope);
-  const sourceArr = filterSourceVariables(currentScope);
-  console.log(findNestedSources(currentScope, sourceArr));
+  console.log(findNestedSources(currentScope));
   // console.log(findAllAliases(sourceArr, currentScope));
 
   return {
