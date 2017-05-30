@@ -24,13 +24,13 @@ const ASTManipulations = (function utilities() {
     };
   };
 
-  const isExpression = isOfType('AssignmentExpression');
+  const isExpression = isOfType('ExpressionStatement');
   const isIdentifier = isOfType('Identifier');
   const isMemberExpression = isOfType('MemberExpression');
-  const isDeclaration = isOfType('VariableDeclarator');
+  const isDeclaration = isOfType('VariableDeclaration');
 
   const expressionHasIdentifier = function (node) {
-    if (isExpression(node.expression)) {
+    if (isExpression(node)) {
       return isIdentifier(node.expression.right);
     } return false;
   };
@@ -53,6 +53,17 @@ const ASTManipulations = (function utilities() {
       return node.argument.name === identifier;
     }
     return false;
+  };
+
+  const isDeclaredAssignment = function (node) {
+    if (node.init !== null) {
+      return isIdentifier(node.init);
+    }
+    return false;
+  };
+
+  const assignmentDeclarations = function (declarationNode) {
+    return declarationNode.declarations.filter(declaration => isDeclaredAssignment(declaration));
   };
 
   const assignmentPointsTo = function (node, identifier) {
@@ -104,6 +115,8 @@ const ASTManipulations = (function utilities() {
     isIdentifier,
     isMemberExpression,
     isDeclaration,
+    expressionHasIdentifier,
+    assignmentDeclarations,
     collectMemberExpressions,
     collectDeclarations,
     reduceBoolean,

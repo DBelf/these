@@ -216,48 +216,68 @@ const Scope = (function scoping() {
       acc.concat(checkChildScope(childScope, aliasesInScope))), []);
   };
 
-  // Bogus method
-  const sourcesInFile = function (ast) {
-    const scopeManager = createScopeManager(ast);
-    const scopes = scopeManager.scopes;
-    // Check whether variables are sources
-    // Check whether Functions return sources
-
-    // Check arrowFunctions
-    // ??
-    const sourceVariables = scopes.reduce((acc, scope) => (
-      acc.concat(filterSourceVariables(scope))), []);
-    const functionSources = scopes.filter((scope) => {
-      const functionReturns = (scope.type === 'function') ? functionReturnsSource(scope) : false;
-      return functionReturns;
-    });
-    console.log(functionSources.map(functionScope => functionScope.block.id.name));
-    return sourceVariables.filter(n => n !== null);
-  };
-
   const sourcesInDeclaration = function (declarationNode) {
     return declarationNode.declarations.filter(declaration => (
       SourceFinder.checkDeclaration(declaration)));
   };
 
   // Finds all sources declared within the scope.
-  const declaredSources = function (scope) {
-    const scopeBody = getScopeBody(scope);
+  const declaredSources = function (scopeBody) {
     const declarations = scopeBody.filter(Utils.isDeclaration);
     const sources = declarations.reduce((acc, declaration) => (
       acc.concat(sourcesInDeclaration(declaration))), []);
     return sources.map(source => SourceFinder.DECLARED_SOURCE(source.id.name, source.loc));
   };
 
-  const assignedSources = function(scope, declaredSources) {
-
-    // Returns all assigned sources in a scope.
-    // For each declared or assigned variable, check whether the rhs is a source.
+  const collectAssignmentDeclarations = function (scopeBody) {
+    const declarations = scopeBody.filter(Utils.isDeclaration);
+    return declarations.reduce((acc, declaration) => (
+      acc.concat(Utils.assignmentDeclarations(declaration))
+    ), []);
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/simple_scoped_reassign.js');
+  const collectAssignmentExpressions = function (scopeBody) {
+    return scopeBody.filter(expression => (
+      Utils.expressionHasIdentifier(expression)
+    ));
+  };
+
+  const filterAlias = function (node, sources) {
+    switch (node.type) {
+      case 'VariableDeclarator':
+        return (sources.reduce((acc, source) => (
+          acc || Utils.declarationPointsTo(node, source.identifier)), false)) ?
+          SourceFinder.DECLARED_SOURCE(node.id.name, node.loc) : [];
+      case 'ExpressionStatement':
+        return (sources.reduce((acc, source) => (
+          acc || Utils.assignmentPointsTo(node.expression, source.identifier)), false)) ?
+          SourceFinder.ASSIGNED_SOURCE(node.expression.left.name, node.loc) : [];
+        // return sources.reduce((acc, source) => (
+        //   Utils.assignmentPointsTo(node.expression, source.identifier)), false) ?
+        //   SourceFinder.ASSIGNED_SOURCE(node.expression.left.name,
+        //   node.expression.type,
+        //   node.expression.loc) : [];
+      default:
+        return [];
+    }
+  };
+  // Returns all sources in a scope.
+  const collectSources = function (scope, upperSources = []) {
+    const scopeBody = getScopeBody(scope);
+    const declaredInScope = declaredSources(scopeBody);
+    const assignmentsInScope = collectAssignmentExpressions(scopeBody);
+    const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
+    const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
+    const sources = potentialSources.reduce((acc, potentialSource) => {
+      const newSource = filterAlias(potentialSource, acc);
+      return acc.concat(newSource);
+    }, declaredInScope.concat(upperSources));
+    return sources;
+  };
+
+  const ast = GenerateAST.astFromFile('../test/ast_tests/source_reassign.js');
   const globalScope = getGlobalScope(ast);
-  console.log(declaredSources(globalScope));
+  console.log(collectSources(globalScope));
   // const currentScope = createScopeManager(ast).scopes[0];
   // console.log(currentScope);
   // console.log(nestedVariableSources(currentScope));
@@ -265,7 +285,6 @@ const Scope = (function scoping() {
 
   return {
     sourcesInGlobalScope,
-    sourcesInFile,
     functionReturnsSource,
     createScopeManager,
     getGlobalScope,
