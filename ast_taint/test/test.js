@@ -1,13 +1,14 @@
+/* eslint-disable no-undef,no-unused-expressions */
 /**
  * Created by dimitri on 11/05/2017.
  */
-let chai = require('chai'),
-  expect = chai.expect, // we are using the "expect" style of Chai
-  sourceFind = require('../lib/SourceFinder'),
-  sinkFinder = require('../lib/SinkFinder'),
-  astCheck = require('../lib/Utils'),
-  GenerateAST = require('../lib/GenerateAST'),
-  scopeAnalysis = require('../lib/Scope');
+const chai = require('chai');
+const expect = chai.expect; // we are using the "expect" style of Chai
+const SourceFinder = require('../lib/SourceFinder');
+const SinkFinder = require('../lib/SinkFinder');
+const Utils = require('../lib/Utils');
+const GenerateAST = require('../lib/GenerateAST');
+const ScopeAnalysis = require('../lib/Scope');
 
 const documentValue = JSON.parse(`{
     "type": "MemberExpression",
@@ -116,22 +117,22 @@ describe('AST generation', () => {
 describe('AST node analysis', () => {
   it('finds a specific member access expression', () => {
     const memberNode = messageManagerControl.declarations[0].init.arguments[0];
-    const value = astCheck.memberExpressionCheck(memberNode, '', 'nsISyncMessageSender');
+    const value = Utils.memberExpressionCheck(memberNode, '', 'nsISyncMessageSender');
     expect(value).to.equal(true);
   });
   it('checks whether the first node in the AST is Program', () => {
     const ast = GenerateAST.astFromFile('test/ast_tests/one_assignment.js');
-    const typeArray = astCheck.mapFunctionToNodes(ast, astCheck.isOfType('Program'));
+    const typeArray = Utils.mapFunctionToNodes(ast, Utils.isOfType('Program'));
     expect(typeArray[0]).to.be.true;
   });
   it('finds all member expressions in the ast', () => {
     const ast = GenerateAST.astFromFile('test/ast_tests/member_expression.js');
-    const memberExpression = astCheck.collectMemberExpressions(ast);
+    const memberExpression = Utils.collectMemberExpressions(ast);
     expect(memberExpression).to.have.lengthOf(1);
   });
   it('finds all variable variable_declarations', () => {
     const ast = GenerateAST.astFromFile('test/ast_tests/one_assignment.js');
-    const declaration = astCheck.collectDeclarations(ast);
+    const declaration = Utils.collectDeclarations(ast);
     expect(declaration).to.have.lengthOf(1);
   });
 });
@@ -139,7 +140,7 @@ describe('AST node analysis', () => {
 describe('Vulnerablility finder', () => {
   describe('Document sources', () => {
     it('finds the sources when doing a member call on documents', () => {
-      const value = sourceFind.checkMemberAccess(documentValue);
+      const value = SourceFinder.checkMemberAccess(documentValue);
       expect(value).to.equal(true);
     });
 
@@ -147,40 +148,40 @@ describe('Vulnerablility finder', () => {
       const docURLAST = GenerateAST.astFromFile('test/ast_tests/member_expression.js');
       const normalAST = GenerateAST.astFromFile('test/ast_tests/member_access.js');
 
-      const docMemberExpressions = astCheck.collectMemberExpressions(docURLAST);
-      const normalMemberExpressions = astCheck.collectMemberExpressions(normalAST);
+      const docMemberExpressions = Utils.collectMemberExpressions(docURLAST);
+      const normalMemberExpressions = Utils.collectMemberExpressions(normalAST);
 
-      const foundSource = docMemberExpressions.map(sourceFind.generalCheck);
-      const noFoundSource = normalMemberExpressions.map(sourceFind.generalCheck);
+      const foundSource = docMemberExpressions.map(SourceFinder.generalCheck);
+      const noFoundSource = normalMemberExpressions.map(SourceFinder.generalCheck);
 
       expect(true).to.be.oneOf(foundSource);
       expect(true).to.not.be.oneOf(noFoundSource);
     });
     it('finds the value of a document element source', () => {
       const ast = GenerateAST.astFromFile('test/ast_tests/value_access.js');
-      const declarations = astCheck.collectDeclarations(ast);
-      const foundSource = declarations.map(sourceFind.checkDeclaration);
+      const declarations = Utils.collectDeclarations(ast);
+      const foundSource = declarations.map(SourceFinder.checkDeclaration);
       expect(true).to.be.oneOf(foundSource);
     });
     it('finds a source within a function', () => {
       const ast = GenerateAST.astFromFile('test/ast_tests/source_in_function.js');
-      const declarations = astCheck.collectDeclarations(ast);
-      const foundSource = declarations.map(sourceFind.checkDeclaration);
+      const declarations = Utils.collectDeclarations(ast);
+      const foundSource = declarations.map(SourceFinder.checkDeclaration);
       expect(true).to.be.oneOf(foundSource);
     });
   });
   describe('Potential communication sinks', () => {
     it('checks whether a property exists', () => {
       const memberNode = messageManagerControl.declarations[0].init.callee;
-      const value = astCheck.memberExpressionCheck(memberNode, '', '@mozilla.org/childprocessmessagemanager;1');
+      const value = Utils.memberExpressionCheck(memberNode, '', '@mozilla.org/childprocessmessagemanager;1');
       expect(value).to.equal(true);
     });
     it('finds the identifier of the message manager', () => {
-      const value = sinkFinder.findProcessMessageManager(messageManagerControl.declarations[0]);
+      const value = SinkFinder.findProcessMessageManager(messageManagerControl.declarations[0]);
       expect(value).to.equal('cpmm');
     });
     it('finds the message passing functions', () => {
-      const value = sinkFinder.checkMessageFunction();
+      const value = SinkFinder.checkMessageFunction();
     });
   });
 });
@@ -188,19 +189,21 @@ describe('Vulnerablility finder', () => {
 describe('Scope Analysis', () => {
   it('can find a source within the global scope', () => {
     const ast = GenerateAST.astFromFile('test/ast_tests/scoped_source_reassign.js');
-    const sources = scopeAnalysis.sourcesInGlobalScope(ast);
-    expect(sources).to.have.lengthOf(1);
+    const globalScope = ScopeAnalysis.getGlobalScope(ast);
+    const sources = ScopeAnalysis.nestedVariableSources(globalScope);
+    expect(sources).to.have.lengthOf(5);
   });
-  it('can find all sources within a file', () => {
+  it('can find nested sources and a returned source', () => {
     const ast = GenerateAST.astFromFile('test/ast_tests/scoped_sources.js');
-    const sources = scopeAnalysis.sourcesInFile(ast);
-    expect(sources).to.have.lengthOf(3);// TODO changeme
+    const globalScope = ScopeAnalysis.getGlobalScope(ast);
+    const sources = ScopeAnalysis.nestedVariableSources(globalScope);
+    expect(sources).to.have.lengthOf(5);
   });
   it('can find functions returning a source', () => {
     const ast = GenerateAST.astFromFile('test/ast_tests/function_returns_source.js');
-    const functionScope = scopeAnalysis.createScope(ast).scopes[2];
-    const returnedSource = scopeAnalysis.functionReturnsSource(functionScope);
-    expect(returnedSource).to.be.true;
+    const functionScope = ScopeAnalysis.getGlobalScope(ast);
+    const sources = ScopeAnalysis.nestedVariableSources(functionScope);
+    expect(sources).to.have.lengthOf(3);
   });
 });
 

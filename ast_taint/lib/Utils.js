@@ -17,9 +17,26 @@ const ASTManipulations = (function utilities() {
     });
     return arr;
   };
+  // Curried
+  const isOfType = function (type) {
+    return function newCheck(node) {
+      return node !== null ? type === node.type : false;
+    };
+  };
+
+  const isExpression = isOfType('AssignmentExpression');
+  const isIdentifier = isOfType('Identifier');
+  const isMemberExpression = isOfType('MemberExpression');
+  const isDeclaration = isOfType('VariableDeclarator');
+
+  const expressionHasIdentifier = function (node) {
+    if (isExpression(node.expression)) {
+      return isIdentifier(node.expression.right);
+    } return false;
+  };
 
   const memberExpressionCheck = function (node, identifier, property) {
-    if (node.object.type === 'MemberExpression') {
+    if (isMemberExpression(node.object.type)) {
       return memberExpressionCheck(node.object, identifier, property);
     }
     return node.object.name.match(identifier)
@@ -31,16 +48,7 @@ const ASTManipulations = (function utilities() {
     return node.property.name === name;
   };
 
-    // Curried
-  const isOfType = function (type) {
-    return function newCheck(node) {
-      return node !== null ? type === node.type : false;
-    };
-  };
-
   const identifierUsedInReturn = function (identifier, node) {
-    const isIdentifier = isOfType('Identifier');
-
     if (isIdentifier(node.argument)) {
       return node.argument.name === identifier;
     }
@@ -48,8 +56,6 @@ const ASTManipulations = (function utilities() {
   };
 
   const assignmentPointsTo = function (node, identifier) {
-    const isIdentifier = isOfType('Identifier');
-
     if (isIdentifier(node.right)) {
       return node.right.name === identifier;
     }
@@ -57,25 +63,20 @@ const ASTManipulations = (function utilities() {
   };
 
   const declarationPointsTo = function (node, identifier) {
-    const isIdentifier = isOfType('Identifier');
-
     if (isIdentifier(node.init)) {
       return node.init.name === identifier;
     }
     return false;
   };
 
+  // Everything below this point is bogus?
   const findMemberExpression = function (node) {
-    const isMemberExpression = isOfType('MemberExpression');
-
     if (isMemberExpression(node)) {
       return node;
     }
   };
 
   const findDeclaration = function (node) {
-    const isDeclaration = isOfType('VariableDeclarator');
-
     if (isDeclaration(node)) {
       return node;
     }
@@ -99,7 +100,10 @@ const ASTManipulations = (function utilities() {
     findDeclaration,
     hasProperty,
     mapFunctionToNodes,
-    isOfType,
+    isExpression,
+    isIdentifier,
+    isMemberExpression,
+    isDeclaration,
     collectMemberExpressions,
     collectDeclarations,
     reduceBoolean,

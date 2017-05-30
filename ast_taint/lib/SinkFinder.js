@@ -41,7 +41,6 @@ const SinkFinder = (function sinkFinder() {
 
   return {
     communicationManagerCheck: componentClassCheck,
-    findProcessMessageManager,
     checkMessageFunction,
   };
 }());
