@@ -84,7 +84,7 @@ const GenerateAST = (function generate() {
   const createTmpDir = function (destination) {
     if (!destination) {
       createDefault();
-    } else if (~destination.indexOf('.js')) { // bitwise ~ makes it true or false
+    } else if (destination.indexOf('.js') >= 0) { // bitwise ~ makes it true or false
       FULLPATH = destination;
       createWithFilePath(destination);
     } else {

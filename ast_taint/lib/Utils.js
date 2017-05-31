@@ -17,6 +17,7 @@ const ASTManipulations = (function utilities() {
 
   const isProgram = isOfType('Program');
   const isExpression = isOfType('ExpressionStatement');
+  const isAssignment = isOfType('AssignmentExpression');
   const isIdentifier = isOfType('Identifier');
   const isMemberExpression = isOfType('MemberExpression');
   const isDeclaration = isOfType('VariableDeclaration');
@@ -25,8 +26,11 @@ const ASTManipulations = (function utilities() {
 
   const expressionHasIdentifier = function (node) {
     if (isExpression(node)) {
-      return isIdentifier(node.expression.right);
-    } return false;
+      if (isAssignment(node.expression)) {
+        return isIdentifier(node.expression.right);
+      }
+    }
+    return false;
   };
 
   const memberExpressionCheck = function (node, identifier, property) {
@@ -85,8 +89,10 @@ const ASTManipulations = (function utilities() {
   };
 
   const assignmentCalls = function (node, identifier) {
-    if (isCallExpression(node.right)) {
-      return calleeIdentifierMatches(node.right, identifier);
+    if (node.right !== undefined) {
+      if (isCallExpression(node.right)) {
+        return calleeIdentifierMatches(node.right, identifier);
+      }
     }
     return false;
   };
@@ -97,7 +103,6 @@ const ASTManipulations = (function utilities() {
     }
     return false;
   };
-
 
   return {
     memberExpressionCheck,

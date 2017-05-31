@@ -15,81 +15,22 @@
  * CONTRACT, TORT OR OTHERWISE , ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-var fs = require('fs'),
-    esprima = require('esprima'),
-    estraverse = require('estraverse'),
-    dfatool = require('dfatool');
-
-
-function traverse(node, func) {
-    func(node);
-    for (var key in node) {
-        if (node.hasOwnProperty(key)) {
-            var child = node[key];
-            if (typeof child === 'object' && child !== null) {
-
-                if (Array.isArray(child)) {
-                    child.forEach(function (node) {
-                        traverse(node, func);
-                    });
-                } else {
-                    traverse(child, func);
-                }
-            }
-        }
-    }
-}
-
-function tagSource(node) {
-    switch (node.type) {
-        case 'MemberExpression':
-            node.isSource = memberExpressionCheck(node);
-            break;
-        default:
-            break;
-    }
-}
-
-function testAssumption(ast) {
-    estraverse.traverse(ast, {
-
-        enter: function (node, parent) {
-            console.log(node.type);
-        },
-        exit: function (node) {
-        }
-    })
-}
+const GenerateAST = require('./GenerateAST');
+const Scope = require('./Scope');
 
 if (process.argv.length < 3) {
-    console.log('Usage: analyze.js file.js');
-    process.exit(1);
+  console.log('Usage: ASTTaint.js file.js');
+  process.exit(1);
 }
 
-var filename = process.argv[2];
-console.log('Reading ' + filename);
-var code = fs.readFileSync(filename, 'utf-8');
+const filename = process.argv[2];
+console.log(`Reading ${filename}`);
 
 // Parse AST with esprima, loc must be set true
-var ast = esprima.parse(code, {
-    loc: true
-});
+const ast = GenerateAST.astFromFile(filename);
 
-var globalScope = dfatool.newGlobalScope();
-dfatool.buildScope(ast, globalScope);
+const globalScope = Scope.getGlobalScope(ast);
+const sourcesInFile = Scope.nestedVariableSources(globalScope);
 
-globalScope.initialize();
-globalScope.derivation()
+console.log(sourcesInFile);
 
-var outline = {};
-
-// Iterate all the defined variables and inference its value
-for (var name in globalScope._defines) {
-    var variable = globalScope._defines[name];
-    var value = variable.inference();
-    if (value) {
-        outline[variable.name] = value.toJSON();
-    }
-}
-
-console.log(outline);
