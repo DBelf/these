@@ -10,27 +10,59 @@ const SourceFinder = (function sourceFinder() {
   const documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
   const locationSources = ['href', 'search', 'hash', 'pathname'];
 
-  const SOURCE_TEMPLATE = function (identifier, type, loc) {
-    return {
-      identifier,
-      type,
-      loc,
-    };
-  };
 
-  const DECLARED_SOURCE = function (identifier, loc) {
-    return SOURCE_TEMPLATE(identifier, 'VariableDeclarator', loc);
-  };
+  // Abstract class for all source types.
+  class Source {
+    constructor(identifier, type, loc) {
+      this.identifier = identifier;
+      this.type = type;
+      this.loc = loc;
+    }
 
-  const ASSIGNED_SOURCE = function (identifier, loc) {
-    return SOURCE_TEMPLATE(identifier, 'Assigned', loc);
-  };
+    sourcePointsTo(statement) {
+      switch (statement.type){
+        case 'VariableDeclarator':
+          return this.pointsToDeclaration(statement);
+        case 'ExpressionStatement':
+          return this.pointsToExpression(statement);
+        default:
+          return [];
+      }
+    }
 
-  const FUNCTION_SOURCE = function (identifier, sources, loc) {
-    const source = SOURCE_TEMPLATE(identifier, 'FunctionDeclaration', loc);
-    source.sources = sources;
-    return source;
-  };
+    pointsToDeclaration(declaration) {
+      return Utils.declarationPointsTo(declaration, this.identifier) ?
+        new SourceFinder.DeclaredSource(declaration.id.name, declaration.loc) : [];
+    }
+
+    pointsToExpression(expression) {
+      return Utils.assignmentPointsTo(expression.expression, this.identifier) ?
+        new SourceFinder.AssignedSource(expression.expression.left.name, expression.loc) : [];
+    }
+
+    isUsedIn(statements) {
+      return statements.reduce((acc, statement) => acc.concat(this.sourcePointsTo(statement)), []);
+    }
+  }
+
+  class DeclaredSource extends Source {
+    constructor(identifier, loc) {
+      super(identifier, 'VariableDeclarator', loc);
+    }
+  }
+
+  class AssignedSource extends Source {
+    constructor(identifier, loc) {
+      super(identifier, 'AssignedVariable', loc);
+    }
+  }
+
+  class FunctionSource extends Source {
+    constructor(identifier, sources, loc) {
+      super(identifier, 'FunctionDeclaration', loc);
+      this.sources = sources;
+    }
+  }
 
   const checkForSource = function (node, callee, potentialSources) {
     const sources = potentialSources.filter((potential) => {
@@ -75,9 +107,9 @@ const SourceFinder = (function sourceFinder() {
 
   return {
     checkMemberAccess,
-    ASSIGNED_SOURCE,
-    DECLARED_SOURCE,
-    FUNCTION_SOURCE,
+    AssignedSource,
+    DeclaredSource,
+    FunctionSource,
     generalCheck,
     checkDeclaration,
     returnAccessesSource,

@@ -43,7 +43,7 @@ const Scope = (function scoping() {
     const defNode = definition[0].node;
 
     return Utils.isDeclaration(defNode) ?
-      SourceFinder.DECLARED_SOURCE(sourceId(defNode), 'VariableDeclarator', defNode.loc) : '';
+      SourceFinder.DeclaredSource(sourceId(defNode), 'VariableDeclarator', defNode.loc) : '';
   };
 
   // Filters the sources declared in the current scope.
@@ -67,7 +67,7 @@ const Scope = (function scoping() {
   const expressionAlias = function (node, identifier) {
     const expression = node.expression;
     return Utils.assignmentPointsTo(expression, identifier) ?
-      SourceFinder.ASSIGNED_SOURCE(expression.left.name, expression.type, expression.loc) : null;
+      new SourceFinder.AssignedSource(expression.left.name, expression.type, expression.loc) : null;
   };
 
   // Checks whether a declaration statement is an alias of the identifier.
@@ -81,7 +81,7 @@ const Scope = (function scoping() {
 
     return declarations.reduce((acc, declaration) => (
       acc.concat(
-        SourceFinder.DECLARED_SOURCE(declaration.id.name, declaration.type, declaration.loc))
+        new SourceFinder.DeclaredSource(declaration.id.name, declaration.type, declaration.loc))
     ), []);
   };
 
@@ -163,58 +163,6 @@ const Scope = (function scoping() {
   const getScopeParameters = function (scope) {
     return scope.block.params;
   };
-// TODO make this do the full test?
-  const analyzeGlobalScope = function (scope) {
-    const body = getScopeBody(scope);
-    const sources = filterSourceVariables(scope);
-    return true;
-  };
-
-  // FIXME Does NOT!! check whether the parameters of the function are used in a bad way.
-  const analyzeFunction = function (scope, upperScopeSources) {
-    // Collect sources within a function.
-    // Check whether the function returns any sources.
-    // Return new functionSource.
-    const sourcesInFunction = filterSourceVariables(scope);
-    const sourcesInScope = sourcesInFunction.concat(upperScopeSources);
-    const functionName = scope.block.id !== null ? scope.block.id.name : 'anonymous';
-    return functionReturnsSource(scope, sourcesInScope) ?
-      sourcesInFunction.concat(SourceFinder.FUNCTION_SOURCE(
-        functionName,
-        sourcesInFunction,
-        scope.block.loc))
-      : sourcesInFunction;
-  };
-
-  /**
-   * Returns a list of the sources within the scope.
-   * Takes possible points to of upper scopes into account.
-   */
-  const sourcesInScope = function (scope, upperScopeSources = []) {
-    switch (scope.type) {
-      case 'function':
-        return analyzeFunction(scope, upperScopeSources);
-      default:
-        return filterSourceVariables(scope);
-    }
-  };
-
-  /**
-   * Depth first search of the scope nodes for sources.
-   * Takes the sources of upper scopes into consideration aswell.
-   */
-  const nestedVariableSources = function checkChildScope(scope, sources = []) {
-    const newSources = sourcesInScope(scope, sources).concat(sources);
-
-    const aliasesInScope = newSources.reduce((acc, identifier) => (
-      acc.concat(pointsToInScope(identifier, scope))), newSources);
-    if (scope.childScopes.length < 1) {
-      // Found all children in this branch of the scope tree.
-      return aliasesInScope;
-    }
-    return scope.childScopes.reduce((acc, childScope) => (
-      acc.concat(checkChildScope(childScope, aliasesInScope))), []);
-  };
 
   const sourcesInDeclaration = function (declarationNode) {
     return declarationNode.declarations.filter(declaration => (
@@ -226,7 +174,7 @@ const Scope = (function scoping() {
     const declarations = scopeBody.filter(Utils.isDeclaration);
     const sources = declarations.reduce((acc, declaration) => (
       acc.concat(sourcesInDeclaration(declaration))), []);
-    return sources.map(source => SourceFinder.DECLARED_SOURCE(source.id.name, source.loc));
+    return sources.map(source => new SourceFinder.DeclaredSource(source.id.name, source.loc));
   };
 
   const collectAssignmentDeclarations = function (scopeBody) {
@@ -242,42 +190,64 @@ const Scope = (function scoping() {
     ));
   };
 
-  const filterAlias = function (node, sources) {
-    switch (node.type) {
-      case 'VariableDeclarator':
-        return (sources.reduce((acc, source) => (
-          acc || Utils.declarationPointsTo(node, source.identifier)), false)) ?
-          SourceFinder.DECLARED_SOURCE(node.id.name, node.loc) : [];
-      case 'ExpressionStatement':
-        return (sources.reduce((acc, source) => (
-          acc || Utils.assignmentPointsTo(node.expression, source.identifier)), false)) ?
-          SourceFinder.ASSIGNED_SOURCE(node.expression.left.name, node.loc) : [];
-        // return sources.reduce((acc, source) => (
-        //   Utils.assignmentPointsTo(node.expression, source.identifier)), false) ?
-        //   SourceFinder.ASSIGNED_SOURCE(node.expression.left.name,
-        //   node.expression.type,
-        //   node.expression.loc) : [];
-      default:
-        return [];
-    }
-  };
   // Returns all sources in a scope.
   const collectSources = function (scope, upperSources = []) {
     const scopeBody = getScopeBody(scope);
-    const declaredInScope = declaredSources(scopeBody);
+    const declaredAndUpperSources = declaredSources(scopeBody).concat(upperSources);
     const assignmentsInScope = collectAssignmentExpressions(scopeBody);
     const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
-    const sources = potentialSources.reduce((acc, potentialSource) => {
-      const newSource = filterAlias(potentialSource, acc);
-      return acc.concat(newSource);
-    }, declaredInScope.concat(upperSources));
+    const sources = declaredAndUpperSources.reduce((acc, source) => (
+      acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
     return sources;
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/source_reassign.js');
+// FIXME Does NOT!! check whether the parameters of the function are used in a bad way.
+  const analyzeFunction = function (scope, upperScopeSources) {
+    // Collect sources within a function.
+    // Check whether the function returns any sources.
+    // Return new functionSource.
+    const sourcesInFunction = collectSources(scope, upperScopeSources);
+    const functionName = scope.block.id !== null ? scope.block.id.name : 'anonymous';
+    return functionReturnsSource(scope, sourcesInFunction) ?
+      sourcesInFunction.concat(new SourceFinder.FunctionSource(
+        functionName,
+        sourcesInFunction,
+        scope.block.loc))
+      : sourcesInFunction;
+  };
+
+  /**
+   * Returns a list of the sources within the scope.
+   * Takes possible points to of upper scopes into account.
+   */
+  const sourcesInScope = function (scope, upperScopeSources = []) {
+    switch (scope.type) {
+      case 'function':
+        return analyzeFunction(scope, upperScopeSources);
+      default:
+        return collectSources(scope);
+    }
+  };
+
+  /**
+   * Depth first search of the scope nodes for sources.
+   * Takes the sources of upper scopes into consideration aswell.
+   */
+  const nestedVariableSources = function checkChildScope(scope, sources = []) {
+    const newSources = sourcesInScope(scope, sources).concat(sources);
+
+    if (scope.childScopes.length < 1) {
+      // Found all children in this branch of the scope tree.
+      return newSources;
+    }
+    return scope.childScopes.reduce((acc, childScope) => (
+      acc.concat(checkChildScope(childScope, newSources))), []);
+  };
+
+  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_sources.js');
   const globalScope = getGlobalScope(ast);
-  console.log(collectSources(globalScope));
+  console.log(nestedVariableSources(globalScope));
   // const currentScope = createScopeManager(ast).scopes[0];
   // console.log(currentScope);
   // console.log(nestedVariableSources(currentScope));
