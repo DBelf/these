@@ -33,6 +33,26 @@ const ASTManipulations = (function utilities() {
     return false;
   };
 
+  const callsIdentifier = function (node) {
+    return node.arguments.reduce((acc, argument) => {
+      switch (argument.type) {
+        case 'CallExpression':
+          return isIdentifier(argument.callee);
+        default:
+          return false;
+      }
+    }, false);
+  };
+
+  const callExpressionWithIdentifier = function (node) {
+    if (isExpression(node)) {
+      if (isCallExpression(node.expression)) {
+        return node.expression.arguments !== undefined ? callsIdentifier(node.expression) : false;
+      }
+    }
+    return false;
+  };
+
   const memberExpressionCheck = function (node, identifier, property) {
     if (isMemberExpression(node.object.type)) {
       return memberExpressionCheck(node.object, identifier, property);
@@ -119,6 +139,7 @@ const ASTManipulations = (function utilities() {
     isMemberExpression,
     isDeclaration,
     expressionHasIdentifier,
+    callExpressionWithIdentifier,
     returnsIdentifier,
     assignmentDeclarations,
     reduceBoolean,

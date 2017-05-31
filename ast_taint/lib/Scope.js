@@ -177,19 +177,28 @@ const Scope = (function scoping() {
     ));
   };
 
+  const collectCallExpressions = function (scopeBody) {
+    return scopeBody.filter(expression => (
+      Utils.callExpressionWithIdentifier(expression)
+    ));
+  };
+
   // Returns all sources in a scope.
   const collectSources = function (scope, upperSources = []) {
     const scopeBody = getScopeBody(scope);
     const declaredAndUpperSources = declaredSources(scopeBody).concat(upperSources);
     const assignmentsInScope = collectAssignmentExpressions(scopeBody);
     const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
+    const callExpressions = collectCallExpressions(scopeBody);
+    // TODO do something with the callexpressions.
+    callExpressions.map(expression => console.log(expression.expression.callee.object.name));
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
     return sources;
   };
 
-// FIXME Does NOT!! check whether the parameters of the function are used in a bad way.
+  // FIXME Does NOT!! check whether the parameters of the function are used in a bad way.
   const analyzeFunction = function (scope, upperScopeSources = []) {
     // Collect sources within a function.
     // Check whether the function returns any sources.
