@@ -31,31 +31,6 @@ const Scope = (function scoping() {
     }
   };
 
-  // Returns the identifier of a source, or nothing if the node isn't a source.
-  // TODO move this to the Utils module.
-  const sourceId = function (node) {
-    return SourceFinder.checkDeclaration(node) ? node.id.name : null;
-  };
-
-  // Dispatch and switch on the type???
-  // Returns a new source object if we've found a source.
-  const checkDefsForSources = function (definition) {
-    const defNode = definition[0].node;
-
-    return Utils.isDeclaration(defNode) ?
-      SourceFinder.DeclaredSource(sourceId(defNode), 'VariableDeclarator', defNode.loc) : '';
-  };
-
-  // Filters the sources declared in the current scope.
-  const filterSourceVariables = function (scope) {
-    // Filter the arguments passed, when it is a function.
-    const variablesInScope = scope.variables.filter(variable => variable.name !== 'arguments');
-    const sources = variablesInScope.reduce((acc, variable) => (
-      acc.concat(checkDefsForSources(variable.defs))
-    ), []);
-    return sources.filter(n => (n.identifier !== null) && n !== '');
-  };
-
   // Checks whether the parameters of an arrowfunction are sources.
   // TODO maybe this can be used to check functions passed.
   const checkParams = function (params) {
@@ -167,7 +142,7 @@ const Scope = (function scoping() {
     const body = getScopeBody(scope);
     // check the parameters of the arrowfunction on whether they are sources
     const parameterSources = checkParams(getScopeParameters(scope));
-    const sources = filterSourceVariables(scope);
+    // const sources = filterSourceVariables(scope);
     const sourceExpressions = body.filter(statement => SourceFinder.generalCheck(statement));
     console.log(sourceExpressions);
   };
