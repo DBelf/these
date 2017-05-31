@@ -118,7 +118,7 @@ const Scope = (function scoping() {
 
   // Filters all returnstatements from the current scope.
   const returnsInScope = function (scope) {
-    return getScopeBody(scope).filter(statement => statement.type === 'ReturnStatement');
+    return getScopeBody(scope).filter(Utils.isReturn);
   };
 
   // Takes a returnstatement and checks whether it returns any of the source identifiers.
@@ -131,16 +131,34 @@ const Scope = (function scoping() {
   /** Checks all returnstatements in the top scope of the function an checks whether they return
    *  a source.
    */
-  const functionReturnsSource = function (scope, sourcesInScope) {
+  const functionIsSource = function (scope, sourcesInScope) {
     const returnsInFunction = returnsInScope(scope);
     const sourcesInFunction = findPointsTo(sourcesInScope, scope).concat(sourcesInScope);
 
-    const returnsSource = returnsInFunction.map(returnStatement => (
-      returnPointsToSource(sourcesInFunction, returnStatement)));
+    const sourceReturns = returnsInFunction.filter(statement => (
+      Utils.returnsIdentifier(statement))).reduce((acc, returnStatement) => (
+      acc || returnPointsToSource(sourcesInFunction, returnStatement)), false);
     // Checks both the identifiers and the full statements of the returnfunction.
-    return returnsSource.reduce(Utils.reduceBoolean, false) ||
-      returnsInFunction.filter(
-        returnStatement => SourceFinder.returnAccessesSource(returnStatement));
+    const returnAccessesSource = returnsInFunction.filter(statement => (
+      !Utils.returnsIdentifier(statement))).reduce((acc, returnStatement) => (
+      acc || SourceFinder.returnAccessesSource(returnStatement)
+    ), false);
+
+    if (sourceReturns || returnAccessesSource) {
+      return functionCalled(scope, sourcesInFunction);
+    }
+    return sourcesInFunction;
+  };
+
+  const functionCalled = function (scope, sourcesInFunction) {
+    const functionName = scope.block.id !== null ? scope.block.id.name : 'anonymous';
+    const functionSource = new SourceFinder.FunctionSource(
+      functionName,
+      sourcesInFunction,
+      scope.block.loc);
+    const upperScopeStatements = getScopeBody(scope.upper);
+    const functionCalledBy = functionSource.isCalledBy(upperScopeStatements);
+    return sourcesInFunction.concat(functionSource).concat(functionCalledBy);
   };
 
   // FIXME does not do anything at the moment.
@@ -151,13 +169,6 @@ const Scope = (function scoping() {
     const sources = filterSourceVariables(scope);
     const sourceExpressions = body.filter(statement => SourceFinder.generalCheck(statement));
     console.log(sourceExpressions);
-  };
-
-  // TODO do I need this?
-  const sourcesInGlobalScope = function (ast) {
-    const scopeManager = createScopeManager(ast);
-    const currentScope = scopeManager.acquire(ast);
-    return filterSourceVariables(currentScope);
   };
 
   const getScopeParameters = function (scope) {
@@ -203,18 +214,12 @@ const Scope = (function scoping() {
   };
 
 // FIXME Does NOT!! check whether the parameters of the function are used in a bad way.
-  const analyzeFunction = function (scope, upperScopeSources) {
+  const analyzeFunction = function (scope, upperScopeSources = []) {
     // Collect sources within a function.
     // Check whether the function returns any sources.
     // Return new functionSource.
     const sourcesInFunction = collectSources(scope, upperScopeSources);
-    const functionName = scope.block.id !== null ? scope.block.id.name : 'anonymous';
-    return functionReturnsSource(scope, sourcesInFunction) ?
-      sourcesInFunction.concat(new SourceFinder.FunctionSource(
-        functionName,
-        sourcesInFunction,
-        scope.block.loc))
-      : sourcesInFunction;
+    return functionIsSource(scope, sourcesInFunction);
   };
 
   /**
@@ -241,21 +246,21 @@ const Scope = (function scoping() {
       // Found all children in this branch of the scope tree.
       return newSources;
     }
+
     return scope.childScopes.reduce((acc, childScope) => (
       acc.concat(checkChildScope(childScope, newSources))), []);
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_sources.js');
-  const globalScope = getGlobalScope(ast);
-  console.log(nestedVariableSources(globalScope));
+  // const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_sources_with_function_return.js');
+  // const globalScope = getGlobalScope(ast);
+  // console.log(nestedVariableSources(globalScope));
   // const currentScope = createScopeManager(ast).scopes[0];
   // console.log(currentScope);
   // console.log(nestedVariableSources(currentScope));
   // console.log(findAllAliases(sourceArr, currentScope));
 
   return {
-    sourcesInGlobalScope,
-    functionReturnsSource,
+    functionIsSource,
     createScopeManager,
     getGlobalScope,
     nestedVariableSources,

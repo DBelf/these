@@ -8,15 +8,6 @@ const ASTManipulations = (function utilities() {
     return acc || val;
   };
 
-  const mapFunctionToNodes = function (ast, curryFunction) {
-    const arr = [];
-    estraverse.traverse(ast, {
-      enter(node) {
-        arr.push(curryFunction(node));
-      },
-    });
-    return arr;
-  };
   // Curried
   const isOfType = function (type) {
     return function newCheck(node) {
@@ -24,10 +15,13 @@ const ASTManipulations = (function utilities() {
     };
   };
 
+  const isProgram = isOfType('Program');
   const isExpression = isOfType('ExpressionStatement');
   const isIdentifier = isOfType('Identifier');
   const isMemberExpression = isOfType('MemberExpression');
   const isDeclaration = isOfType('VariableDeclaration');
+  const isReturn = isOfType('ReturnStatement');
+  const isCallExpression = isOfType('CallExpression');
 
   const expressionHasIdentifier = function (node) {
     if (isExpression(node)) {
@@ -42,6 +36,10 @@ const ASTManipulations = (function utilities() {
     return node.object.name.match(identifier)
             && (node.property.name === property
             || node.property.value === property);
+  };
+
+  const returnsIdentifier = function (node) {
+    return isIdentifier(node.argument);
   };
 
   const hasProperty = function (node, name) {
@@ -73,6 +71,26 @@ const ASTManipulations = (function utilities() {
     return false;
   };
 
+  const calleeIdentifierMatches = function (callee, identifier) {
+    if (isIdentifier(callee)) {
+      return callee.name === identifier;
+    } return false;
+  };
+
+  const declarationCalls = function (node, identifier) {
+    if (isCallExpression(node.init)) {
+      return calleeIdentifierMatches(node.init, identifier);
+    }
+    return false;
+  };
+
+  const assignmentCalls = function (node, identifier) {
+    if (isCallExpression(node.right)) {
+      return calleeIdentifierMatches(node.right, identifier);
+    }
+    return false;
+  };
+
   const declarationPointsTo = function (node, identifier) {
     if (isIdentifier(node.init)) {
       return node.init.name === identifier;
@@ -80,45 +98,24 @@ const ASTManipulations = (function utilities() {
     return false;
   };
 
-  // Everything below this point is bogus?
-  const findMemberExpression = function (node) {
-    if (isMemberExpression(node)) {
-      return node;
-    }
-  };
-
-  const findDeclaration = function (node) {
-    if (isDeclaration(node)) {
-      return node;
-    }
-  };
-
-  const collectDeclarations = function (ast) {
-    const declarations = mapFunctionToNodes(ast, findDeclaration);
-    return declarations.filter(node => node);
-  };
-
-  const collectMemberExpressions = function (ast) {
-    const memberExpressions = mapFunctionToNodes(ast, findMemberExpression);
-    return memberExpressions.filter(node => node);// Not sure of this filter
-  };
 
   return {
     memberExpressionCheck,
     identifierUsedInReturn,
     declarationPointsTo,
+    declarationCalls,
     assignmentPointsTo,
-    findDeclaration,
+    assignmentCalls,
     hasProperty,
-    mapFunctionToNodes,
+    isProgram,
+    isReturn,
     isExpression,
     isIdentifier,
     isMemberExpression,
     isDeclaration,
     expressionHasIdentifier,
+    returnsIdentifier,
     assignmentDeclarations,
-    collectMemberExpressions,
-    collectDeclarations,
     reduceBoolean,
   };
 }());

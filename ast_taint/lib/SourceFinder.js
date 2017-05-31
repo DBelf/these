@@ -20,7 +20,7 @@ const SourceFinder = (function sourceFinder() {
     }
 
     sourcePointsTo(statement) {
-      switch (statement.type){
+      switch (statement.type) {
         case 'VariableDeclarator':
           return this.pointsToDeclaration(statement);
         case 'ExpressionStatement':
@@ -61,6 +61,31 @@ const SourceFinder = (function sourceFinder() {
     constructor(identifier, sources, loc) {
       super(identifier, 'FunctionDeclaration', loc);
       this.sources = sources;
+    }
+
+    sourceCalls(statement) {
+      switch (statement.type) {
+        case 'VariableDeclarator':
+          return this.calledByDeclaration(statement);
+        case 'ExpressionStatement':
+          return this.calledByExpression(statement);
+        default:
+          return [];
+      }
+    }
+
+    calledByExpression(expression) {
+      return Utils.assignmentCalls(expression.expression, this.identifier) ?
+        new SourceFinder.AssignedSource(expression.expression.left.name, expression.loc) : [];
+    }
+
+    calledByDeclaration(declaration) {
+      return Utils.declarationCalls(declaration, this.identifier) ?
+        new SourceFinder.DeclaredSource(declaration.id.name, declaration.loc) : [];
+    }
+
+    isCalledBy(statements) {
+      return statements.reduce((acc, statement) => acc.concat(this.sourceCalls(statement)), []);
     }
   }
 

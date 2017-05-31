@@ -5,7 +5,7 @@ var globalSource = document.value;
 
 var globalReassign = globalSource;
 
-function name() {
+function returnsAlias() {
     var scopedReassign = globalSource;
     return scopedReassign;
 }
