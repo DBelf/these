@@ -72,8 +72,8 @@ const ASTManipulations = (function utilities() {
   };
 
   const calleeIdentifierMatches = function (callee, identifier) {
-    if (isIdentifier(callee)) {
-      return callee.name === identifier;
+    if (isIdentifier(callee.callee)) {
+      return callee.callee.name === identifier;
     } return false;
   };
 

@@ -128,6 +128,18 @@ const Scope = (function scoping() {
       , false);
   };
 
+
+  const functionCalled = function (scope, sourcesInFunction) {
+    const functionName = scope.block.id !== null ? scope.block.id.name : 'anonymous';
+    const functionSource = new SourceFinder.FunctionSource(
+      functionName,
+      sourcesInFunction,
+      scope.block.loc);
+    const upperScopeStatements = getScopeBody(scope.upper);
+    const functionCalledBy = functionSource.isCalledBy(upperScopeStatements);
+    return sourcesInFunction.concat(functionSource).concat(functionCalledBy);
+  };
+
   /** Checks all returnstatements in the top scope of the function an checks whether they return
    *  a source.
    */
@@ -148,17 +160,6 @@ const Scope = (function scoping() {
       return functionCalled(scope, sourcesInFunction);
     }
     return sourcesInFunction;
-  };
-
-  const functionCalled = function (scope, sourcesInFunction) {
-    const functionName = scope.block.id !== null ? scope.block.id.name : 'anonymous';
-    const functionSource = new SourceFinder.FunctionSource(
-      functionName,
-      sourcesInFunction,
-      scope.block.loc);
-    const upperScopeStatements = getScopeBody(scope.upper);
-    const functionCalledBy = functionSource.isCalledBy(upperScopeStatements);
-    return sourcesInFunction.concat(functionSource).concat(functionCalledBy);
   };
 
   // FIXME does not do anything at the moment.

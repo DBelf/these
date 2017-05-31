@@ -65,8 +65,9 @@ const SourceFinder = (function sourceFinder() {
 
     sourceCalls(statement) {
       switch (statement.type) {
-        case 'VariableDeclarator':
-          return this.calledByDeclaration(statement);
+        case 'VariableDeclaration':
+          return statement.declarations.reduce((acc, declaration) => (
+            acc.concat(this.calledByDeclaration(declaration))), []);
         case 'ExpressionStatement':
           return this.calledByExpression(statement);
         default:
