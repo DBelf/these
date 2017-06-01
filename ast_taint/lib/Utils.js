@@ -47,6 +47,7 @@ const ASTManipulations = (function utilities() {
   const callExpressionWithIdentifier = function (node) {
     if (isExpression(node)) {
       if (isCallExpression(node.expression)) {
+        console.log(node.expression);
         return node.expression.arguments !== undefined ? callsIdentifier(node.expression) : false;
       }
     }

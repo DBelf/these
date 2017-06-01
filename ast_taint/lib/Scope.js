@@ -89,14 +89,19 @@ const Scope = (function scoping() {
     return getScopeBody(scope).filter(Utils.isReturn);
   };
 
-  // Takes a returnstatement and checks whether it returns any of the source identifiers.
+  /**
+   * Takes a returnstatement and checks whether it returns any of the source identifiers.
+   */
   const returnPointsToSource = function (sources, returnStatement) {
     return sources.reduce((acc, source) => (
       acc || Utils.identifierUsedInReturn(source.identifier, returnStatement))
       , false);
   };
 
-
+  /**
+   * Checks the upper scope for statements calling the fucntion.
+   * Returns the function source and any statements calling the function.
+   */
   const functionCalled = function (scope, sourcesInFunction) {
     const functionName = scope.block.id !== null ? scope.block.id.name : 'anonymous';
     const functionSource = new SourceFinder.FunctionSource(
@@ -106,10 +111,12 @@ const Scope = (function scoping() {
     const upperScopeStatements = getScopeBody(scope.upper);
     const functionCalledBy = functionSource.isCalledBy(upperScopeStatements);
     return sourcesInFunction.concat(functionSource).concat(functionCalledBy);
-  };
+  }; // This function might be replaced by a check in nested sources.
 
-  /** Checks all returnstatements in the top scope of the function an checks whether they return
-   *  a source.
+  /**
+   * Checks all returnstatements in the top scope of the function an checks whether
+   * are returned by the function or whether the function returns a source expression.
+   * Returns all sources detected this way.
    */
   const functionIsSource = function (scope, sourcesInScope) {
     const returnsInFunction = returnsInScope(scope);
@@ -130,12 +137,18 @@ const Scope = (function scoping() {
     return sourcesInFunction;
   };
 
+  /**
+   * Filters all sources from the declaration and returns these.
+   */
   const sourcesInDeclaration = function (declarationNode) {
     return declarationNode.declarations.filter(declaration => (
       SourceFinder.checkDeclaration(declaration)));
   };
 
-  // Finds all sources declared within the scope.
+  /**
+   * Filters all declarations from the scopebody and filters all sources from this list,
+   * returns the result.
+   */
   const declaredSources = function (scopeBody) {
     const declarations = scopeBody.filter(Utils.isDeclaration);
     const sources = declarations.reduce((acc, declaration) => (
@@ -143,6 +156,9 @@ const Scope = (function scoping() {
     return sources.map(source => new SourceFinder.DeclaredSource(source.id.name, source.loc));
   };
 
+  /**
+   * Filters all declarations that assign to an identifier from the scope body and returns these.
+   */
   const collectAssignmentDeclarations = function (scopeBody) {
     const declarations = scopeBody.filter(Utils.isDeclaration);
     return declarations.reduce((acc, declaration) => (
@@ -150,17 +166,24 @@ const Scope = (function scoping() {
     ), []);
   };
 
+  /**
+   * Filters all assignment expressions from the scope body and returns these.
+   */
   const collectAssignmentExpressions = function (scopeBody) {
     return scopeBody.filter(expression => (
       Utils.expressionHasIdentifier(expression)
     ));
   };
 
+  /**
+   * Filters all call expressions from the scope body and returns these.
+   */
   const collectCallExpressions = function (scopeBody) {
     return scopeBody.filter(expression => (
       Utils.callExpressionWithIdentifier(expression)
     ));
   };
+
 
   const sourceAccesses = function (scopeBody) {
     const memberAccesses = scopeBody.filter(Utils.isMemberExpression);
@@ -170,22 +193,26 @@ const Scope = (function scoping() {
       new SourceFinder.AccessedSource(source.object.name, source.loc)));
   };
 
-  // Returns all sources in a scope.
+  /**
+   * Collects the sources within a scope and returns a list of these.
+   */
   const collectSources = function (scope, upperSources = []) {
     const scopeBody = getScopeBody(scope);
     const declaredAndUpperSources = declaredSources(scopeBody).concat(upperSources);
     const assignmentsInScope = collectAssignmentExpressions(scopeBody);
     const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
     const accessStatements = sourceAccesses(scopeBody);
-    // const callExpressions = collectCallExpressions(scopeBody);
-    // TODO do something with the callexpressions.
-    // callExpressions.map(expression => console.log(expression.expression.callee.object.name));
+
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
     return sources.concat(accessStatements);
   };
 
+  /**
+   * Collects the sources within a functon and returns all the sources,
+   * including the function if the function returns a source.
+   */
   const analyzeFunction = function (scope, upperScopeSources = []) {
     // Collect sources within a function.
     // Check whether the function returns any sources.
@@ -213,22 +240,27 @@ const Scope = (function scoping() {
    */
   const nestedVariableSources = function checkChildScope(scope, sources = []) {
     const newSources = sourcesInScope(scope, sources).concat(sources);
+    const scopeBody = getScopeBody(scope);
+    const callExpressions = collectCallExpressions(scopeBody);
+
+    // TODO do something with the callexpressions.
+    callExpressions.map(expression => console.log(expression.expression.callee.object.name));
 
     if (scope.childScopes.length < 1) {
       // Found all children in this branch of the scope tree.
       return newSources;
     }
 
+    // Also want to find all the call expressions that use the sources within this scope level.
     return scope.childScopes.reduce((acc, childScope) => (
       acc.concat(checkChildScope(childScope, newSources))), []);
   };
 
-  // const ast = GenerateAST.astFromFile('../test/ast_tests/arrow_source.js');
-  // const globalScope = getGlobalScope(ast);
-  // console.log(nestedVariableSources(globalScope));
+  const ast = GenerateAST.astFromFile('../test/ast_tests/anonymous_listener_function.js');
+  const globalScope = getGlobalScope(ast);
+  console.log(nestedVariableSources(globalScope));
 
   return {
-    functionIsSource,
     createScopeManager,
     getGlobalScope,
     nestedVariableSources,
