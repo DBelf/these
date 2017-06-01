@@ -34,35 +34,46 @@ describe('AST generation', () => {
 });
 
 describe('Scope Analysis', () => {
-  it('can find a source within the global scope', () => {
-    const ast = GenerateAST.astFromFile('test/ast_tests/value_access.js');
-    const globalScope = ScopeAnalysis.getGlobalScope(ast);
-    const sources = ScopeAnalysis.nestedVariableSources(globalScope);
-    expect(sources).to.have.lengthOf(1);
+  describe('Source Detection', () => {
+    it('can find a source within the global scope', () => {
+      const ast = GenerateAST.astFromFile('test/ast_tests/value_access.js');
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(globalScope);
+      expect(sources).to.have.lengthOf(1);
+    });
+    it('can find a function returning a source', () => {
+      const ast = GenerateAST.astFromFile('test/ast_tests/function_returns_source.js');
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(globalScope);
+      expect(sources.filter(source => source.type === 'FunctionDeclaration')).to.have.lengthOf(1);
+    });
+    it('can find a source and its aliases in the global scope', () => {
+      const ast = GenerateAST.astFromFile('test/ast_tests/source_reassign.js');
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(globalScope);
+      expect(sources).to.have.lengthOf(3);
+    });
+    it('can find nested sources', () => {
+      const ast = GenerateAST.astFromFile('test/ast_tests/scoped_sources_with_function_return.js');
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(globalScope);
+      expect(sources).to.have.lengthOf(5);// TODO check the function aswell?
+    });
+    it('can find functions returning aliased global sources', () => {
+      const ast = GenerateAST.astFromFile('test/ast_tests/scoped_sources_with_function_return.js');
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(globalScope);
+      expect(sources.filter(source => source.type === 'FunctionDeclaration')).to.have.lengthOf(1);
+    });
+    it('can find the source in the implicit return of an arrow function', () => {
+      const ast = GenerateAST.astFromFile('test/ast_tests/arrow_source.js');
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(globalScope);
+      expect(sources).to.have.lengthOf(1);
+    });
   });
-  it('can find a function returning a source', () => {
-    const ast = GenerateAST.astFromFile('test/ast_tests/function_returns_source.js');
-    const globalScope = ScopeAnalysis.getGlobalScope(ast);
-    const sources = ScopeAnalysis.nestedVariableSources(globalScope);
-    expect(sources.filter(source => source.type === 'FunctionDeclaration')).to.have.lengthOf(1);
-  });
-  it('can find a source and its aliases in the global scope', () => {
-    const ast = GenerateAST.astFromFile('test/ast_tests/source_reassign.js');
-    const globalScope = ScopeAnalysis.getGlobalScope(ast);
-    const sources = ScopeAnalysis.nestedVariableSources(globalScope);
-    expect(sources).to.have.lengthOf(3);
-  });
-  it('can find nested sources', () => {
-    const ast = GenerateAST.astFromFile('test/ast_tests/scoped_sources_with_function_return.js');
-    const globalScope = ScopeAnalysis.getGlobalScope(ast);
-    const sources = ScopeAnalysis.nestedVariableSources(globalScope);
-    expect(sources).to.have.lengthOf(5);// TODO check the function aswell?
-  });
-  it('can find functions returning aliased global sources', () => {
-    const ast = GenerateAST.astFromFile('test/ast_tests/scoped_sources_with_function_return.js');
-    const globalScope = ScopeAnalysis.getGlobalScope(ast);
-    const sources = ScopeAnalysis.nestedVariableSources(globalScope);
-    expect(sources.filter(source => source.type === 'FunctionDeclaration')).to.have.lengthOf(1);
+  describe('Sink Detection', () => {
+
   });
 });
 
