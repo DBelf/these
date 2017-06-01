@@ -63,6 +63,11 @@ const SourceFinder = (function sourceFinder() {
     }
   }
 
+  class AccessedSource extends Source {
+    constructor(identifier, loc) {
+      super(identifier, 'AccessedSource', loc);
+    }
+  }
   // Function source wrapper, used to check where it is used.
   class FunctionSource extends Source {
     constructor(identifier, sources, loc) {
@@ -103,10 +108,8 @@ const SourceFinder = (function sourceFinder() {
 
   // Used to check a memberaccess for any type of source vulnerability.
   const checkForSource = function (node, callee, potentialSources) {
-    const sources = potentialSources.filter((potential) => {
-      const source = Utils.memberExpressionCheck(node, callee, potential);
-      return source;
-    });
+    const sources = potentialSources.filter(potential => (
+     Utils.memberExpressionCheck(node, callee, potential)));
     return sources.length > 0;
   };
 
@@ -154,6 +157,7 @@ const SourceFinder = (function sourceFinder() {
     checkMemberAccess,
     AssignedSource,
     DeclaredSource,
+    AccessedSource,
     FunctionSource,
     generalCheck,
     checkDeclaration,

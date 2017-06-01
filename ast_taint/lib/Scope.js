@@ -31,13 +31,6 @@ const Scope = (function scoping() {
     }
   };
 
-  // Checks whether the parameters of an arrowfunction are sources.
-  // TODO maybe this can be used to check functions passed.
-  const checkParams = function (params) {
-    return params.filter(parameter => (parameter.object !== undefined ?
-      SourceFinder.generalCheck(parameter) : false));
-  };
-
   // Checks whether an expression (i.e. an assignment) is an alias.
   const expressionAlias = function (node, identifier) {
     const expression = node.expression;
@@ -137,20 +130,6 @@ const Scope = (function scoping() {
     return sourcesInFunction;
   };
 
-  // FIXME does not do anything at the moment.
-  const analyzeArrowFunction = function (scope) {
-    const body = getScopeBody(scope);
-    // check the parameters of the arrowfunction on whether they are sources
-    const parameterSources = checkParams(getScopeParameters(scope));
-    // const sources = filterSourceVariables(scope);
-    const sourceExpressions = body.filter(statement => SourceFinder.generalCheck(statement));
-    console.log(sourceExpressions);
-  };
-
-  const getScopeParameters = function (scope) {
-    return scope.block.params;
-  };
-
   const sourcesInDeclaration = function (declarationNode) {
     return declarationNode.declarations.filter(declaration => (
       SourceFinder.checkDeclaration(declaration)));
@@ -183,22 +162,30 @@ const Scope = (function scoping() {
     ));
   };
 
+  const sourceAccesses = function (scopeBody) {
+    const memberAccesses = scopeBody.filter(Utils.isMemberExpression);
+    const sourceMemberAccesses = memberAccesses.filter(statement => (
+      SourceFinder.generalCheck(statement)));
+    return sourceMemberAccesses.map(source => (
+      new SourceFinder.AccessedSource(source.object.name, source.loc)));
+  };
+
   // Returns all sources in a scope.
   const collectSources = function (scope, upperSources = []) {
     const scopeBody = getScopeBody(scope);
     const declaredAndUpperSources = declaredSources(scopeBody).concat(upperSources);
     const assignmentsInScope = collectAssignmentExpressions(scopeBody);
     const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
-    const callExpressions = collectCallExpressions(scopeBody);
+    const accessStatements = sourceAccesses(scopeBody);
+    // const callExpressions = collectCallExpressions(scopeBody);
     // TODO do something with the callexpressions.
-    callExpressions.map(expression => console.log(expression.expression.callee.object.name));
+    // callExpressions.map(expression => console.log(expression.expression.callee.object.name));
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
-    return sources;
+    return sources.concat(accessStatements);
   };
 
-  // FIXME Does NOT!! check whether the parameters of the function are used in a bad way.
   const analyzeFunction = function (scope, upperScopeSources = []) {
     // Collect sources within a function.
     // Check whether the function returns any sources.
@@ -236,13 +223,9 @@ const Scope = (function scoping() {
       acc.concat(checkChildScope(childScope, newSources))), []);
   };
 
-  // const ast = GenerateAST.astFromFile('../test/ast_tests/scoped_sources_with_function_return.js');
+  // const ast = GenerateAST.astFromFile('../test/ast_tests/arrow_source.js');
   // const globalScope = getGlobalScope(ast);
   // console.log(nestedVariableSources(globalScope));
-  // const currentScope = createScopeManager(ast).scopes[0];
-  // console.log(currentScope);
-  // console.log(nestedVariableSources(currentScope));
-  // console.log(findAllAliases(sourceArr, currentScope));
 
   return {
     functionIsSource,

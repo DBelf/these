@@ -3,64 +3,13 @@
  * Created by dimitri on 11/05/2017.
  */
 const chai = require('chai');
-const expect = chai.expect; // we are using the "expect" style of Chai
-const SourceFinder = require('../lib/SourceFinder');
-const SinkFinder = require('../lib/SinkFinder');
-const Utils = require('../lib/Utils');
+// const SourceFinder = require('../lib/SourceFinder');
+// const SinkFinder = require('../lib/SinkFinder');
+// const Utils = require('../lib/Utils');
 const GenerateAST = require('../lib/GenerateAST');
 const ScopeAnalysis = require('../lib/Scope');
 
-const messageManagerControl = JSON.parse(`{
-            "type": "VariableDeclaration",
-            "declarations": [
-                {
-                    "type": "VariableDeclarator",
-                    "id": {
-                        "type": "Identifier",
-                        "name": "cpmm"
-                    },
-                    "init": {
-                        "type": "CallExpression",
-                        "callee": {
-                            "type": "MemberExpression",
-                            "computed": false,
-                            "object": {
-                                "type": "MemberExpression",
-                                "computed": true,
-                                "object": {
-                                    "type": "Identifier",
-                                    "name": "Cc"
-                                },
-                                "property": {
-                                    "type": "Literal",
-                                    "value": "@mozilla.org/childprocessmessagemanager;1",
-                                    "raw": "@mozilla.org/childprocessmessagemanager;1"
-                                }
-                            },
-                            "property": {
-                                "type": "Identifier",
-                                "name": "getService"
-                            }
-                        },
-                        "arguments": [
-                            {
-                                "type": "MemberExpression",
-                                "computed": false,
-                                "object": {
-                                    "type": "Identifier",
-                                    "name": "Ci"
-                                },
-                                "property": {
-                                    "type": "Identifier",
-                                    "name": "nsISyncMessageSender"
-                                }
-                            }
-                        ]
-                    }
-                }
-            ],
-            "kind": "let"
-        }`);
+const expect = chai.expect; // we are using the "expect" style of Chai
 
 describe('AST generation', () => {
   describe('Collecting all javascript files', () => {
@@ -107,7 +56,7 @@ describe('Scope Analysis', () => {
     const ast = GenerateAST.astFromFile('test/ast_tests/scoped_sources_with_function_return.js');
     const globalScope = ScopeAnalysis.getGlobalScope(ast);
     const sources = ScopeAnalysis.nestedVariableSources(globalScope);
-    expect(sources).to.have.lengthOf(5);//TODO check the function aswell?
+    expect(sources).to.have.lengthOf(5);// TODO check the function aswell?
   });
   it('can find functions returning aliased global sources', () => {
     const ast = GenerateAST.astFromFile('test/ast_tests/scoped_sources_with_function_return.js');
