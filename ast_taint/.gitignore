@@ -1,6 +1,7 @@
 ### Own ignored folders ###
 
 tmp/
+addons/
 
 Created by https://www.gitignore.io/api/node,webstorm
 
