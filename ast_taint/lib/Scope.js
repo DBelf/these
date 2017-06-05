@@ -99,6 +99,15 @@ const Scope = (function scoping() {
   };
 
   /**
+   * Filters all call expressions from the scope body and returns these.
+   */
+  const collectCallExpressions = function (scopeBody) {
+    return scopeBody.filter(expression => (
+      Utils.callExpressionWithIdentifier(expression)
+    ));
+  };
+
+  /**
    * Checks the upper scope for statements calling the fucntion.
    * Returns the function source and any statements calling the function.
    */
@@ -109,6 +118,12 @@ const Scope = (function scoping() {
       sourcesInFunction,
       scope.block.loc);
     const upperScopeStatements = getScopeBody(scope.upper);
+    const callExpressions = collectCallExpressions(upperScopeStatements).map(expression => expression.expression);
+
+    // TODO do something with the callexpressions.
+    console.log(callExpressions);
+    const communicationSources = functionSource.isCalledBy(callExpressions);
+
     const functionCalledBy = functionSource.isCalledBy(upperScopeStatements);
     return sourcesInFunction.concat(functionSource).concat(functionCalledBy);
   }; // This function might be replaced by a check in nested sources.
@@ -175,14 +190,6 @@ const Scope = (function scoping() {
     ));
   };
 
-  /**
-   * Filters all call expressions from the scope body and returns these.
-   */
-  const collectCallExpressions = function (scopeBody) {
-    return scopeBody.filter(expression => (
-      Utils.callExpressionWithIdentifier(expression)
-    ));
-  };
 
 
   const sourceAccesses = function (scopeBody) {
@@ -240,11 +247,6 @@ const Scope = (function scoping() {
    */
   const nestedVariableSources = function checkChildScope(scope, sources = []) {
     const newSources = sourcesInScope(scope, sources).concat(sources);
-    const scopeBody = getScopeBody(scope);
-    const callExpressions = collectCallExpressions(scopeBody);
-
-    // TODO do something with the callexpressions.
-    callExpressions.map(expression => console.log(expression.expression.callee.object.name));
 
     if (scope.childScopes.length < 1) {
       // Found all children in this branch of the scope tree.
@@ -256,7 +258,7 @@ const Scope = (function scoping() {
       acc.concat(checkChildScope(childScope, newSources))), []);
   };
 
-  const ast = GenerateAST.astFromFile('../test/ast_tests/anonymous_listener_function.js');
+  const ast = GenerateAST.astFromFile('../test/ast_tests/declared_listener_function.js');
   const globalScope = getGlobalScope(ast);
   console.log(nestedVariableSources(globalScope));
 

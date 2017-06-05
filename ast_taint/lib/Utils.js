@@ -47,7 +47,6 @@ const ASTManipulations = (function utilities() {
   const callExpressionWithIdentifier = function (node) {
     if (isExpression(node)) {
       if (isCallExpression(node.expression)) {
-        console.log(node.expression);
         return node.expression.arguments !== undefined ? callsIdentifier(node.expression) : false;
       }
     }
@@ -68,7 +67,7 @@ const ASTManipulations = (function utilities() {
   };
 
   const hasProperty = function (node, name) {
-    return node.property.name === name;
+    return isIdentifier(node.property) ? node.property.name === name : false;
   };
 
   const identifierUsedInReturn = function (identifier, node) {

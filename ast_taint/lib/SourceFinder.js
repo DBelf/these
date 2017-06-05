@@ -9,6 +9,7 @@ const SourceFinder = (function sourceFinder() {
     // Arrays with the vulnerable member accesses
   const documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
   const locationSources = ['href', 'search', 'hash', 'pathname'];
+  const communicationSource = 'addMessageListener';
 
   // Abstract class for all source types.
   class Source {
@@ -20,11 +21,14 @@ const SourceFinder = (function sourceFinder() {
 
     // Checks whether the statement points to the source.
     sourcePointsTo(statement) {
+      console.log(statement);
       switch (statement.type) {
         case 'VariableDeclarator':
           return this.pointsToDeclaration(statement);
         case 'ExpressionStatement':
           return this.pointsToExpression(statement);
+        case 'CallExpression':
+          return this.passedAsSourceArgument(statement);
           // TODO add checks for passing to functions/Anything else.
         default:
           return [];
@@ -43,9 +47,25 @@ const SourceFinder = (function sourceFinder() {
         new SourceFinder.AssignedSource(expression.expression.left.name, expression.loc) : [];
     }
 
+    passedAsSourceArgument(statement) { // TODO extend functionality to actual functions
+      if (statement.callee.property !== undefined) {
+        if (Utils.hasProperty(statement, this.identifier)) {
+          return Utils.hasProperty(statement, communicationSource) ?
+            new SourceFinder.CommunicationSource(statement.property.name, statement.loc) : [];
+        }
+      }
+      return [];
+    }
+
     // Returns what statements the source is used in.
     isUsedIn(statements) {
       return statements.reduce((acc, statement) => acc.concat(this.sourcePointsTo(statement)), []);
+    }
+  }
+
+  class CommunicationSource extends Source {
+    constructor(identifier, loc) {
+      super(identifier, 'CommunicationSource', loc);
     }
   }
 
@@ -158,6 +178,7 @@ const SourceFinder = (function sourceFinder() {
     AssignedSource,
     DeclaredSource,
     AccessedSource,
+    CommunicationSource,
     FunctionSource,
     generalCheck,
     checkDeclaration,
