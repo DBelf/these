@@ -11,7 +11,7 @@ const ASTManipulations = (function utilities() {
   // Curried
   const isOfType = function (type) {
     return function newCheck(node) {
-      return node !== null ? type === node.type : false;
+      return (node !== undefined && node !== null) ? type === node.type : false;
     };
   };
 
@@ -68,6 +68,7 @@ const ASTManipulations = (function utilities() {
 
   const hasProperty = function (node, name) {
     return isIdentifier(node.property) ? node.property.name === name : false;
+
   };
 
   const identifierUsedInReturn = function (identifier, node) {
