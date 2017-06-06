@@ -16,6 +16,7 @@ const ASTManipulations = (function utilities() {
   };
 
   const isProgram = isOfType('Program');
+  const isIfStatement = isOfType('IfStatement');
   const isExpression = isOfType('ExpressionStatement');
   const isAssignment = isOfType('AssignmentExpression');
   const isIdentifier = isOfType('Identifier');
@@ -141,6 +142,7 @@ const ASTManipulations = (function utilities() {
     assignmentCalls,
     hasProperty,
     isProgram,
+    isIfStatement,
     isReturn,
     isExpression,
     isCallExpression,

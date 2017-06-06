@@ -47,10 +47,6 @@ const SinkFinder = (function sinkFinder() {
     return isSink ? new Sink(filename, callExpression.callee.name, callExpression.loc) : [];
   };
 
-  // const checkMessagePayload = function (node) {
-  //   const messageArguments = node.expression.arguments;
-  //
-  // }
   const checkCallExpression = function (filename, callExpression) {
     switch (callExpression.callee.name) {
       case 'document':

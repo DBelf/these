@@ -77,9 +77,16 @@ describe('Scope Analysis', () => {
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources).to.have.lengthOf(1);
     });
+    it('can find the source within either clause of an if statement', () => {
+      const path = 'test/ast_tests/source/if_source.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
+      expect(sources).to.have.lengthOf(2);
+    });
   });
   describe('Sink Detection', () => {
-    it('can detect sink calls without checking the arguments', () => {
+    it('can detect eval calls without checking the arguments', () => {
       const path = 'test/ast_tests/sink/sink_call.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
@@ -88,6 +95,13 @@ describe('Scope Analysis', () => {
     });
     it('can detect sinks in nested scopes', () => {
       const path = 'test/ast_tests/sink/nested_sinks.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
+      expect(sinks).to.have.lengthOf(1);
+    });
+    it('can detect a sink within an anonymous function', () => {
+      const path = 'test/ast_tests/sink/arrow_sink.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sinks = ScopeAnalysis.nestedSinks(path, globalScope);

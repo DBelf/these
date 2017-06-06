@@ -187,6 +187,13 @@ const Scope = (function scoping() {
     ), []);
   };
 
+  //FIXME right now this only works with variables declared within the ifstatement, pointsto is bad.
+  const collectIfStatements = function (filepath, scopeBody, upperSources = []) {
+    const ifStatements = scopeBody.filter(statement => Utils.isIfStatement(statement));
+    return ifStatements.reduce((acc, statement) => (
+      acc.concat(statementsInClauses(filepath, statement))), []);
+  };
+
   /**
    * Filters all assignment expressions from the scope body and returns these.
    */
@@ -207,17 +214,24 @@ const Scope = (function scoping() {
   /**
    * Collects the sources within a scope and returns a list of these.
    */
-  const collectSources = function (filepath, scope, upperSources = []) {
-    const scopeBody = getScopeBody(scope);
+  const collectSources = function (filepath, scopeBody, upperSources = []) {
     const declaredAndUpperSources = declaredSources(filepath, scopeBody).concat(upperSources);
     const assignmentsInScope = collectAssignmentExpressions(scopeBody);
     const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
+    const ifClauses = collectIfStatements(filepath, scopeBody, upperSources);
     const accessStatements = sourceAccesses(filepath, scopeBody);
 
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
-    return sources.concat(accessStatements);
+    return sources.concat(accessStatements).concat(ifClauses);
+  };
+
+  const statementsInClauses = function (filepath, ifStatement, upperSources = []) {
+    const consequent = ifStatement.consequent !== null ? ifStatement.consequent.body : [];
+    const alternate = ifStatement.alternate !== null ? ifStatement.alternate.body : [];
+    return collectSources(filepath, consequent, upperSources).concat(
+      collectSources(filepath, alternate, upperSources));
   };
 
   /**
@@ -228,7 +242,8 @@ const Scope = (function scoping() {
     // Collect sources within a function.
     // Check whether the function returns any sources.
     // Return new functionSource.
-    const sourcesInFunction = collectSources(filepath, scope, upperScopeSources);
+    const scopeBody = getScopeBody(scope);
+    const sourcesInFunction = collectSources(filepath, scopeBody, upperScopeSources);
     return functionIsSource(filepath, scope, sourcesInFunction);
   };
 
@@ -241,7 +256,7 @@ const Scope = (function scoping() {
       case 'function':
         return analyzeFunction(filepath, scope, upperScopeSources);
       default:
-        return collectSources(filepath, scope);
+        return collectSources(filepath, getScopeBody(scope));
     }
   };
 
@@ -256,7 +271,6 @@ const Scope = (function scoping() {
       // Found all children in this branch of the scope tree.
       return newSources;
     }
-
     // Also want to find all the call expressions that use the sources within this scope level.
     return scope.childScopes.reduce((acc, childScope) => (
       acc.concat(checkChildScope(filepath, childScope, newSources))), []);
@@ -299,7 +313,7 @@ const Scope = (function scoping() {
     return sinkCalls;
   };
 
-  const nestedSinks = function checkChildScope(filename, scope, sinks = []) {
+  const nestedSinks = function sinkInChild(filename, scope, sinks = []) {
     const newSinks = sinksInScope(filename, scope).concat(sinks);
 
     if (scope.childScopes.length < 1) {
@@ -307,12 +321,13 @@ const Scope = (function scoping() {
     }
 
     return scope.childScopes.reduce((acc, childScope) => (
-      acc.concat(checkChildScope(filename, childScope, newSinks))), []);
+      acc.concat(sinkInChild(filename, childScope, newSinks))), []);
   };
 
-  // const ast = GenerateAST.astFromFile('../test/ast_tests/declared_listener_function.js');
+  // const path = '../test/ast_tests/sink/arrow_sink.js';
+  // const ast = GenerateAST.astFromFile(path);
   // const globalScope = getGlobalScope(ast);
-  // console.log(nestedVariableSources(globalScope));
+  // console.log(nestedSinks(path, globalScope));
 
   return {
     createScopeManager,
