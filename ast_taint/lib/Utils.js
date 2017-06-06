@@ -147,6 +147,7 @@ const ASTManipulations = (function utilities() {
     isIdentifier,
     isMemberExpression,
     isDeclaration,
+    isAssignment,
     calleeIsIdentifier,
     functionNameMatches,
     expressionHasIdentifier,

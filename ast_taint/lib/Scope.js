@@ -275,14 +275,20 @@ const Scope = (function scoping() {
       acc.concat(SinkFinder.checkCallExpression(filename, expression.expression))), []);
   };
 
-  const assignedSinks = function (expressions) {
-    return [];
+  const assignedSinks = function (filename, expressions) {
+    const assignmentExpressions = expressions.filter(expression => (
+      Utils.isAssignment(expression.expression)
+    ));
+    return assignmentExpressions.reduce((acc, expression) => (
+      acc.concat(SinkFinder.checkAssignmentExpression(filename, expression.expression))
+    ), []);
   };
 
   const collectSinkCalls = function (filename, scopeBody) {
     const declarations = scopeBody.filter(Utils.isDeclaration);
     const expressions = scopeBody.filter(Utils.isExpression);
-    const expressionSinks = calledSinks(filename, expressions).concat(assignedSinks(expressions));
+    const expressionSinks = calledSinks(filename, expressions).concat(
+      assignedSinks(filename, expressions));
     const declarationSinks = declaredSinks(filename, declarations);
     return expressionSinks.concat(declarationSinks);
   };
@@ -301,8 +307,7 @@ const Scope = (function scoping() {
     }
 
     return scope.childScopes.reduce((acc, childScope) => (
-      acc.concat(checkChildScope(filename, childScope, newSinks), [])
-    ));
+      acc.concat(checkChildScope(filename, childScope, newSinks))), []);
   };
 
   // const ast = GenerateAST.astFromFile('../test/ast_tests/declared_listener_function.js');

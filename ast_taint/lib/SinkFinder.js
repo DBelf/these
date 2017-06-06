@@ -67,6 +67,11 @@ const SinkFinder = (function sinkFinder() {
     return assignsToExpression ? callsSink(filename, declaration.init) : [];
   };
 
+  const checkAssignmentExpression = function (filename, expression) {
+    const assignsToExpression = Utils.isCallExpression(expression.right);
+    return assignsToExpression ? callsSink(filename, expression.right) : [];
+  };
+
   /**
    * Gets the array of declarations and checks whether any of these is
    * assigned to a sink.
@@ -79,6 +84,7 @@ const SinkFinder = (function sinkFinder() {
   return {
     checkCallExpression,
     checkDeclaration,
+    checkAssignmentExpression,
   };
 }());
 
