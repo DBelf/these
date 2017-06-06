@@ -33,6 +33,14 @@ const ASTManipulations = (function utilities() {
     return false;
   };
 
+  const calleeIsIdentifier = function (callExpression) {
+    return isIdentifier(callExpression.callee);
+  };
+
+  const functionNameMatches = function (callExpression, name) {
+    return callExpression.callee.name === name;
+  };
+
   const callsIdentifier = function (node) {
     return node.arguments.reduce((acc, argument) => {
       switch (argument.type) {
@@ -68,7 +76,6 @@ const ASTManipulations = (function utilities() {
 
   const hasProperty = function (node, name) {
     return isIdentifier(node.property) ? node.property.name === name : false;
-
   };
 
   const identifierUsedInReturn = function (identifier, node) {
@@ -136,9 +143,12 @@ const ASTManipulations = (function utilities() {
     isProgram,
     isReturn,
     isExpression,
+    isCallExpression,
     isIdentifier,
     isMemberExpression,
     isDeclaration,
+    calleeIsIdentifier,
+    functionNameMatches,
     expressionHasIdentifier,
     callExpressionWithIdentifier,
     returnsIdentifier,

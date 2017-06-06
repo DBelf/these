@@ -5,6 +5,7 @@
 const GenerateAST = require('./GenerateAST');
 const Utils = require('./Utils');
 const SourceFinder = require('./SourceFinder');
+const SinkFinder = require('./SinkFinder');
 const escope = require('escope');
 
 const Scope = (function scoping() {
@@ -261,6 +262,47 @@ const Scope = (function scoping() {
       acc.concat(checkChildScope(filepath, childScope, newSources))), []);
   };
 
+  const declaredSinks = function (declarations) {
+    return [];
+  };
+
+  const calledSinks = function (filename, expressions) {
+    const callExpressions = expressions.filter(expression => (
+      Utils.isCallExpression(expression.expression)));
+    return callExpressions.reduce((acc, expression) => (
+      acc.concat(SinkFinder.checkCallExpression(filename, expression.expression))), []);
+  };
+
+  const assignedSinks = function (expressions) {
+    return [];
+  };
+
+  const collectSinkCalls = function (filename, scopeBody) {
+    const declarations = scopeBody.filter(Utils.isDeclaration);
+    const expressions = scopeBody.filter(Utils.isExpression);
+    const expressionSinks = calledSinks(filename, expressions).concat(assignedSinks(expressions));
+    const declarationSinks = declaredSinks(declarations);
+    return expressionSinks.concat(declarationSinks);
+  };
+
+  const sinksInScope = function (filename, scope) {
+    const scopeBody = getScopeBody(scope);
+    const sinkCalls = collectSinkCalls(filename, scopeBody);
+    return sinkCalls;
+  };
+
+  const nestedSinks = function checkChildScope(filename, scope, sinks = []) {
+    const newSinks = sinksInScope(filename, scope).concat(sinks);
+
+    if (scope.childScopes.length < 1) {
+      return newSinks;
+    }
+
+    return scope.childScopes.reduce((acc, childScope) => (
+      acc.concat(checkChildScope(filename, childScope, newSinks), [])
+    ));
+  };
+
   // const ast = GenerateAST.astFromFile('../test/ast_tests/declared_listener_function.js');
   // const globalScope = getGlobalScope(ast);
   // console.log(nestedVariableSources(globalScope));
@@ -269,6 +311,7 @@ const Scope = (function scoping() {
     createScopeManager,
     getGlobalScope,
     nestedVariableSources,
+    nestedSinks,
   };
 }());
 

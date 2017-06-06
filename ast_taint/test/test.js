@@ -36,42 +36,42 @@ describe('AST generation', () => {
 describe('Scope Analysis', () => {
   describe('Source Detection', () => {
     it('can find a source within the global scope', () => {
-      const path = 'test/ast_tests/value_access.js';
+      const path = 'test/ast_tests/source/value_access.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources).to.have.lengthOf(1);
     });
     it('can find a function returning a source', () => {
-      const path = 'test/ast_tests/function_returns_source.js';
+      const path = 'test/ast_tests/source/function_returns_source.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources.filter(source => source.type === 'FunctionDeclaration')).to.have.lengthOf(1);
     });
     it('can find a source and its aliases in the global scope', () => {
-      const path = 'test/ast_tests/source_reassign.js';
+      const path = 'test/ast_tests/source/source_reassign.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources).to.have.lengthOf(3);
     });
     it('can find nested sources', () => {
-      path = 'test/ast_tests/scoped_sources_with_function_return.js';
+      path = 'test/ast_tests/source/scoped_sources_with_function_return.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources).to.have.lengthOf(5);// TODO check the function aswell?
     });
     it('can find functions returning aliased global sources', () => {
-      const path = 'test/ast_tests/scoped_sources_with_function_return.js';
+      const path = 'test/ast_tests/source/scoped_sources_with_function_return.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources.filter(source => source.type === 'FunctionDeclaration')).to.have.lengthOf(1);
     });
     it('can find the source in the implicit return of an arrow function', () => {
-      const path = 'test/ast_tests/arrow_source.js';
+      const path = 'test/ast_tests/source/arrow_source.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
@@ -79,7 +79,13 @@ describe('Scope Analysis', () => {
     });
   });
   describe('Sink Detection', () => {
-
+    it('can detect sink calls without checking the arguments', () => {
+      const path = 'test/ast_tests/sink/sink_call.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
+      expect(sinks).to.have.lengthOf(1);
+    });
   });
 });
 

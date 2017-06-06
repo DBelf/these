@@ -10,7 +10,17 @@ const SinkFinder = (function sinkFinder() {
   const servicesProperties = ['cpmm', 'ppm'];
   const messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
     '@mozilla.org/parentprocessmessagemanager;1', '@mozilla.org/globalmessagemanager;1'];
+  const functionSinks = ['eval', 'function', 'execScript'];
+  const documentCallSinks = ['write', 'writeln'];
+  const locationCallSinks = ['assign', 'replace'];
 
+  class Sink {
+    constructor(file, identifier, location) {
+      this.file = file;
+      this.identifier = identifier;
+      this.location = location;
+    }
+  }
 
   const componentClassCheck = function (node) {
     const potentialManager = messageManagers.map(propertyName => Utils.memberExpressionCheck(node.init.callee, '', propertyName));
@@ -30,10 +40,27 @@ const SinkFinder = (function sinkFinder() {
     return potentialSink.reduce(Utils.reduceBoolean, false);
   };
 
+
+  const callsSink = function (filename, callExpression) {
+    const isSink = functionSinks.reduce((acc, sink) => (
+      acc || Utils.functionNameMatches(callExpression, sink)), false);
+    return isSink ? new Sink(filename, callExpression.callee.name, callExpression.loc) : [];
+  };
+
   // const checkMessagePayload = function (node) {
   //   const messageArguments = node.expression.arguments;
   //
   // }
+  const checkCallExpression = function (filename, callExpression) {
+    switch (callExpression.callee.name) {
+      case 'document':
+        return [];
+      case 'location':
+        return [];
+      default:
+        return callsSink(filename, callExpression);
+    }
+  };
 
   const checkMessageFunction = function (node) {
     return true;
@@ -42,6 +69,7 @@ const SinkFinder = (function sinkFinder() {
   return {
     communicationManagerCheck: componentClassCheck,
     checkMessageFunction,
+    checkCallExpression,
   };
 }());
 
