@@ -22,50 +22,38 @@ const SinkFinder = (function sinkFinder() {
     }
   }
 
-  const componentClassCheck = function (node) {
-    const potentialManager = messageManagers.map(propertyName => Utils.memberExpressionCheck(node.init.callee, '', propertyName));
-    return potentialManager.reduce(Utils.reduceBoolean, false);
-  };
-
-  // TODO finish this, not even sure if this is needed
-  const servicesCheck = function (node, servicesAliases) {
-    const services = servicesAliases.concat(SERVICES_STRING);
-    for (let i = 0; i < services; i++) {
-      servicesProperties.map(propertyName => Utils.memberExpressionCheck(node.init.callee, '', propertyName));
-    }
-  };
-
-  const sinkMessage = function (node) {
-    const potentialSink = messages.map(messageType => Utils.memberExpressionCheck(node, '', messageType));
-    return potentialSink.reduce(Utils.reduceBoolean, false);
-  };
-
-
   const callsSink = function (filename, callExpression) {
     const isSink = functionSinks.reduce((acc, sink) => (
       acc || Utils.functionNameMatches(callExpression, sink)), false);
     return isSink ? new Sink(filename, callExpression.callee.name, callExpression.loc) : [];
   };
 
-  const checkCallExpression = function (filename, callExpression) {
-    switch (callExpression.callee.name) {
-      case 'document':
-        return [];
-      case 'location':
-        return [];
+  const accessesSink = function (filename, accessExpression) {
+    switch (accessExpression.object.name) {
       default:
-        return callsSink(filename, callExpression);
+        return [];
+    }
+  };
+
+  const expressionIsSink = function (filename, expression) {
+    switch (expression.type) {
+      case 'MemberExpression':
+        return accessesSink(filename, expression);
+      case 'CallExpression':
+        return callsSink(filename, expression);
+      default:
+        return [];
     }
   };
 
   const declarationIsSink = function (filename, declaration) {
     const assignsToExpression = Utils.isCallExpression(declaration.init);
-    return assignsToExpression ? callsSink(filename, declaration.init) : [];
+    return assignsToExpression ? expressionIsSink(filename, declaration.init) : [];
   };
 
   const checkAssignmentExpression = function (filename, expression) {
     const assignsToExpression = Utils.isCallExpression(expression.right);
-    return assignsToExpression ? callsSink(filename, expression.right) : [];
+    return assignsToExpression ? expressionIsSink(filename, expression.right) : [];
   };
 
   /**
@@ -78,7 +66,7 @@ const SinkFinder = (function sinkFinder() {
   };
 
   return {
-    checkCallExpression,
+    expressionIsSink,
     checkDeclaration,
     checkAssignmentExpression,
   };

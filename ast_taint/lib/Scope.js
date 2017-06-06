@@ -286,7 +286,7 @@ const Scope = (function scoping() {
     const callExpressions = expressions.filter(expression => (
       Utils.isCallExpression(expression.expression)));
     return callExpressions.reduce((acc, expression) => (
-      acc.concat(SinkFinder.checkCallExpression(filename, expression.expression))), []);
+      acc.concat(SinkFinder.expressionIsSink(filename, expression.expression))), []);
   };
 
   const assignedSinks = function (filename, expressions) {

@@ -5,3 +5,4 @@ const declared = eval(document.value);
 let assigned;
 assigned = eval(document.value);
 eval(document.value);
+document.write('vulnerability');
