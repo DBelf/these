@@ -125,7 +125,7 @@ const Scope = (function scoping() {
       (expression.expression));
 
     // TODO do something with the callexpressions.
-    console.log(callExpressions);
+    // console.log(callExpressions);
     const communicationSources = functionSource.isCalledBy(callExpressions);
 
     const functionCalledBy = functionSource.isCalledBy(upperScopeStatements);

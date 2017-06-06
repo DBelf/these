@@ -22,7 +22,6 @@ const SourceFinder = (function sourceFinder() {
 
     // Checks whether the statement points to the source.
     sourcePointsTo(statement) {
-      console.log(statement);
       switch (statement.type) {
         case 'VariableDeclarator':
           return this.pointsToDeclaration(statement);
