@@ -34,6 +34,15 @@ describe('AST generation', () => {
 });
 
 describe('Scope Analysis', () => {
+  describe('Scope Generating', () => {
+    it('detects the blockscope of a for-loop', () => {
+      const path = './test/ast_tests/source/for_loop.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      console.log(globalScope);
+      expect(globalScope.childScopes).to.have.lengthOf(1);
+    });
+  });
   describe('Source Detection', () => {
     it('can find a source within the global scope', () => {
       const path = 'test/ast_tests/source/value_access.js';
@@ -69,6 +78,13 @@ describe('Scope Analysis', () => {
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources.filter(source => source.type === 'FunctionDeclaration')).to.have.lengthOf(1);
+    });
+    it('can find the source in a for loop', () => {
+      const path = 'test/ast_tests/source/for_loop.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
+      expect(sources).to.have.lengthOf(1);
     });
     it('can find the source in the implicit return of an arrow function', () => {
       const path = 'test/ast_tests/source/arrow_source.js';

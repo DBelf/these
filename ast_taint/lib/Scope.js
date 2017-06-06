@@ -194,6 +194,25 @@ const Scope = (function scoping() {
       acc.concat(statementsInClauses(filepath, statement))), []);
   };
 
+  //TODO complete this
+  const hoistFromControl = function hoist(statement) {
+    switch(statement.type) {
+      case 'IfStatement:
+        return [];
+      case 'ForStatement':
+        return [];
+      case 'ForOfStatement':
+        return [];
+      case 'TryStatement':
+        return [];
+      case '':
+        return [];
+      case '':
+        return [];
+      default:
+        return [statement];
+    }
+  }
   /**
    * Filters all assignment expressions from the scope body and returns these.
    */
@@ -324,10 +343,10 @@ const Scope = (function scoping() {
       acc.concat(sinkInChild(filename, childScope, newSinks))), []);
   };
 
-  // const path = '../test/ast_tests/sink/arrow_sink.js';
-  // const ast = GenerateAST.astFromFile(path);
-  // const globalScope = getGlobalScope(ast);
-  // console.log(nestedSinks(path, globalScope));
+  const path = '../test/ast_tests/source/for_loop.js';
+  const ast = GenerateAST.astFromFile(path);
+  const globalScope = getGlobalScope(ast);
+  console.log(nestedVariableSources(path, globalScope));
 
   return {
     createScopeManager,

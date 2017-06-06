@@ -36,7 +36,7 @@ const SinkFinder = (function sinkFinder() {
 
   const callsSink = function (filename, callExpression) {
     return functionSinks.reduce((acc, sink) => (
-      acc || Utils.functionNameMatches(callExpression, sink)), false) ?
+    acc || Utils.functionNameMatches(callExpression, sink)), false) ?
       new Sink(filename, callExpression.callee.name, callExpression.loc) : [];
   };
 
