@@ -67,9 +67,8 @@ const ASTManipulations = (function utilities() {
   };
 
   const hasProperty = function (node, name) {
-    if (node.property !== undefined) {
-      return node.property.name === name;
-    } return false;
+    return isIdentifier(node.property) ? node.property.name === name : false;
+
   };
 
   const identifierUsedInReturn = function (identifier, node) {
