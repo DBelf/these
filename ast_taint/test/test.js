@@ -91,7 +91,14 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
-      expect(sinks).to.have.lengthOf(4);
+      expect(sinks).to.have.lengthOf(3);
+    });
+    it('can detect document sinks', () => {
+      const path = 'test/ast_tests/sink/document_sink.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
+      expect(sinks).to.have.lengthOf(1);
     });
     it('can detect sinks in nested scopes', () => {
       const path = 'test/ast_tests/sink/nested_sinks.js';

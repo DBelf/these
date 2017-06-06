@@ -22,14 +22,37 @@ const SinkFinder = (function sinkFinder() {
     }
   }
 
+  const documentSink = function (filename, callExpression) {
+    console.log(callExpression);
+    return documentCallSinks.reduce((acc, sink) => (
+    acc || Utils.hasProperty(callExpression, sink)), false) ?
+      new Sink(filename, 'document', callExpression.loc) : [];
+  };
+
+  const locationSink = function (filename, callExpression) {
+    return locationCallSinks.reduce((acc, sink) => (
+    acc || Utils.hasProperty(callExpression, sink)), false) ?
+      new Sink(filename, 'document', callExpression.loc) : [];
+  };
+
   const callsSink = function (filename, callExpression) {
-    const isSink = functionSinks.reduce((acc, sink) => (
-      acc || Utils.functionNameMatches(callExpression, sink)), false);
-    return isSink ? new Sink(filename, callExpression.callee.name, callExpression.loc) : [];
+    switch (callExpression.callee.name) {
+      case 'document':
+        return documentSink(filename, callExpression);
+      case 'location':
+        return locationSink(filename, callExpression);
+      default:
+        return functionSinks.reduce((acc, sink) => (
+        acc || Utils.functionNameMatches(callExpression, sink)), false) ?
+          new Sink(filename, callExpression.callee.name, callExpression.loc) : [];
+    }
   };
 
   const accessesSink = function (filename, accessExpression) {
     switch (accessExpression.object.name) {
+      case 'document':
+
+      case 'location':
       default:
         return [];
     }
