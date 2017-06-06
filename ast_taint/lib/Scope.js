@@ -197,17 +197,15 @@ const Scope = (function scoping() {
   //TODO complete this
   const hoistFromControl = function hoist(statement) {
     switch(statement.type) {
+      case 'ForStatement':
+      case 'ForOfStatement':
+      case 'ForInStatement':
+      case 'LabeledStatement':
+      case 'TryStatement':
+        return statement.body.reduce((acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
       case 'IfStatement:
         return [];
-      case 'ForStatement':
-        return [];
-      case 'ForOfStatement':
-        return [];
-      case 'TryStatement':
-        return [];
-      case '':
-        return [];
-      case '':
+      case 'SwitchStatement':
         return [];
       default:
         return [statement];
