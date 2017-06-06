@@ -35,12 +35,9 @@ const SinkFinder = (function sinkFinder() {
   };
 
   const callsSink = function (filename, callExpression) {
-    switch (callExpression.callee.name) {
-      default:
-        return functionSinks.reduce((acc, sink) => (
-        acc || Utils.functionNameMatches(callExpression, sink)), false) ?
-          new Sink(filename, callExpression.callee.name, callExpression.loc) : [];
-    }
+    return functionSinks.reduce((acc, sink) => (
+      acc || Utils.functionNameMatches(callExpression, sink)), false) ?
+      new Sink(filename, callExpression.callee.name, callExpression.loc) : [];
   };
 
   const accessesSink = function (filename, accessExpression) {
@@ -81,7 +78,7 @@ const SinkFinder = (function sinkFinder() {
    */
   const checkDeclaration = function (filename, declarationArray) {
     return declarationArray.reduce((acc, declaration) => (
-      declarationIsSink(filename, declaration)), []);
+      acc.concat(declarationIsSink(filename, declaration))), []);
   };
 
   return {
