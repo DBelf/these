@@ -23,7 +23,6 @@ const SinkFinder = (function sinkFinder() {
   }
 
   const documentSink = function (filename, callExpression) {
-    console.log(callExpression);
     return documentCallSinks.reduce((acc, sink) => (
     acc || Utils.hasProperty(callExpression, sink)), false) ?
       new Sink(filename, 'document', callExpression.loc) : [];
@@ -37,10 +36,6 @@ const SinkFinder = (function sinkFinder() {
 
   const callsSink = function (filename, callExpression) {
     switch (callExpression.callee.name) {
-      case 'document':
-        return documentSink(filename, callExpression);
-      case 'location':
-        return locationSink(filename, callExpression);
       default:
         return functionSinks.reduce((acc, sink) => (
         acc || Utils.functionNameMatches(callExpression, sink)), false) ?
@@ -51,18 +46,19 @@ const SinkFinder = (function sinkFinder() {
   const accessesSink = function (filename, accessExpression) {
     switch (accessExpression.object.name) {
       case 'document':
-
+        return documentSink(filename, accessExpression);
       case 'location':
+        return locationSink(filename, accessExpression);
       default:
         return [];
     }
   };
 
   const expressionIsSink = function (filename, expression) {
-    switch (expression.type) {
+    switch (expression.callee.type) {
       case 'MemberExpression':
-        return accessesSink(filename, expression);
-      case 'CallExpression':
+        return accessesSink(filename, expression.callee);
+      case 'Identifier':
         return callsSink(filename, expression);
       default:
         return [];
