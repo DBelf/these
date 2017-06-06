@@ -23,8 +23,8 @@ const analyze = function (path) {
   console.log(path);
   const ast = GenerateAST.astFromFile(path);
   const globalScope = Scope.getGlobalScope(ast);
-  const sources = Scope.nestedVariableSources(globalScope);
-  sources.map(source => console.log(source.loc));
+  const sources = Scope.nestedVariableSources(path, globalScope);
+  sources.map(source => console.log(source));
 };
 
 if (process.argv.length < 3) {

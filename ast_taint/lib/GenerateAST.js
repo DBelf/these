@@ -4,7 +4,6 @@
 const fs = require('fs');
 const path = require('path');
 const esprima = require('esprima');
-const Scope = require('./Scope');
 
 const GenerateAST = (function generate() {
   const EXTENSION = '.js';

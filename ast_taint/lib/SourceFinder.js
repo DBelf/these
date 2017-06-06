@@ -13,7 +13,8 @@ const SourceFinder = (function sourceFinder() {
 
   // Abstract class for all source types.
   class Source {
-    constructor(identifier, type, loc) {
+    constructor(file, identifier, type, loc) {
+      this.file = file;
       this.identifier = identifier;
       this.type = type;
       this.loc = loc;
@@ -38,20 +39,23 @@ const SourceFinder = (function sourceFinder() {
     // Returns whether the declaration points to the source.
     pointsToDeclaration(declaration) {
       return Utils.declarationPointsTo(declaration, this.identifier) ?
-        new SourceFinder.DeclaredSource(declaration.id.name, declaration.loc) : [];
+        new SourceFinder.DeclaredSource(
+          this.file, declaration.id.name, declaration.loc) : [];
     }
 
     // Returns whether the expression points to the source.
     pointsToExpression(expression) {
       return Utils.assignmentPointsTo(expression.expression, this.identifier) ?
-        new SourceFinder.AssignedSource(expression.expression.left.name, expression.loc) : [];
+        new SourceFinder.AssignedSource(
+          this.file, expression.expression.left.name, expression.loc) : [];
     }
 
     passedAsSourceArgument(statement) { // TODO extend functionality to actual functions
       if (statement.callee.property !== undefined) {
         if (Utils.hasProperty(statement, this.identifier)) {
           return Utils.hasProperty(statement, communicationSource) ?
-            new SourceFinder.CommunicationSource(statement.property.name, statement.loc) : [];
+            new SourceFinder.CommunicationSource(
+              this.file, statement.property.name, statement.loc) : [];
         }
       }
       return [];
@@ -64,34 +68,34 @@ const SourceFinder = (function sourceFinder() {
   }
 
   class CommunicationSource extends Source {
-    constructor(identifier, loc) {
-      super(identifier, 'CommunicationSource', loc);
+    constructor(file, identifier, loc) {
+      super(file, identifier, 'CommunicationSource', loc);
     }
   }
 
   // Declaration source wrapper.
   class DeclaredSource extends Source {
-    constructor(identifier, loc) {
-      super(identifier, 'VariableDeclarator', loc);
+    constructor(file, identifier, loc) {
+      super(file, identifier, 'VariableDeclarator', loc);
     }
   }
 
   // Assignment source wrapper.
   class AssignedSource extends Source {
-    constructor(identifier, loc) {
-      super(identifier, 'AssignedVariable', loc);
+    constructor(file, identifier, loc) {
+      super(file, identifier, 'AssignedVariable', loc);
     }
   }
 
   class AccessedSource extends Source {
-    constructor(identifier, loc) {
-      super(identifier, 'AccessedSource', loc);
+    constructor(file, identifier, loc) {
+      super(file, identifier, 'AccessedSource', loc);
     }
   }
   // Function source wrapper, used to check where it is used.
   class FunctionSource extends Source {
-    constructor(identifier, sources, loc) {
-      super(identifier, 'FunctionDeclaration', loc);
+    constructor(file, identifier, sources, loc) {
+      super(file, identifier, 'FunctionDeclaration', loc);
       this.sources = sources;
     }
 
@@ -111,13 +115,14 @@ const SourceFinder = (function sourceFinder() {
     // Returns whether an expression calls the function.
     calledByExpression(expression) {
       return Utils.assignmentCalls(expression.expression, this.identifier) ?
-        new SourceFinder.AssignedSource(expression.expression.left.name, expression.loc) : [];
+        new SourceFinder.AssignedSource(
+          this.file, expression.expression.left.name, expression.loc) : [];
     }
 
     // Returns whether a declaration calls the function.
     calledByDeclaration(declaration) {
       return Utils.declarationCalls(declaration, this.identifier) ?
-        new SourceFinder.DeclaredSource(declaration.id.name, declaration.loc) : [];
+        new SourceFinder.DeclaredSource(this.file, declaration.id.name, declaration.loc) : [];
     }
 
     // Returns what statements call (or invoke) the function.
