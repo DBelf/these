@@ -84,7 +84,7 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
-      expect(sinks).to.have.lengthOf(1);
+      expect(sinks).to.have.lengthOf(2);
     });
   });
 });

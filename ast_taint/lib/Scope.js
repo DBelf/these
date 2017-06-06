@@ -262,8 +262,10 @@ const Scope = (function scoping() {
       acc.concat(checkChildScope(filepath, childScope, newSources))), []);
   };
 
-  const declaredSinks = function (declarations) {
-    return [];
+  const declaredSinks = function (filename, declarations) {
+    return declarations.reduce((acc, declaration) => (
+      acc.concat(SinkFinder.checkDeclaration(filename, declaration.declarations))
+    ), []);
   };
 
   const calledSinks = function (filename, expressions) {
@@ -281,7 +283,7 @@ const Scope = (function scoping() {
     const declarations = scopeBody.filter(Utils.isDeclaration);
     const expressions = scopeBody.filter(Utils.isExpression);
     const expressionSinks = calledSinks(filename, expressions).concat(assignedSinks(expressions));
-    const declarationSinks = declaredSinks(declarations);
+    const declarationSinks = declaredSinks(filename, declarations);
     return expressionSinks.concat(declarationSinks);
   };
 

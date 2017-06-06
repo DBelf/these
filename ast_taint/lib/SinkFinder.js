@@ -62,14 +62,23 @@ const SinkFinder = (function sinkFinder() {
     }
   };
 
-  const checkMessageFunction = function (node) {
-    return true;
+  const declarationIsSink = function (filename, declaration) {
+    const assignsToExpression = Utils.isCallExpression(declaration.init);
+    return assignsToExpression ? callsSink(filename, declaration.init) : [];
+  };
+
+  /**
+   * Gets the array of declarations and checks whether any of these is
+   * assigned to a sink.
+   */
+  const checkDeclaration = function (filename, declarationArray) {
+    return declarationArray.reduce((acc, declaration) => (
+      declarationIsSink(filename, declaration)), []);
   };
 
   return {
-    communicationManagerCheck: componentClassCheck,
-    checkMessageFunction,
     checkCallExpression,
+    checkDeclaration,
   };
 }());
 
