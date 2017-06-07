@@ -94,7 +94,7 @@ const GenerateAST = (function generate() {
     }
   };
 
-  const createAST = function (parentPath, destination) {
+  const createProjectAST = function (parentPath, destination) {
     const filesInPath = gatherFiles(parentPath);
     createTmpDir(destination);
     gatherCode(filesInPath);
@@ -105,7 +105,7 @@ const GenerateAST = (function generate() {
 
   return {
     collectFiles: gatherFiles,
-    createAST,
+    createProjectAST,
     astFromFile,
   };
 }());
