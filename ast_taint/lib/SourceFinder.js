@@ -9,7 +9,7 @@ const SourceFinder = (function sourceFinder() {
     // Arrays with the vulnerable member accesses
   const documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
   const locationSources = ['href', 'search', 'hash', 'pathname'];
-  const communicationSource = 'addMessageListener';
+  const communicationSource = 'addMessageListener';//TODO CHECK WHAT I'M LISTENING TO!(i.e. window, or parent)
 
   // Abstract class for all source types.
   class Source {
@@ -113,7 +113,7 @@ const SourceFinder = (function sourceFinder() {
 
     // Returns whether an expression calls the function.
     calledByExpression(expression) {
-      switch(expression.expression.type){
+      switch (expression.expression.type) {
         case 'AssignmentExpression':
           return Utils.assignmentCalls(expression.expression, this.identifier) ?
             new SourceFinder.AssignedSource(

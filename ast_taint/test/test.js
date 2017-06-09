@@ -138,12 +138,19 @@ describe('Scope Analysis', () => {
       const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
       expect(sinks).to.have.lengthOf(1);
     });
+    it('can detect a communication sink.', () => {
+      const path = 'test/ast_tests/sink/send_message.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
+      expect(sinks).to.have.lengthOf(2);
+    });
     it('can detect a sink within an anonymous function', () => {
       const path = 'test/ast_tests/sink/arrow_sink.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
-      expect(sinks).to.have.lengthOf(1);
+      expect(sinks).to.have.lengthOf(1);//FIXME fails because statements have to be hoisted..
     });
   });
 });

@@ -6,7 +6,7 @@ const Utils = require('./Utils');
 const SinkFinder = (function sinkFinder() {
   const BROADCAST_MESSAGE_STRING = 'broadcastMessage';
   const SERVICES_STRING = 'Services';
-  const messages = ['sendAsyncMessage', 'sendSyncMessage'];
+  const messages = ['sendAsyncMessage', 'sendSyncMessage', 'postMessage'];
   const servicesProperties = ['cpmm', 'ppm'];
   const messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
     '@mozilla.org/parentprocessmessagemanager;1', '@mozilla.org/globalmessagemanager;1'];
@@ -19,6 +19,18 @@ const SinkFinder = (function sinkFinder() {
       this.file = file;
       this.identifier = identifier;
       this.location = location;
+    }
+  }
+
+  // Rethink this structure.
+  class CommunicationSink extends Sink {
+    constructor(file, identifier, location, args) {
+      super(file, identifier, location);
+      this.args = args;
+    }
+
+    argumentIsSource(sourcesInScope) {
+      sourcesInScope.reduce((acc, source) => source.isUsedIn(this.args));
     }
   }
 
