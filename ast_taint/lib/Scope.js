@@ -343,10 +343,10 @@ const Scope = (function scoping() {
       acc.concat(sinkInChild(filename, childScope, newSinks))), []);
   };
 
-  // const path = '../test/ast_tests/source/declared_listener_function.js';
+  // const path = '../test/ast_tests/sink/send_message.js';
   // const ast = GenerateAST.astFromFile(path);
   // const globalScope = getGlobalScope(ast);
-  // console.log(nestedVariableSources(path, globalScope));
+  // console.log(nestedSinks(path, globalScope));
 
   return {
     hoistFromControl,

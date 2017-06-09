@@ -3,3 +3,4 @@
  */
 window.postMessage("sink");
 window.postMessage("sinkTwo", "additional argument");
+window.sendMessage("hai");

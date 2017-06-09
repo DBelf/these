@@ -143,7 +143,8 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
-      expect(sinks).to.have.lengthOf(2);
+      console.log(sinks);
+      expect(sinks).to.have.lengthOf(3);
     });
     it('can detect a sink within an anonymous function', () => {
       const path = 'test/ast_tests/sink/arrow_sink.js';

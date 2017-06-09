@@ -6,7 +6,7 @@ const Utils = require('./Utils');
 const SinkFinder = (function sinkFinder() {
   const BROADCAST_MESSAGE_STRING = 'broadcastMessage';
   const SERVICES_STRING = 'Services';
-  const messages = ['sendAsyncMessage', 'sendSyncMessage', 'postMessage'];
+  const messages = ['sendAsyncMessage', 'sendSyncMessage', 'postMessage', 'sendMessage'];
   const servicesProperties = ['cpmm', 'ppm'];
   const messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
     '@mozilla.org/parentprocessmessagemanager;1', '@mozilla.org/globalmessagemanager;1'];
@@ -52,21 +52,28 @@ const SinkFinder = (function sinkFinder() {
       new Sink(filename, callExpression.callee.name, callExpression.loc) : [];
   };
 
+  const messageSink = function (filename, expression) {
+    const isMessageSink = messages.reduce((acc, message) => (
+    acc || Utils.hasProperty(expression.callee, message)), false);
+    return isMessageSink ? new CommunicationSink(
+        filename, expression.callee.property.name, expression.loc, expression.arguments) : [];
+  };
+
   const accessesSink = function (filename, accessExpression) {
-    switch (accessExpression.object.name) {
+    switch (accessExpression.callee.object.name) {
       case 'document':
-        return documentSink(filename, accessExpression);
+        return documentSink(filename, accessExpression.callee);
       case 'location':
-        return locationSink(filename, accessExpression);
+        return locationSink(filename, accessExpression.callee);
       default:
-        return [];
+        return messageSink(filename, accessExpression);
     }
   };
 
   const expressionIsSink = function (filename, expression) {
     switch (expression.callee.type) {
       case 'MemberExpression':
-        return accessesSink(filename, expression.callee);
+        return accessesSink(filename, expression);
       case 'Identifier':
         return callsSink(filename, expression);
       default:
