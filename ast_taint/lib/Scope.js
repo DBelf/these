@@ -240,6 +240,7 @@ const Scope = (function scoping() {
     const accessStatements = sourceAccesses(filepath, scopeBody);
 
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
+    //Missing any other statements.
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
     return sources.concat(accessStatements).concat(ifClauses);
@@ -342,10 +343,10 @@ const Scope = (function scoping() {
       acc.concat(sinkInChild(filename, childScope, newSinks))), []);
   };
 
-  // const path = '../test/ast_tests/source/for_loop.js';
-  // const ast = GenerateAST.astFromFile(path);
-  // const globalScope = getGlobalScope(ast);
-  // console.log(nestedVariableSources(path, globalScope));
+  const path = '../test/ast_tests/source/declared_listener_function.js';
+  const ast = GenerateAST.astFromFile(path);
+  const globalScope = getGlobalScope(ast);
+  console.log(nestedVariableSources(path, globalScope));
 
   return {
     hoistFromControl,

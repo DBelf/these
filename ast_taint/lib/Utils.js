@@ -79,6 +79,10 @@ const ASTManipulations = (function utilities() {
     return isIdentifier(node.property) ? node.property.name === name : false;
   };
 
+  const hasArgument = function (node, name) {
+    //TODO fill me in
+  };
+
   const identifierUsedInReturn = function (identifier, node) {
     if (isIdentifier(node.argument)) {
       return node.argument.name === identifier;

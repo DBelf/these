@@ -113,9 +113,23 @@ const SourceFinder = (function sourceFinder() {
 
     // Returns whether an expression calls the function.
     calledByExpression(expression) {
-      return Utils.assignmentCalls(expression.expression, this.identifier) ?
-        new SourceFinder.AssignedSource(
-          this.file, expression.expression.left.name, expression.loc) : [];
+      switch(expression.expression.type){
+        case 'AssignmentExpression':
+          return Utils.assignmentCalls(expression.expression, this.identifier) ?
+            new SourceFinder.AssignedSource(
+              this.file, expression.expression.left.name, expression.loc) : [];
+        case 'CallExpression':
+          if (expression.expression.callee.property !== undefined) {
+            // if (Utils.hasArgument(expression.expression, this.identifier)) {
+              return Utils.hasProperty(expression.expression.callee, communicationSource) ?
+                new SourceFinder.CommunicationSource(
+                  this.file, expression.expression.callee.property.name, expression.loc) : [];
+            // }
+          }
+          return [];
+        default:
+          return false;
+      }
     }
 
     // Returns whether a declaration calls the function.
