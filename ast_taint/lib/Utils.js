@@ -79,8 +79,17 @@ const ASTManipulations = (function utilities() {
     return isIdentifier(node.property) ? node.property.name === name : false;
   };
 
+  const argumentCalls = function (argument, name) {
+    switch (argument.type) {
+      case 'CallExpression':
+        return argument.callee.name === name;
+      default:
+        return false;
+    }
+  };
+
   const hasArgument = function (node, name) {
-    //TODO fill me in
+    return node.arguments.reduce((acc, argument) => acc || argumentCalls(argument, name), false);
   };
 
   const identifierUsedInReturn = function (identifier, node) {
@@ -145,6 +154,7 @@ const ASTManipulations = (function utilities() {
     assignmentPointsTo,
     assignmentCalls,
     hasProperty,
+    hasArgument,
     isProgram,
     isIfStatement,
     isReturn,

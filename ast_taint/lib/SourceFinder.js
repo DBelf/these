@@ -120,11 +120,11 @@ const SourceFinder = (function sourceFinder() {
               this.file, expression.expression.left.name, expression.loc) : [];
         case 'CallExpression':
           if (expression.expression.callee.property !== undefined) {
-            // if (Utils.hasArgument(expression.expression, this.identifier)) {
+            if (Utils.hasArgument(expression.expression, this.identifier)) {
               return Utils.hasProperty(expression.expression.callee, communicationSource) ?
                 new SourceFinder.CommunicationSource(
                   this.file, expression.expression.callee.property.name, expression.loc) : [];
-            // }
+            }
           }
           return [];
         default:
