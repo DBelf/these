@@ -187,30 +187,31 @@ const Scope = (function scoping() {
     ), []);
   };
 
-  //FIXME right now this only works with variables declared within the ifstatement, pointsto is bad.
+  // FIXME right now this only works with variables declared within the ifstatement, pointsto is bad.
   const collectIfStatements = function (filepath, scopeBody, upperSources = []) {
     const ifStatements = scopeBody.filter(statement => Utils.isIfStatement(statement));
     return ifStatements.reduce((acc, statement) => (
       acc.concat(statementsInClauses(filepath, statement))), []);
   };
 
-  //TODO complete this
+  // TODO complete this
   const hoistFromControl = function hoist(statement) {
-    switch(statement.type) {
+    switch (statement.type) {
       case 'ForStatement':
       case 'ForOfStatement':
       case 'ForInStatement':
+        return statement.body.body.reduce((acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
       case 'LabeledStatement':
       case 'TryStatement':
-        return statement.body.reduce((acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
-      case 'IfStatement:
+
+      case 'IfStatement':
         return [];
       case 'SwitchStatement':
         return [];
       default:
         return [statement];
     }
-  }
+  };
   /**
    * Filters all assignment expressions from the scope body and returns these.
    */
@@ -341,12 +342,13 @@ const Scope = (function scoping() {
       acc.concat(sinkInChild(filename, childScope, newSinks))), []);
   };
 
-  const path = '../test/ast_tests/source/for_loop.js';
-  const ast = GenerateAST.astFromFile(path);
-  const globalScope = getGlobalScope(ast);
-  console.log(nestedVariableSources(path, globalScope));
+  // const path = '../test/ast_tests/source/for_loop.js';
+  // const ast = GenerateAST.astFromFile(path);
+  // const globalScope = getGlobalScope(ast);
+  // console.log(nestedVariableSources(path, globalScope));
 
   return {
+    hoistFromControl,
     createScopeManager,
     getGlobalScope,
     nestedVariableSources,

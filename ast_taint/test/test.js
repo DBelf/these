@@ -13,7 +13,7 @@ const expect = chai.expect; // we are using the "expect" style of Chai
 
 describe('AST generation', () => {
   describe('Collecting all javascript files', () => {
-    it('Can\'t find non-existing paths', () => {
+    it('can\'t find non-existing paths', () => {
       const falsePath = '';
       const value = GenerateAST.collectFiles(falsePath);
       expect(value).to.be.empty;
@@ -25,10 +25,18 @@ describe('AST generation', () => {
     });
   });
   describe('Creates an AST', () => {
-    it('Creates an AST from one file', () => {
+    it('creates an AST from one file', () => {
       const path = './test/test.js';
       const ast = GenerateAST.astFromFile(path);
       expect(ast).to.not.be.undefined;
+    });
+    it('can make the scope and hoist statements from within a for loop', () => {
+      const path = './test/ast_tests/source/for_loop.js';
+      const ast = GenerateAST.astFromFile(path);
+      const scope = ScopeAnalysis.getGlobalScope(ast);
+      const globalStatements = (scope.block.body).reduce((acc, statement) => acc.concat(
+        ScopeAnalysis.hoistFromControl(statement)), []);
+      expect(globalStatements).to.have.lengthOf(4);
     });
   });
 });
@@ -39,7 +47,6 @@ describe('Scope Analysis', () => {
       const path = './test/ast_tests/source/for_loop.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
-      console.log(globalScope);
       expect(globalScope.childScopes).to.have.lengthOf(1);
     });
   });
