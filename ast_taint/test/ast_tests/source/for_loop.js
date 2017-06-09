@@ -10,8 +10,8 @@ for(stuff in [1,2,3]) {
     console.log(stuff);
 }
 
-for (let value of [1,2,3]) {
-  console.log(value);
+for (let stuff of [1,2,3]) {
+  console.log(stuff);
 }
 
 for(var i = 0; i < 5; i++) {

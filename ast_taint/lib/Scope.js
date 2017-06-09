@@ -200,10 +200,10 @@ const Scope = (function scoping() {
       case 'ForStatement':
       case 'ForOfStatement':
       case 'ForInStatement':
-        return statement.body.body.reduce((acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+        return statement.body.body.reduce(
+          (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
       case 'LabeledStatement':
       case 'TryStatement':
-
       case 'IfStatement':
         return [];
       case 'SwitchStatement':
