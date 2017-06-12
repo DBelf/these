@@ -2,6 +2,7 @@
  * Created by dimitri on 11/05/2017.
  */
 const Utils = require('./Utils');
+const fs = require('fs');
 
 const SourceFinder = (function sourceFinder() {
     // Source access strings
@@ -18,6 +19,11 @@ const SourceFinder = (function sourceFinder() {
       this.identifier = identifier;
       this.type = type;
       this.loc = loc;
+    }
+
+    saveToFile() {
+      const path = './vulnerabilities/source'.concat(this.file);
+      fs.
     }
 
     // Checks whether the statement points to the source.

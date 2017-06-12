@@ -23,6 +23,12 @@ describe('AST generation', () => {
       const value = GenerateAST.collectFiles(path);
       expect(value.length).to.be.at.least(5);
     });
+    it('prints the source lines of the statement', () => {
+      const path = './test/test_resources/line_print.js';
+      const ast = GenerateAST.astFromFile(path);
+      const sourceCode = GenerateAST.returnLines(path, ast.body[0].loc);
+      expect(sourceCode).to.have.lengthOf(1);
+    });
   });
   describe('Creates an AST', () => {
     it('creates an AST from one file', () => {
