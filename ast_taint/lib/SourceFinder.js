@@ -2,7 +2,7 @@
  * Created by dimitri on 11/05/2017.
  */
 const Utils = require('./Utils');
-const fs = require('fs');
+const GenerateAST = require('./GenerateAST');
 
 const SourceFinder = (function sourceFinder() {
     // Source access strings
@@ -23,7 +23,8 @@ const SourceFinder = (function sourceFinder() {
 
     saveToFile() {
       const path = './vulnerabilities/source'.concat(this.file);
-      fs.
+      const data = `${this.file}, ${this.type}\n ${this.loc};\n`;
+      GenerateAST.saveToFile(path, data);
     }
 
     // Checks whether the statement points to the source.

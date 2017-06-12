@@ -94,6 +94,18 @@ const GenerateAST = (function generate() {
       createWithFilePath();
     }
   };
+
+  const saveToFile = function (filename, data) {
+    fs.exists(filename, (exists) => {
+      if (!exists) {
+        createWithFilePath(filename);
+      }
+    });
+    fs.appendFile(filename, data, (error) => {
+      if (error) throw error;
+    });
+  };
+
   //Broken??
   const returnLines = function (filename, loc) {
     const start = loc.start.line;
@@ -128,14 +140,16 @@ const GenerateAST = (function generate() {
     return ast;
   };
 
-  const filePath = '../test/test_resources/line_print.js';
-  const ast = astFromFile(filePath);
-  const sourceCode = returnLines(filePath, ast.body[0].loc);
-  console.log(sourceCode);
+  // const filePath = '../test/test_resources/line_print.js';
+  // const ast = astFromFile(filePath);
+  // const sourceCode = returnLines(filePath, ast.body[0].loc);
+  // console.log(sourceCode);
+  //
   return {
     collectFiles: gatherFiles,
     createProjectAST,
     astFromFile,
+    saveToFile,
     returnLines,
   };
 }());
