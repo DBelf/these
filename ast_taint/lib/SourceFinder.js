@@ -136,7 +136,7 @@ const SourceFinder = (function sourceFinder() {
           }
           return [];
         default:
-          return false;
+          return [];
       }
     }
 

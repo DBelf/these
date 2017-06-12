@@ -8,9 +8,10 @@ const analyze = function (path) {
   const globalScope = Scope.getGlobalScope(ast);
   const sources = Scope.nestedVariableSources(path, globalScope);
   sources.forEach((source) => {
-    if (source) {
-      source.saveToFile();
-    }
+    console.log(source);
+    // if (source) {
+    //   source.saveToFile();
+    // }
   });
 };
 
