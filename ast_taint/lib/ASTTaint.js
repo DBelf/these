@@ -7,7 +7,12 @@ const analyze = function (path) {
   const ast = GenerateAST.astFromFile(path);
   const globalScope = Scope.getGlobalScope(ast);
   const sources = Scope.nestedVariableSources(path, globalScope);
-  sources.map(source => source.saveToFile());
+  sources.forEach((source) => {
+    if (source) {
+      console.log(source);
+      source.saveToFile();
+    }
+  });
 };
 
 if (process.argv.length < 3) {

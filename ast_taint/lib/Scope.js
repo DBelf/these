@@ -236,14 +236,14 @@ const Scope = (function scoping() {
     const declaredAndUpperSources = declaredSources(filepath, scopeBody).concat(upperSources);
     const assignmentsInScope = collectAssignmentExpressions(scopeBody);
     const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
-    const ifClauses = collectIfStatements(filepath, scopeBody, upperSources);
+    // const ifClauses = collectIfStatements(filepath, scopeBody, upperSources);
     const accessStatements = sourceAccesses(filepath, scopeBody);
 
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
     //Missing any other statements.
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
-    return sources.concat(accessStatements).concat(ifClauses);
+    return sources.concat(accessStatements);
   };
 
   const statementsInClauses = function (filepath, ifStatement, upperSources = []) {
