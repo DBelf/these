@@ -9,7 +9,6 @@ const analyze = function (path) {
   const sources = Scope.nestedVariableSources(path, globalScope);
   sources.forEach((source) => {
     if (source) {
-      console.log(source);
       source.saveToFile();
     }
   });
