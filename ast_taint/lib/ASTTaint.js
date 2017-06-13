@@ -7,11 +7,17 @@ const analyze = function (path) {
   const ast = GenerateAST.astFromFile(path);
   const globalScope = Scope.getGlobalScope(ast);
   const sources = Scope.nestedVariableSources(path, globalScope);
+  const sinks = Scope.nestedSinks(path, globalScope);
   sources.forEach((source) => {
     if (source) {
       source.saveToFile();
     }
   });
+  sinks.forEach((sink) => {
+    if (sink) {
+      sink.saveToFile()
+    }
+  })
 };
 
 if (process.argv.length < 3) {

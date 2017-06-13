@@ -2,6 +2,7 @@
  * Created by dimitri on 15/05/2017.
  */
 const Utils = require('./Utils');
+const GenerateAST = require('./GenerateAST');
 
 const SinkFinder = (function sinkFinder() {
   const BROADCAST_MESSAGE_STRING = 'broadcastMessage';
@@ -19,6 +20,12 @@ const SinkFinder = (function sinkFinder() {
       this.file = file;
       this.identifier = identifier;
       this.location = location;
+    }
+
+    saveToFile() {
+      const path = './vulnerabilities/sinks.txt';
+      const data = `${this.file}\n ${JSON.stringify(this.location)};\n`;
+      GenerateAST.saveToFile(path, data);
     }
   }
 
