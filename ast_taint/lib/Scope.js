@@ -37,7 +37,7 @@ const Scope = (function scoping() {
     const expression = node.expression;
     return Utils.assignmentPointsTo(expression, identifier) ?
       new SourceFinder.AssignedSource(
-        filepath, expression.left.name, expression.type, expression.loc) : null;
+        filepath, expression.left.name, expression.loc) : null;
   };
 
   // Checks whether a declaration statement is an alias of the identifier.

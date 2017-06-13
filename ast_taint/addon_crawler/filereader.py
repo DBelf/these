@@ -1,8 +1,13 @@
 import itertools
-
 import subprocess
+import os
 
-subprocess.call('node ../lib/ASTTaint.js ../addons/fireftp', shell=True)
+BASEPATH = '../addons/'
+
+for folder in os.walk(BASEPATH).next()[1]:
+    subprocess.call('node ../lib/ASTTaint.js {0}'.format(BASEPATH + folder), shell=True)
+
+
 #
 # with open() as f:
 #     for line1,line2 in itertools.izip_longest(*[f]*2):
