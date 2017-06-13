@@ -181,7 +181,7 @@ const SourceFinder = (function sourceFinder() {
 
   // Checks whether the returnstatement returns a vulnerable memberaccess.
   const returnAccessesSource = function (returnStatement) {
-    return checkMemberAccess(returnStatement.argument);
+    return returnStatement.argument !== null ? checkMemberAccess(returnStatement.argument) : false;
   };
 
   // Checks whether the declaration is a source.

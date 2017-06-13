@@ -46,7 +46,7 @@ const GenerateAST = (function generate() {
 
       if (stat.isDirectory()) {
         filesInPath = filesInPath.concat(gatherFiles(filename, EXTENSION)); // recurse
-      } else if (filename.indexOf(EXTENSION) >= 0) {
+      } else if (filename.endsWith(EXTENSION)) {
         // console.log('-- found: ', filename); //DEBUG
         filesInPath.push(filename);
       }
