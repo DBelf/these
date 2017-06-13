@@ -13,8 +13,10 @@ def parsevulnerability(line1, line2):
     match = re.search('{"start":{"line":(?P<start>\d*),"column":\d*},"end":{"line":(?P<end>\d*),"column":\d*}};', line2)
     position = (int(match.group('start')), int(match.group('end')))
     with open(vulnerable_file, "r") as text_file:
-        for line in itertools.islice(text_file, position[0] - 1, position[1]):
-            print line
+        with open('vulnerabilities/{}.txt'.format(vulnerable_addon), 'a') as new_file:
+            for line in itertools.islice(text_file, position[0] - 1, position[1]):
+                new_file.write(line.strip())
+
 
 
 # for folder in os.walk(BASEPATH).next()[1]:
