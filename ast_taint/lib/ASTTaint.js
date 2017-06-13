@@ -3,15 +3,14 @@ const Scope = require('./Scope');
 
 
 const analyze = function (path) {
-  console.log(path);
+  // console.log(path);
   const ast = GenerateAST.astFromFile(path);
   const globalScope = Scope.getGlobalScope(ast);
   const sources = Scope.nestedVariableSources(path, globalScope);
   sources.forEach((source) => {
-    console.log(source);
-    // if (source) {
-    //   source.saveToFile();
-    // }
+    if (source) {
+      source.saveToFile();
+    }
   });
 };
 

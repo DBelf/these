@@ -55,12 +55,15 @@ const GenerateAST = (function generate() {
   };
 
   const createDirectory = function (dirPath) {
-    const splitPath = dirPath.split('/');
-    splitPath.forEach((pathPart) => {
-      if (!fs.existsSync(pathPart)) {
-        fs.mkdirSync(pathPart);
+    const sep = path.sep;
+    const initDir = path.isAbsolute(dirPath) ? sep : '';
+    dirPath.split(sep).reduce((parentDir, childDir) => {
+      const curDir = path.resolve(parentDir, childDir);
+      if (!fs.existsSync(curDir)) {
+        fs.mkdirSync(curDir);
       }
-    });
+      return curDir;
+    }, initDir);
   };
 
   const createDefault = function () {
@@ -76,9 +79,6 @@ const GenerateAST = (function generate() {
     if (fullPath.length > 1) {
       createDirectory(fullPath.slice(0, -1).join('/'));
     }
-    fs.writeFile(destination, '', (err) => {
-      console.log(err);
-    });
   };
 
   // FIXME calling this somehow prints null??
@@ -99,10 +99,10 @@ const GenerateAST = (function generate() {
     fs.exists(filename, (exists) => {
       if (!exists) {
         createWithFilePath(filename);
+        fs.appendFileSync(filename, data, 'utf-8');
+      } else {
+        fs.appendFileSync(filename, data, 'utf-8');
       }
-    });
-    fs.appendFile(filename, data, (error) => {
-      if (error) throw error;
     });
   };
 

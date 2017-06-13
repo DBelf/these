@@ -22,10 +22,9 @@ const SourceFinder = (function sourceFinder() {
     }
 
     saveToFile() {
-      const path = './vulnerabilities/source'.concat(this.file);
-      const data = `${this.file}, ${this.type}\n ${this.loc};\n`;
-      console.log(data);
-      // GenerateAST.saveToFile(path, data);
+      const path = './vulnerabilities/sources.txt';
+      const data = `${this.file}, ${this.type}\n ${JSON.stringify(this.loc)};\n`;
+      GenerateAST.saveToFile(path, data);
     }
 
     // Checks whether the statement points to the source.
