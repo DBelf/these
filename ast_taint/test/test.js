@@ -23,12 +23,6 @@ describe('AST generation', () => {
       const value = GenerateAST.collectFiles(path);
       expect(value.length).to.be.at.least(5);
     });
-    it('prints the source lines of the statement', () => {
-      const path = './test/test_resources/line_print.js';
-      const ast = GenerateAST.astFromFile(path);
-      const sourceCode = GenerateAST.returnLines(path, ast.body[0].loc);
-      expect(sourceCode).to.have.lengthOf(1);
-    });
   });
   describe('Creates an AST', () => {
     it('creates an AST from one file', () => {
@@ -111,7 +105,6 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
-      console.log(sources);
       expect(sources).to.have.lengthOf(2);
     });
     it('can find the source within either clause of an if statement', () => {
@@ -149,7 +142,6 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
-      console.log(sinks);
       expect(sinks).to.have.lengthOf(3);
     });
     it('can detect a sink within an anonymous function', () => {
@@ -165,8 +157,9 @@ describe('Scope Analysis', () => {
       const path = 'test/ast_tests/sources_and_sinks/declarations.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
-      const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
-      expect(sinks).to.have.lengthOf(1);// FIXME fails because statements have to be hoisted..
+      const vulnerabilities = ScopeAnalysis.nestedVulnerabilities(path, globalScope);
+      expect(vulnerabilities.sources).to.have.lengthOf(1);
+      expect(vulnerabilities.sinks).to.have.lengthOf(1);
     });
   });
 });

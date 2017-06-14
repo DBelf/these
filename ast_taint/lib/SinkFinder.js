@@ -22,6 +22,10 @@ const SinkFinder = (function sinkFinder() {
       this.location = location;
     }
 
+    argumentIsSource(sourcesInScope) {
+      return [];
+    }
+
     saveToFile() {
       const path = './vulnerabilities/sinks.txt';
       const data = `${this.file}\n ${JSON.stringify(this.location)};\n`;

@@ -328,8 +328,7 @@ const Scope = (function scoping() {
 
   const sinksInScope = function (filename, scope) {
     const scopeBody = getScopeBody(scope);
-    const sinkCalls = collectSinkCalls(filename, scopeBody);
-    return sinkCalls;
+    return collectSinkCalls(filename, scopeBody);
   };
 
   const nestedSinks = function sinkInChild(filename, scope, sinks = []) {
@@ -344,27 +343,26 @@ const Scope = (function scoping() {
   };
 
   const nestedVulnerabilities = function checkChildScope(
-    filename, scope, vulnerabilities) {
+    filename, scope, vulnerabilities = { sources: [], sinks: [] }) {
     const sources = vulnerabilities.sources;
     const sinks = vulnerabilities.sinks;
     const newSources = sourcesInScope(filename, scope, sources).concat(sources);
     const newSinks = sinksInScope(filename, scope).concat(sinks);
-
     const sinkWithSources = newSinks.reduce((acc, sink) =>
       acc.concat(sink.argumentIsSource(newSources)), []);
     if (scope.childScopes.length < 1) {
       // Found all children in this branch of the scope tree.
       return {
         sources: newSources,
-        sinks: newSinks.concat(sinkWithSources);
-      }
+        sinks: newSinks.concat(sinkWithSources),
+      };
     }
     // Also want to find all the call expressions that use the sources within this scope level.
     return scope.childScopes.reduce((acc, childScope) => (
       acc.concat(checkChildScope(
         filename,
         childScope,
-        {sources: newSources, sinks: newSinks.concat(sinkWithSources)}))), []);
+        { sources: newSources, sinks: newSinks.concat(sinkWithSources) }))), []);
   };
 
   // const path = '../test/ast_tests/sink/send_message.js';
