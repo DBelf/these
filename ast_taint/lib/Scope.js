@@ -240,7 +240,7 @@ const Scope = (function scoping() {
     const accessStatements = sourceAccesses(filepath, scopeBody);
 
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
-    //Missing any other statements.
+    // Missing any other statements.
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
     return sources.concat(accessStatements);
@@ -343,23 +343,29 @@ const Scope = (function scoping() {
       acc.concat(sinkInChild(filename, childScope, newSinks))), []);
   };
 
-  const nestedVulnerabilities = function checkChildScope(filename, scope, sources = [], sinks = []) {
+  const nestedVulnerabilities = function checkChildScope(
+    filename, scope, vulnerabilities) {
+    const sources = vulnerabilities.sources;
+    const sinks = vulnerabilities.sinks;
     const newSources = sourcesInScope(filename, scope, sources).concat(sources);
     const newSinks = sinksInScope(filename, scope).concat(sinks);
-    if (scope.childScopes.length < 1) {
-      const sinkWithSources = newSources.reduce((acc, source) => {
-        acc.concat(newSinks.reduce((acc, sink) =>
-            acc.concat(sink.argumentIsSource())
-        ),[]);
-      // Found all children in this branch of the scope tree.
-      return newSources;
-    }
 
+    const sinkWithSources = newSinks.reduce((acc, sink) =>
+      acc.concat(sink.argumentIsSource(newSources)), []);
+    if (scope.childScopes.length < 1) {
+      // Found all children in this branch of the scope tree.
+      return {
+        sources: newSources,
+        sinks: newSinks.concat(sinkWithSources);
+      }
+    }
     // Also want to find all the call expressions that use the sources within this scope level.
     return scope.childScopes.reduce((acc, childScope) => (
-      acc.concat(checkChildScope(filename, childScope, newSources))), []);
-
-  }
+      acc.concat(checkChildScope(
+        filename,
+        childScope,
+        {sources: newSources, sinks: newSinks.concat(sinkWithSources)}))), []);
+  };
 
   // const path = '../test/ast_tests/sink/send_message.js';
   // const ast = GenerateAST.astFromFile(path);
@@ -372,6 +378,7 @@ const Scope = (function scoping() {
     getGlobalScope,
     nestedVariableSources,
     nestedSinks,
+    nestedVulnerabilities,
   };
 }());
 

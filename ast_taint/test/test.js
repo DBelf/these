@@ -97,7 +97,7 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
-      expect(sources).to.have.lengthOf(0);//FIXME for loop hoisting?
+      expect(sources).to.have.lengthOf(0);// FIXME for loop hoisting?
     });
     it('can find the source in the implicit return of an arrow function', () => {
       const path = 'test/ast_tests/source/arrow_source.js';
@@ -157,7 +157,16 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
-      expect(sinks).to.have.lengthOf(1);//FIXME fails because statements have to be hoisted..
+      expect(sinks).to.have.lengthOf(1);// FIXME fails because statements have to be hoisted..
+    });
+  });
+  describe('Sources and Sinks', () => {
+    it('can find all non-aliased sources and sinks', () => {
+      const path = 'test/ast_tests/sources_and_sinks/declarations.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sinks = ScopeAnalysis.nestedSinks(path, globalScope);
+      expect(sinks).to.have.lengthOf(1);// FIXME fails because statements have to be hoisted..
     });
   });
 });
