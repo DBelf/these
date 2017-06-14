@@ -9,4 +9,4 @@ function returnsAlias() {
   return scopedReassign;
 }
 
-eval(globalSource);
+eval(returnsAlias());

@@ -48,11 +48,11 @@ const Scope = (function scoping() {
       }
       return false;
     });
-
+    //FIXME gets hit twice, should not get hit twice!
     return declarations.reduce((acc, declaration) => (
       acc.concat(
         new SourceFinder.DeclaredSource(
-          filepath, declaration.id.name, declaration.type, declaration.loc))), []);
+          filepath, declaration.id.name, declaration.loc))), []);
   };
 
   // FIXME Not sure whether this works for nested forloops.
@@ -346,8 +346,8 @@ const Scope = (function scoping() {
     filename, scope, vulnerabilities = { sources: [], sinks: [] }) {
     const sources = vulnerabilities.sources;
     const sinks = vulnerabilities.sinks;
-    const newSources = sourcesInScope(filename, scope, sources).concat(sources);
-    const newSinks = sinksInScope(filename, scope).concat(sinks);
+    const newSources = sourcesInScope(filename, scope, sources);
+    const newSinks = sinksInScope(filename, scope);
     const sinkWithSources = newSinks.reduce((acc, sink) =>
       acc.concat(sink.argumentIsSource(newSources)), []);
     if (scope.childScopes.length < 1) {
