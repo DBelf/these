@@ -343,6 +343,24 @@ const Scope = (function scoping() {
       acc.concat(sinkInChild(filename, childScope, newSinks))), []);
   };
 
+  const nestedVulnerabilities = function checkChildScope(filename, scope, sources = [], sinks = []) {
+    const newSources = sourcesInScope(filename, scope, sources).concat(sources);
+    const newSinks = sinksInScope(filename, scope).concat(sinks);
+    if (scope.childScopes.length < 1) {
+      const sinkWithSources = newSources.reduce((acc, source) => {
+        acc.concat(newSinks.reduce((acc, sink) =>
+            acc.concat(sink.argumentIsSource())
+        ),[]);
+      // Found all children in this branch of the scope tree.
+      return newSources;
+    }
+
+    // Also want to find all the call expressions that use the sources within this scope level.
+    return scope.childScopes.reduce((acc, childScope) => (
+      acc.concat(checkChildScope(filename, childScope, newSources))), []);
+
+  }
+
   // const path = '../test/ast_tests/sink/send_message.js';
   // const ast = GenerateAST.astFromFile(path);
   // const globalScope = getGlobalScope(ast);

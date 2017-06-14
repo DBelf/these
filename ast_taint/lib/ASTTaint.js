@@ -15,9 +15,9 @@ const analyze = function (path) {
   });
   sinks.forEach((sink) => {
     if (sink) {
-      sink.saveToFile()
+      sink.saveToFile();
     }
-  })
+  });
 };
 
 if (process.argv.length < 3) {
@@ -30,12 +30,3 @@ console.log(`Reading ${projectPath}`);
 
 const filesInProject = GenerateAST.collectFiles(projectPath);
 filesInProject.map(file => analyze(file));
-
-// Parse AST with esprima, loc must be set true
-// const ast = GenerateAST.astFromFile(filename);
-//
-// const globalScope = Scope.getGlobalScope(ast);
-// const sourcesInFile = Scope.nestedVariableSources(globalScope);
-//
-// console.log(sourcesInFile);
-
