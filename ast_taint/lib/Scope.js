@@ -351,7 +351,6 @@ const Scope = (function scoping() {
     const sinkWithSources = newSinks.reduce((acc, sink) =>
       acc.concat(sink.argumentIsSource(newSources)), []);
     if (scope.childScopes.length < 1) {
-      console.log(newSources);
       // Found all children in this branch of the scope tree.
       return {
         sources: newSources,
@@ -359,11 +358,15 @@ const Scope = (function scoping() {
       };
     }
     // Also want to find all the call expressions that use the sources within this scope level.
-    return scope.childScopes.reduce((acc, childScope) => (
-      acc.concat(checkChildScope(
-        filename,
-        childScope,
-        { sources: newSources, sinks: newSinks.concat(sinkWithSources) }))), []);//Dit kan eleganter
+    return scope.childScopes.reduce((acc, childScope) => {
+      const hits = checkChildScope(
+          filename,
+          childScope,
+          { sources: newSources, sinks: newSinks.concat(sinkWithSources) });
+      const objectSources = hits.sources;
+      const objectSinks = hits.sinks;
+      return { sources: objectSources, sinks: objectSinks };
+    }, { sources: [], sinks: [] });// Dit kan eleganter
   };
 
   // const path = '../test/ast_tests/sink/send_message.js';

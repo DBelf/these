@@ -166,6 +166,7 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const vulnerabilities = ScopeAnalysis.nestedVulnerabilities(path, globalScope);
+      console.log(vulnerabilities.sources);
       expect(vulnerabilities.sources).to.have.lengthOf(3);
       expect(vulnerabilities.sinks).to.have.lengthOf(1);
     });
