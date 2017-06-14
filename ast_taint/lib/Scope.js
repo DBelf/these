@@ -351,6 +351,7 @@ const Scope = (function scoping() {
     const sinkWithSources = newSinks.reduce((acc, sink) =>
       acc.concat(sink.argumentIsSource(newSources)), []);
     if (scope.childScopes.length < 1) {
+      console.log(newSources);
       // Found all children in this branch of the scope tree.
       return {
         sources: newSources,
@@ -362,7 +363,7 @@ const Scope = (function scoping() {
       acc.concat(checkChildScope(
         filename,
         childScope,
-        { sources: newSources, sinks: newSinks.concat(sinkWithSources) }))), []);
+        { sources: newSources, sinks: newSinks.concat(sinkWithSources) }))), []);//Dit kan eleganter
   };
 
   // const path = '../test/ast_tests/sink/send_message.js';

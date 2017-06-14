@@ -161,6 +161,14 @@ describe('Scope Analysis', () => {
       expect(vulnerabilities.sources).to.have.lengthOf(1);
       expect(vulnerabilities.sinks).to.have.lengthOf(1);
     });
+    it('can find all aliased sources and sinks', () => {
+      const path = 'test/ast_tests/sources_and_sinks/aliased.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const vulnerabilities = ScopeAnalysis.nestedVulnerabilities(path, globalScope);
+      expect(vulnerabilities.sources).to.have.lengthOf(3);
+      expect(vulnerabilities.sinks).to.have.lengthOf(1);
+    });
   });
 });
 
