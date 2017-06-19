@@ -48,7 +48,7 @@ const Scope = (function scoping() {
       }
       return false;
     });
-    //FIXME gets hit twice, should not get hit twice!
+    // FIXME gets hit twice, should not get hit twice!
     return declarations.reduce((acc, declaration) => (
       acc.concat(
         new SourceFinder.DeclaredSource(
@@ -82,9 +82,9 @@ const Scope = (function scoping() {
   };
 
   // Constructs a list of all the aliases in the scope.
-  const findPointsTo = function (filepath, sourceArr, scope) {
+  const findPointsTo = function (filepath, sourceArr, scopeBody) {
     return sourceArr.reduce(
-      (acc, alias) => acc.concat(pointsToInScope(filepath, alias, scope)), []);
+      (acc, alias) => acc.concat(pointsToInScope(filepath, alias, scopeBody)), []);
   };
 
   // Filters all returnstatements from the current scope.
@@ -140,11 +140,11 @@ const Scope = (function scoping() {
    */
   const functionIsSource = function (filepath, scope, sourcesInScope) {
     const returnsInFunction = returnsInScope(scope);
-    const sourcesInFunction = findPointsTo(filepath, sourcesInScope, scope).concat(sourcesInScope);
+    //There's a chance this gets hit twice?
 
     const sourceReturns = returnsInFunction.filter(statement => (
       Utils.returnsIdentifier(statement))).reduce((acc, returnStatement) => (
-    acc || returnPointsToSource(sourcesInFunction, returnStatement)), false);
+    acc || returnPointsToSource(sourcesInScope, returnStatement)), false);
     // Checks both the identifiers and the full statements of the returnfunction.
     const returnAccessesSource = returnsInFunction.filter(statement => (
       !Utils.returnsIdentifier(statement))).reduce((acc, returnStatement) => (
@@ -152,9 +152,9 @@ const Scope = (function scoping() {
     ), false);
 
     if (sourceReturns || returnAccessesSource) {
-      return functionCalled(filepath, scope, sourcesInFunction);
+      return functionCalled(filepath, scope, sourcesInScope);
     }
-    return sourcesInFunction;
+    return sourcesInScope;
   };
 
   /**
@@ -354,7 +354,7 @@ const Scope = (function scoping() {
       // Found all children in this branch of the scope tree.
       return {
         sources: newSources,
-        sinks: newSinks.concat(sinkWithSources),
+        sinks: sinks.concat(newSinks.concat(sinkWithSources)),
       };
     }
     // Also want to find all the call expressions that use the sources within this scope level.

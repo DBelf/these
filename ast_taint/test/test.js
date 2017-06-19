@@ -85,6 +85,7 @@ describe('Scope Analysis', () => {
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources.filter(source => source.type === 'FunctionDeclaration')).to.have.lengthOf(1);
+      expect(sources).to.have.lengthOf(4);
     });
     it('can find the source in a for loop', () => {
       const path = 'test/ast_tests/source/for_loop.js';
@@ -93,6 +94,7 @@ describe('Scope Analysis', () => {
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources).to.have.lengthOf(0);// FIXME for loop hoisting?
     });
+
     it('can find the source in the implicit return of an arrow function', () => {
       const path = 'test/ast_tests/source/arrow_source.js';
       const ast = GenerateAST.astFromFile(path);
@@ -160,6 +162,14 @@ describe('Scope Analysis', () => {
       const vulnerabilities = ScopeAnalysis.nestedVulnerabilities(path, globalScope);
       expect(vulnerabilities.sources).to.have.lengthOf(1);
       expect(vulnerabilities.sinks).to.have.lengthOf(1);
+    });
+    it('can find all the aliased sources', () => {
+      const path = 'test/ast_tests/source/scoped_sources_with_function_return.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
+      console.log(sources);
+      expect(sources).to.have.lengthOf(3);
     });
     it('can find all aliased sources and sinks', () => {
       const path = 'test/ast_tests/sources_and_sinks/aliased.js';
