@@ -30,14 +30,6 @@ describe('AST generation', () => {
       const ast = GenerateAST.astFromFile(path);
       expect(ast).to.not.be.undefined;
     });
-    it('can make the scope and hoist statements from within a for loop', () => {
-      const path = './test/ast_tests/source/for_loop.js';
-      const ast = GenerateAST.astFromFile(path);
-      const scope = ScopeAnalysis.getGlobalScope(ast);
-      const globalStatements = (scope.block.body).reduce((acc, statement) => acc.concat(
-        ScopeAnalysis.hoistFromControl(statement)), []);
-      expect(globalStatements).to.have.lengthOf(4);
-    });
   });
 });
 
@@ -47,7 +39,23 @@ describe('Scope Analysis', () => {
       const path = './test/ast_tests/source/for_loop.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
-      expect(globalScope.childScopes).to.have.lengthOf(2);// FIXME for loop hoisting?
+      expect(globalScope.childScopes).to.have.lengthOf(0);// FIXME for loop hoisting?
+    });
+    it('can make the scope and hoist statements from within a for loop', () => {
+      const path = './test/ast_tests/source/for_loop.js';
+      const ast = GenerateAST.astFromFile(path);
+      const scope = ScopeAnalysis.getGlobalScope(ast);
+      const globalStatements = (scope.block.body).reduce((acc, statement) => acc.concat(
+        ScopeAnalysis.hoistFromControl(statement)), []);
+      expect(globalStatements).to.have.lengthOf(4);
+    });
+    it('can make the scope and hoist statements from within both clauses of an if', () => {
+      const path = 'test/ast_tests/source/if_source.js';
+      const ast = GenerateAST.astFromFile(path);
+      const scope = ScopeAnalysis.getGlobalScope(ast);
+      const globalStatements = (scope.block.body).reduce((acc, statement) => acc.concat(
+        ScopeAnalysis.hoistFromControl(statement)), []);
+      expect(globalStatements).to.have.lengthOf(3);
     });
   });
   describe('Source Detection', () => {
@@ -77,7 +85,7 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
-      expect(sources).to.have.lengthOf(5);// TODO check the function aswell?
+      expect(sources).to.have.lengthOf(4);// TODO check the function aswell?
     });
     it('can find functions returning aliased global sources', () => {
       const path = 'test/ast_tests/source/scoped_sources_with_function_return.js';
@@ -114,7 +122,7 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
-      expect(sources).to.have.lengthOf(2);
+      expect(sources).to.have.lengthOf(3);
     });
   });
   describe('Sink Detection', () => {

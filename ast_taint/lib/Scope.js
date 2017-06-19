@@ -28,7 +28,7 @@ const Scope = (function scoping() {
       case 'FunctionExpression':
         return [].concat(scope.block.body.body);
       default:
-        return [].concat(scope.block.body);
+        return [].concat(hoistFromControl(scope.block.body));
     }
   };
 
@@ -140,7 +140,7 @@ const Scope = (function scoping() {
    */
   const functionIsSource = function (filepath, scope, sourcesInScope) {
     const returnsInFunction = returnsInScope(scope);
-    //There's a chance this gets hit twice?
+    // There's a chance this gets hit twice?
 
     const sourceReturns = returnsInFunction.filter(statement => (
       Utils.returnsIdentifier(statement))).reduce((acc, returnStatement) => (
@@ -187,31 +187,36 @@ const Scope = (function scoping() {
     ), []);
   };
 
-  // FIXME right now this only works with variables declared within the ifstatement, pointsto is bad.
-  const collectIfStatements = function (filepath, scopeBody, upperSources = []) {
-    const ifStatements = scopeBody.filter(statement => Utils.isIfStatement(statement));
-    return ifStatements.reduce((acc, statement) => (
-      acc.concat(statementsInClauses(filepath, statement))), []);
-  };
-
   // TODO complete this
   const hoistFromControl = function hoist(statement) {
     switch (statement.type) {
       case 'ForStatement':
-      case 'ForOfStatement':
       case 'ForInStatement':
         return statement.body.body.reduce(
           (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
-      case 'LabeledStatement':
-      case 'TryStatement':
-      case 'IfStatement':
+      case 'ForOfStatement':
         return [];
+      case 'LabeledStatement':
+        return [];
+      case 'TryStatement':
+        return [];
+      case 'IfStatement': {
+        const consequent = statement.consequent.body.reduce(
+          (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+        let alternate = [];
+        if (statement.alternate !== null) {
+          alternate = statement.alternate.body.reduce(
+            (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+        }
+        return consequent.concat(alternate);
+      }
       case 'SwitchStatement':
         return [];
       default:
-        return [statement];
+        return statement;
     }
   };
+
   /**
    * Filters all assignment expressions from the scope body and returns these.
    */
@@ -244,13 +249,6 @@ const Scope = (function scoping() {
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
     return sources.concat(accessStatements);
-  };
-
-  const statementsInClauses = function (filepath, ifStatement, upperSources = []) {
-    const consequent = ifStatement.consequent !== null ? ifStatement.consequent.body : [];
-    const alternate = ifStatement.alternate !== null ? ifStatement.alternate.body : [];
-    return collectSources(filepath, consequent, upperSources).concat(
-      collectSources(filepath, alternate, upperSources));
   };
 
   /**
@@ -327,6 +325,7 @@ const Scope = (function scoping() {
 
   const sinksInScope = function (filename, scope) {
     const scopeBody = getScopeBody(scope);
+    console.log(scopeBody);
     return collectSinkCalls(filename, scopeBody);
   };
 
@@ -368,10 +367,11 @@ const Scope = (function scoping() {
     }, { sources: [], sinks: [] });// Dit kan eleganter
   };
 
-  // const path = '../test/ast_tests/sink/send_message.js';
+  //
+  // const path = '../test/ast_tests/source/for_loop.js';
   // const ast = GenerateAST.astFromFile(path);
   // const globalScope = getGlobalScope(ast);
-  // console.log(nestedSinks(path, globalScope));
+  // console.log(nestedVulnerabilities(path, globalScope));
 
   return {
     hoistFromControl,

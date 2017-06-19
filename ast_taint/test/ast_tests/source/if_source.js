@@ -6,3 +6,7 @@ if(true) {
 } else {
   const b = document.value;
 }
+
+if(true) {
+  const c = document.value;
+}
