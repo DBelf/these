@@ -22,14 +22,19 @@ const Scope = (function scoping() {
   // Breaks on arrowexpressions?
   // Returns the body of statements within the scope.
   const getScopeBody = function (scope) {
+    let statements = [];
     switch (scope.block.type) {
       case 'FunctionDeclaration':
-        return [].concat(scope.block.body.body);
+        statements = [].concat(scope.block.body.body);
+        break;
       case 'FunctionExpression':
-        return [].concat(scope.block.body.body);
+        statements = [].concat(scope.block.body.body);
+        break;
       default:
-        return [].concat(hoistFromControl(scope.block.body));
+        statements = [].concat(scope.block.body);
+        break;
     }
+    return statements.reduce((acc, statement) => acc.concat(hoistFromControl(statement)), []);
   };
 
   // Checks whether an expression (i.e. an assignment) is an alias.
@@ -190,16 +195,16 @@ const Scope = (function scoping() {
   // TODO complete this
   const hoistFromControl = function hoist(statement) {
     switch (statement.type) {
-      case 'ForStatement':
+      case 'ForStatement': // Fall through.
       case 'ForInStatement':
         return statement.body.body.reduce(
           (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
       case 'ForOfStatement':
-        return [];
+        return statement;// TODO this.
       case 'LabeledStatement':
-        return [];
+        return statement;// TODO this.
       case 'TryStatement':
-        return [];
+        return statement;// TODO this.
       case 'IfStatement': {
         const consequent = statement.consequent.body.reduce(
           (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
@@ -211,7 +216,7 @@ const Scope = (function scoping() {
         return consequent.concat(alternate);
       }
       case 'SwitchStatement':
-        return [];
+        return statement;// TODO this.
       default:
         return statement;
     }
@@ -325,7 +330,6 @@ const Scope = (function scoping() {
 
   const sinksInScope = function (filename, scope) {
     const scopeBody = getScopeBody(scope);
-    console.log(scopeBody);
     return collectSinkCalls(filename, scopeBody);
   };
 
@@ -366,9 +370,9 @@ const Scope = (function scoping() {
       return { sources: objectSources, sinks: objectSinks };
     }, { sources: [], sinks: [] });// Dit kan eleganter
   };
-
+  
   //
-  // const path = '../test/ast_tests/source/for_loop.js';
+  // const path = '../test/ast_tests/source/if_source.js';
   // const ast = GenerateAST.astFromFile(path);
   // const globalScope = getGlobalScope(ast);
   // console.log(nestedVulnerabilities(path, globalScope));

@@ -85,7 +85,7 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
-      expect(sources).to.have.lengthOf(4);// TODO check the function aswell?
+      expect(sources).to.have.lengthOf(5);// TODO check the function aswell?
     });
     it('can find functions returning aliased global sources', () => {
       const path = 'test/ast_tests/source/scoped_sources_with_function_return.js';
@@ -93,14 +93,14 @@ describe('Scope Analysis', () => {
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources.filter(source => source.type === 'FunctionDeclaration')).to.have.lengthOf(1);
-      expect(sources).to.have.lengthOf(4);
+      expect(sources).to.have.lengthOf(5);
     });
     it('can find the source in a for loop', () => {
       const path = 'test/ast_tests/source/for_loop.js';
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
-      expect(sources).to.have.lengthOf(0);// FIXME for loop hoisting?
+      expect(sources).to.have.lengthOf(1);// FIXME for loop hoisting?
     });
 
     it('can find the source in the implicit return of an arrow function', () => {
@@ -176,7 +176,7 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
-      expect(sources).to.have.lengthOf(4);
+      expect(sources).to.have.lengthOf(5);
     });
     it('can find all aliased sources and sinks', () => {
       const path = 'test/ast_tests/sources_and_sinks/aliased.js';
