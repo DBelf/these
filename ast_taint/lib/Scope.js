@@ -21,6 +21,9 @@ const Scope = (function scoping() {
 
   // TODO complete this
   const hoistFromControl = function hoist(statement) {
+    if (statement === undefined) {
+      return [];
+    }
     switch (statement.type) {
       case 'ForStatement': // Fall through.
       case 'ForOfStatement': // Fall through.
