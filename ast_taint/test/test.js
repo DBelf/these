@@ -65,6 +65,14 @@ describe('Scope Analysis', () => {
         ScopeAnalysis.hoistFromControl(statement)), []);
       expect(globalStatements).to.have.lengthOf(6);
     });
+    it('can make the scope and hoist statements from within try catch clauses', () => {
+      const path = 'test/ast_tests/source/try_catch.js';
+      const ast = GenerateAST.astFromFile(path);
+      const scope = ScopeAnalysis.getGlobalScope(ast);
+      const globalStatements = (scope.block.body).reduce((acc, statement) => acc.concat(
+        ScopeAnalysis.hoistFromControl(statement)), []);
+      expect(globalStatements).to.have.lengthOf(5);
+    });
   });
   describe('Source Detection', () => {
     it('can find a source within the global scope', () => {

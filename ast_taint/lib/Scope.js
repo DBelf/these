@@ -28,9 +28,19 @@ const Scope = (function scoping() {
         return statement.body.body.reduce(
           (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
       case 'LabeledStatement':
-        return statement;// TODO this.
-      case 'TryStatement':
-        return statement;// TODO this.
+        return statement;// Not addind this, no labeled statements for me...
+      case 'TryStatement': {
+        const tryBody = statement.block.body.reduce((acc, blockStatement) =>
+          acc.concat(hoist(blockStatement)), []);
+        const catchBody = statement.handler.body.body.reduce((acc, blockStatement) =>
+          acc.concat(hoist(blockStatement)), []);
+        let finalBody = [];
+        if (statement.finalizer !== null) {
+          finalBody = statement.finalizer.body.reduce((acc, blockStatement) =>
+            acc.concat(hoist(blockStatement)), []);
+        }
+        return tryBody.concat(catchBody.concat(finalBody));
+      }
       case 'IfStatement': {
         const consequent = statement.consequent.body.reduce(
           (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
@@ -78,15 +88,6 @@ const Scope = (function scoping() {
     return sources.reduce((acc, source) => (
       acc || Utils.identifierUsedInReturn(source.identifier, returnStatement))
       , false);
-  };
-
-  /**
-   * Filters all call expressions from the scope body and returns these.
-   */
-  const collectCallExpressions = function (scopeBody) {
-    return scopeBody.filter(expression => (
-      Utils.callExpressionWithIdentifier(expression)
-    ));
   };
 
   /**
@@ -158,7 +159,7 @@ const Scope = (function scoping() {
       acc.concat(Utils.assignmentDeclarations(declaration))
     ), []);
   };
-  
+
   /**
    * Filters all assignment expressions from the scope body and returns these.
    */
