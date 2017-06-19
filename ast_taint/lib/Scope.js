@@ -25,8 +25,10 @@ const Scope = (function scoping() {
       case 'ForStatement': // Fall through.
       case 'ForOfStatement': // Fall through.
       case 'ForInStatement':
-        return statement.body.body.reduce(
-          (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+        if (statement.body.body !== undefined) {
+          return statement.body.body.reduce(
+            (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+        } return [].concat(statement.body);
       case 'LabeledStatement':
         return statement;// Not addind this, no labeled statements for me...
       case 'TryStatement': {
@@ -42,12 +44,21 @@ const Scope = (function scoping() {
         return tryBody.concat(catchBody.concat(finalBody));
       }
       case 'IfStatement': {
-        const consequent = statement.consequent.body.reduce(
-          (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+        let consequent = [];
+        if (statement.consequent.body !== undefined) {
+          consequent = statement.consequent.body.reduce(
+            (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+        } else {
+          consequent = consequent.concat(statement.consequent);
+        }
         let alternate = [];
         if (statement.alternate !== null) {
-          alternate = statement.alternate.body.reduce(
-            (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+          if (statement.alternate.body !== undefined) {
+            alternate = statement.alternate.body.reduce(
+              (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+          } else {
+            alternate = alternate.concat(statement.alternate);
+          }
         }
         return consequent.concat(alternate);
       }

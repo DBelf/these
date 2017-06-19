@@ -10,7 +10,9 @@ const analyze = function (path) {
   const sinks = Scope.nestedSinks(path, globalScope);
   sources.forEach((source) => {
     if (source) {
-      source.saveToFile();
+      if(source.type === 'CommunicationSource') {
+        source.saveToFile();
+      }
     }
   });
   sinks.forEach((sink) => {

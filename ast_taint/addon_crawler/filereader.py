@@ -31,7 +31,6 @@ def parse_sink(line1, line2):
     except:
         print 'error'
         return
-    print'(sink)'
     with open(vulnerable_file, "r") as text_file:
         with open('vulnerabilities/{}.txt'.format(vulnerable_addon), 'a') as new_file:
             new_file.write("{}::sink::\n".format(vulnerable_file))
