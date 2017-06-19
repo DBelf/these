@@ -19,7 +19,12 @@ const Scope = (function scoping() {
     return createScopeManager(ast).scopes[0];
   };
 
-  // TODO complete this
+  /**
+   * Escope does not work as intended so I've made my own hoist function.
+   * Hoists all nested statements from control structures.
+   * This ensures we get a path insensitive (and context insensitive) analysis.
+   * Returns a list of all statements encoutered in a control statement.
+   */
   const hoistFromControl = function hoist(statement) {
     if (statement === undefined) {
       return [];
@@ -183,6 +188,12 @@ const Scope = (function scoping() {
     ));
   };
 
+  /**
+   * Checks the statements in the body for member accesses.
+   * Checks whether these member accesses have a known source (or alias)
+   * as argument.
+   * Returns a list of source objects.
+   */
   const sourceAccesses = function (filepath, scopeBody) {
     const memberAccesses = scopeBody.filter(Utils.isMemberExpression);
     const sourceMemberAccesses = memberAccesses.filter(statement => (
@@ -213,9 +224,6 @@ const Scope = (function scoping() {
    * including the function if the function returns a source.
    */
   const analyzeFunction = function (filepath, scope, upperScopeSources = []) {
-    // Collect sources within a function.
-    // Check whether the function returns any sources.
-    // Return new functionSource.
     const scopeBody = getScopeBody(scope);
     const sourcesInFunction = collectSources(filepath, scopeBody, upperScopeSources);
     return functionIsSource(filepath, scope, sourcesInFunction);
@@ -249,12 +257,20 @@ const Scope = (function scoping() {
       acc.concat(checkChildScope(filepath, childScope, newSources))), []);
   };
 
+  /**
+   * Checks the declaration statements for being known sinks.
+   * Returns a list with all of the found sinks, can be empty.
+   */
   const declaredSinks = function (filename, declarations) {
     return declarations.reduce((acc, declaration) => (
       acc.concat(SinkFinder.checkDeclaration(filename, declaration.declarations))
     ), []);
   };
 
+  /**
+   * Checks all callexpressions for being a sink.
+   * Returns a list of all the found sinks, can be empty.
+   */
   const calledSinks = function (filename, expressions) {
     const callExpressions = expressions.filter(expression => (
       Utils.isCallExpression(expression.expression)));
@@ -262,6 +278,10 @@ const Scope = (function scoping() {
       acc.concat(SinkFinder.expressionIsSink(filename, expression.expression))), []);
   };
 
+  /**
+   * Checks all assignment expressions for being a sink.
+   * Returns a list of all the found sinks, can be empty.
+   */
   const assignedSinks = function (filename, expressions) {
     const assignmentExpressions = expressions.filter(expression => (
       Utils.isAssignment(expression.expression)
@@ -271,6 +291,11 @@ const Scope = (function scoping() {
     ), []);
   };
 
+
+  /**
+   * Collects all declaration and expression sinks within a scope body.
+   * Returns a list of all the found sinks, can be empty.
+   */
   const collectSinkCalls = function (filename, scopeBody) {
     const declarations = scopeBody.filter(Utils.isDeclaration);
     const expressions = scopeBody.filter(Utils.isExpression);
@@ -280,11 +305,18 @@ const Scope = (function scoping() {
     return expressionSinks.concat(declarationSinks);
   };
 
+  /**
+   * Returns all sinks found in the scope.
+   */
   const sinksInScope = function (filename, scope) {
     const scopeBody = getScopeBody(scope);
     return collectSinkCalls(filename, scopeBody);
   };
 
+  /**
+   * Depth first search for all sinks in the file.
+   * Returns a list of all sinks found this way.
+   */
   const nestedSinks = function sinkInChild(filename, scope, sinks = []) {
     const newSinks = sinksInScope(filename, scope).concat(sinks);
 
@@ -296,6 +328,10 @@ const Scope = (function scoping() {
       acc.concat(sinkInChild(filename, childScope, newSinks))), []);
   };
 
+  /**
+   * Depth first search for all sources and sinks in a given file.
+   * Returns an object containing a list of all sources and a list of all sinks found.
+   */
   const nestedVulnerabilities = function checkChildScope(
     filename, scope, vulnerabilities = { sources: [], sinks: [] }) {
     const sources = vulnerabilities.sources;
@@ -322,7 +358,7 @@ const Scope = (function scoping() {
       return { sources: objectSources, sinks: objectSinks };
     }, { sources: [], sinks: [] });// Dit kan eleganter
   };
-  //
+
   // const path = '../test/ast_tests/source/switch_sources.js';
   // const ast = GenerateAST.astFromFile(path);
   // const globalScope = getGlobalScope(ast);

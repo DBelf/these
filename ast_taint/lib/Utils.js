@@ -1,8 +1,6 @@
 /**
  * Created by dimitri on 15/05/2017.
  */
-const estraverse = require('estraverse');
-
 const ASTManipulations = (function utilities() {
   const reduceBoolean = function (acc, val) {
     return acc || val;
