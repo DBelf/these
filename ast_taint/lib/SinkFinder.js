@@ -5,9 +5,9 @@ const Utils = require('./Utils');
 const GenerateAST = require('./GenerateAST');
 
 const SinkFinder = (function sinkFinder() {
-  const BROADCAST_MESSAGE_STRING = 'broadcastMessage';
   const SERVICES_STRING = 'Services';
-  const messages = ['sendAsyncMessage', 'sendSyncMessage', 'postMessage', 'sendMessage'];
+  const messages =
+    ['sendAsyncMessage', 'sendSyncMessage', 'postMessage', 'sendMessage', 'broadcastMessage'];
   const servicesProperties = ['cpmm', 'ppm'];
   const messageManagers = ['@mozilla.org/childprocessmessagemanager;1',
     '@mozilla.org/parentprocessmessagemanager;1', '@mozilla.org/globalmessagemanager;1'];

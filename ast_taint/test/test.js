@@ -57,6 +57,14 @@ describe('Scope Analysis', () => {
         ScopeAnalysis.hoistFromControl(statement)), []);
       expect(globalStatements).to.have.lengthOf(3);
     });
+    it('can make the scope and hoist statements from within switch cases', () => {
+      const path = 'test/ast_tests/source/switch_sources.js';
+      const ast = GenerateAST.astFromFile(path);
+      const scope = ScopeAnalysis.getGlobalScope(ast);
+      const globalStatements = (scope.block.body).reduce((acc, statement) => acc.concat(
+        ScopeAnalysis.hoistFromControl(statement)), []);
+      expect(globalStatements).to.have.lengthOf(6);
+    });
   });
   describe('Source Detection', () => {
     it('can find a source within the global scope', () => {
@@ -100,9 +108,15 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
+      expect(sources).to.have.lengthOf(1);
+    });
+    it('can find that a function returns a a source from a switch', () => {
+      const path = 'test/ast_tests/source/function_switch_sources.js';
+      const ast = GenerateAST.astFromFile(path);
+      const globalScope = ScopeAnalysis.getGlobalScope(ast);
+      const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
       expect(sources).to.have.lengthOf(1);// FIXME for loop hoisting?
     });
-
     it('can find the source in the implicit return of an arrow function', () => {
       const path = 'test/ast_tests/source/arrow_source.js';
       const ast = GenerateAST.astFromFile(path);

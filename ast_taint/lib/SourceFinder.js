@@ -10,7 +10,7 @@ const SourceFinder = (function sourceFinder() {
     // Arrays with the vulnerable member accesses
   const documentSources = ['URL', 'documentURI', 'URLUnencoded', 'baseURI', 'cookie', 'referrer'];
   const locationSources = ['href', 'search', 'hash', 'pathname'];
-  const communicationSource = 'addMessageListener';//TODO CHECK WHAT I'M LISTENING TO!(i.e. window, or parent)
+  const communicationSources = ['addMessageListener', 'addEventListener'];//TODO CHECK WHAT I'M LISTENING TO!(i.e. window, or parent)
 
   // Abstract class for all source types.
   class Source {
@@ -59,7 +59,8 @@ const SourceFinder = (function sourceFinder() {
     passedAsSourceArgument(statement) { // TODO extend functionality to actual functions
       if (statement.callee.property !== undefined) {
         if (Utils.hasProperty(statement, this.identifier)) {
-          return Utils.hasProperty(statement, communicationSource) ?
+          return communicationSources.reduce((acc, communicationSource) =>
+          acc || Utils.hasProperty(statement, communicationSource), false) ?
             new SourceFinder.CommunicationSource(
               this.file, statement.property.name, statement.loc) : [];
         }
@@ -128,7 +129,8 @@ const SourceFinder = (function sourceFinder() {
         case 'CallExpression':
           if (expression.expression.callee.property !== undefined) {
             if (Utils.hasArgument(expression.expression, this.identifier)) {
-              return Utils.hasProperty(expression.expression.callee, communicationSource) ?
+              return communicationSources.reduce((acc, communicationSource) =>
+              acc || Utils.hasProperty(expression.expression.callee, communicationSource), false) ?
                 new SourceFinder.CommunicationSource(
                   this.file, expression.expression.callee.property.name, expression.loc) : [];
             }

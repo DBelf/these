@@ -19,7 +19,36 @@ const Scope = (function scoping() {
     return createScopeManager(ast).scopes[0];
   };
 
-  // Breaks on arrowexpressions?
+  // TODO complete this
+  const hoistFromControl = function hoist(statement) {
+    switch (statement.type) {
+      case 'ForStatement': // Fall through.
+      case 'ForOfStatement': // Fall through.
+      case 'ForInStatement':
+        return statement.body.body.reduce(
+          (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+      case 'LabeledStatement':
+        return statement;// TODO this.
+      case 'TryStatement':
+        return statement;// TODO this.
+      case 'IfStatement': {
+        const consequent = statement.consequent.body.reduce(
+          (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+        let alternate = [];
+        if (statement.alternate !== null) {
+          alternate = statement.alternate.body.reduce(
+            (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
+        }
+        return consequent.concat(alternate);
+      }
+      case 'SwitchStatement':
+        return statement.cases.reduce((acc, switchCase) =>
+          acc.concat(hoist(switchCase.consequent)), []);
+      default:
+        return statement;
+    }
+  };
+
   // Returns the body of statements within the scope.
   const getScopeBody = function (scope) {
     let statements = [];
@@ -35,61 +64,6 @@ const Scope = (function scoping() {
         break;
     }
     return statements.reduce((acc, statement) => acc.concat(hoistFromControl(statement)), []);
-  };
-
-  // Checks whether an expression (i.e. an assignment) is an alias.
-  const expressionAlias = function (filepath, node, identifier) {
-    const expression = node.expression;
-    return Utils.assignmentPointsTo(expression, identifier) ?
-      new SourceFinder.AssignedSource(
-        filepath, expression.left.name, expression.loc) : null;
-  };
-
-  // Checks whether a declaration statement is an alias of the identifier.
-  const declarationAlias = function (filepath, node, identifier) {
-    const declarations = node.declarations.filter((declaration) => {
-      if (declaration.type !== null) {
-        return Utils.declarationPointsTo(declaration, identifier);
-      }
-      return false;
-    });
-    // FIXME gets hit twice, should not get hit twice!
-    return declarations.reduce((acc, declaration) => (
-      acc.concat(
-        new SourceFinder.DeclaredSource(
-          filepath, declaration.id.name, declaration.loc))), []);
-  };
-
-  // FIXME Not sure whether this works for nested forloops.
-  // Constructs the list of aliases within a scope.
-  const pointsToInScopeBody = function (filepath, identifier, scopeBody) {
-    let uses = [];
-    scopeBody.forEach((element) => {
-      switch (element.type) {
-        case 'VariableDeclaration':
-          uses = uses.concat(declarationAlias(filepath, element, identifier));
-          break;
-        case 'ExpressionStatement':
-          uses = uses.concat(expressionAlias(filepath, element, identifier));
-          break;
-        default:
-          break;
-      }
-    });
-    return uses.filter(n => n !== null);
-  };
-
-  // Returns a list of the aliases of a source within a scope.
-  const pointsToInScope = function (filepath, source, scope) {
-    const scopeBody = getScopeBody(scope);
-    const sourceIdentifier = source.identifier;
-    return pointsToInScopeBody(filepath, sourceIdentifier, scopeBody);
-  };
-
-  // Constructs a list of all the aliases in the scope.
-  const findPointsTo = function (filepath, sourceArr, scopeBody) {
-    return sourceArr.reduce(
-      (acc, alias) => acc.concat(pointsToInScope(filepath, alias, scopeBody)), []);
   };
 
   // Filters all returnstatements from the current scope.
@@ -127,16 +101,9 @@ const Scope = (function scoping() {
       sourcesInFunction,
       scope.block.loc);
     const upperScopeStatements = getScopeBody(scope.upper);
-    const callExpressions = collectCallExpressions(upperScopeStatements).map(expression =>
-      (expression.expression));
-
-    // TODO do something with the callexpressions.
-    // console.log(callExpressions);
-    const communicationSources = functionSource.isCalledBy(callExpressions);
-
     const functionCalledBy = functionSource.isCalledBy(upperScopeStatements);
     return sourcesInFunction.concat(functionSource).concat(functionCalledBy);
-  }; // This function might be replaced by a check in nested sources.
+  };
 
   /**
    * Checks all returnstatements in the top scope of the function an checks whether
@@ -191,37 +158,7 @@ const Scope = (function scoping() {
       acc.concat(Utils.assignmentDeclarations(declaration))
     ), []);
   };
-
-  // TODO complete this
-  const hoistFromControl = function hoist(statement) {
-    switch (statement.type) {
-      case 'ForStatement': // Fall through.
-      case 'ForInStatement':
-        return statement.body.body.reduce(
-          (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
-      case 'ForOfStatement':
-        return statement;// TODO this.
-      case 'LabeledStatement':
-        return statement;// TODO this.
-      case 'TryStatement':
-        return statement;// TODO this.
-      case 'IfStatement': {
-        const consequent = statement.consequent.body.reduce(
-          (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
-        let alternate = [];
-        if (statement.alternate !== null) {
-          alternate = statement.alternate.body.reduce(
-            (acc, bodyStatement) => acc.concat(hoist(bodyStatement)), []);
-        }
-        return consequent.concat(alternate);
-      }
-      case 'SwitchStatement':
-        return statement;// TODO this.
-      default:
-        return statement;
-    }
-  };
-
+  
   /**
    * Filters all assignment expressions from the scope body and returns these.
    */
@@ -370,9 +307,8 @@ const Scope = (function scoping() {
       return { sources: objectSources, sinks: objectSinks };
     }, { sources: [], sinks: [] });// Dit kan eleganter
   };
-  
   //
-  // const path = '../test/ast_tests/source/if_source.js';
+  // const path = '../test/ast_tests/source/switch_sources.js';
   // const ast = GenerateAST.astFromFile(path);
   // const globalScope = getGlobalScope(ast);
   // console.log(nestedVulnerabilities(path, globalScope));
@@ -387,5 +323,4 @@ const Scope = (function scoping() {
   };
 }());
 
-// TODO Recursive check over all child scopes??
 module.exports = Scope;

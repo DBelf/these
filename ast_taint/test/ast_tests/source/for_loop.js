@@ -9,11 +9,6 @@ for(var i = 0; i < 5; i++){
 for(stuff in [1,2,3]) {
     console.log(stuff);
 }
-//
-// for (let stuff of [1,2,3]) {
-//   console.log(stuff);
-// }
-
 for(var i = 0; i < 5; i++) {
     for(var j = 0; j < 5; j++){
         console.log(i);
