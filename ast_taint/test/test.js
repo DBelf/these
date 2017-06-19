@@ -168,8 +168,7 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
-      console.log(sources);
-      expect(sources).to.have.lengthOf(3);
+      expect(sources).to.have.lengthOf(4);
     });
     it('can find all aliased sources and sinks', () => {
       const path = 'test/ast_tests/sources_and_sinks/aliased.js';

@@ -233,7 +233,7 @@ const Scope = (function scoping() {
    * Collects the sources within a scope and returns a list of these.
    */
   const collectSources = function (filepath, scopeBody, upperSources = []) {
-    const declaredAndUpperSources = declaredSources(filepath, scopeBody).concat(upperSources);
+    const declaredAndUpperSources = upperSources.concat(declaredSources(filepath, scopeBody));
     const assignmentsInScope = collectAssignmentExpressions(scopeBody);
     const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
     // const ifClauses = collectIfStatements(filepath, scopeBody, upperSources);
@@ -284,8 +284,7 @@ const Scope = (function scoping() {
    * Takes the sources of upper scopes into consideration aswell.
    */
   const nestedVariableSources = function checkChildScope(filepath, scope, sources = []) {
-    const newSources = sourcesInScope(filepath, scope, sources).concat(sources);
-
+    const newSources = sourcesInScope(filepath, scope, sources);
     if (scope.childScopes.length < 1) {
       // Found all children in this branch of the scope tree.
       return newSources;

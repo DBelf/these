@@ -141,7 +141,6 @@ const ASTManipulations = (function utilities() {
 
   const declarationPointsTo = function (node, identifier) {
     if (isIdentifier(node.init)) {
-      console.log(`identifier:${identifier} === node name:${node.init.name}`);
       return node.init.name === identifier;
     }
     return false;
