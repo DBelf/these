@@ -38,13 +38,14 @@ def parse_sink(line1, line2):
                 new_file.write('{}\n'.format(line.strip()))
 
 
-for folder in os.walk(BASEPATH).next()[1]:
-    subprocess.call('node ../lib/ASTTaint.js {0}'.format(BASEPATH + folder), shell=True)
-#
-# with open('vulnerabilities/sources.txt') as f:
-#     for line1,line2 in itertools.izip_longest(*[f]*2):
-#         parse_source(line1,line2)
-#
-# with open('vulnerabilities/sinks.txt') as f:
-#     for line1,line2 in itertools.izip_longest(*[f]*2):
-#         parse_sink(line1,line2)
+# for folder in os.walk(BASEPATH).next()[1]:
+#     subprocess.call('node ../lib/ASTTaint.js {0}'.format(BASEPATH + folder), shell=True)
+subprocess.call('node ../lib/ASTTaint.js {0}'.format('/Users/dimitri/Documents/these/ast_taint/addons/adblock-for-firefox'), shell=True)
+
+with open('vulnerabilities/sources.txt') as f:
+    for line1,line2 in itertools.izip_longest(*[f]*2):
+        parse_source(line1,line2)
+
+with open('vulnerabilities/sinks.txt') as f:
+    for line1,line2 in itertools.izip_longest(*[f]*2):
+        parse_sink(line1,line2)

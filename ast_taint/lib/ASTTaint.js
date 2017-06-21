@@ -25,6 +25,14 @@ const findManifest = function gatherFiles(projectPath) {
   return filesInPath;
 };
 
+const readManifest = function (manifestPath) {
+  console.log(manifestPath);
+  const obj = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  if (obj.hasOwnProperty('content_security_policy')) {
+    console.log(obj['content_security_policy']);
+  }
+};
+
 const analyze = function (path) {
   console.log(path);
   const ast = GenerateAST.astFromFile(path);
@@ -53,7 +61,7 @@ console.log(`Reading ${projectPath}`);
 
 const filesInProject = GenerateAST.collectFiles(projectPath);
 const manifest = findManifest(projectPath);
-if(manifest.length >= 1) {
-  console.log(manifest[0]);
+if (manifest.length >= 1) {
+  readManifest(manifest[0]);
 }
-// filesInProject.map(file => analyze(file));
+filesInProject.map(file => analyze(file));
