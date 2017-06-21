@@ -1,6 +1,29 @@
 const GenerateAST = require('./GenerateAST');
 const Scope = require('./Scope');
+const fs = require('fs');
+const path = require('path');
 
+const findManifest = function gatherFiles(projectPath) {
+  let filesInPath = [];
+  if (!fs.existsSync(projectPath)) {
+    // console.log("no dir ",path); //DEBUG
+    return filesInPath;
+  }
+  const files = fs.readdirSync(projectPath);
+  files.forEach((filePath) => {
+    const filename = path.join(projectPath, filePath);
+    const stat = fs.lstatSync(filename);
+
+    if (stat.isDirectory()) {
+      filesInPath = filesInPath.concat(gatherFiles(filename)); // recurse
+    } else if (filename.endsWith('manifest.json')) {
+      // console.log('-- found: ', filename); //DEBUG
+      filesInPath.push(filename);
+    }
+  });
+
+  return filesInPath;
+};
 
 const analyze = function (path) {
   console.log(path);
@@ -29,4 +52,8 @@ const projectPath = process.argv[2];
 console.log(`Reading ${projectPath}`);
 
 const filesInProject = GenerateAST.collectFiles(projectPath);
-filesInProject.map(file => analyze(file));
+const manifest = findManifest(projectPath);
+if(manifest.length >= 1) {
+  console.log(manifest[0]);
+}
+// filesInProject.map(file => analyze(file));

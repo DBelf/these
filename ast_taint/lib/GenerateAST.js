@@ -4,7 +4,6 @@
 const fs = require('fs');
 const path = require('path');
 const esprima = require('esprima');
-const lazy = require('lazy');
 
 const GenerateAST = (function generate() {
   const EXTENSION = '.js';
@@ -33,7 +32,7 @@ const GenerateAST = (function generate() {
     return ast;
   };
 
-  const gatherFiles = function (parentPath) {
+  const collectFiles = function gatherFiles(parentPath) {
     let filesInPath = [];
     if (!fs.existsSync(parentPath)) {
       // console.log("no dir ",path); //DEBUG
@@ -106,31 +105,6 @@ const GenerateAST = (function generate() {
     });
   };
 
-  //Broken??
-  const returnLines = function (filename, loc) {
-    const start = loc.start.line;
-    const end = loc.end.line;
-
-    let sourceLines = [];
-    fs.exists(filename, (exists) => {
-      if (exists) {
-        // Used lazy package to save memory (and maybe time).
-        const lines = (lazy(fs.createReadStream(filename))
-          .lines
-          .map(String)
-          .skip(start - 1)
-          .take(end - start + 1)
-        );
-        lines.forEach((line) => {
-          sourceLines = sourceLines.concat(line);
-          console.log(sourceLines);
-        });
-        return sourceLines;
-      }
-    });
-    return sourceLines;
-  };
-
   const createProjectAST = function (parentPath, destination) {
     const filesInPath = gatherFiles(parentPath);
     createTmpDir(destination);
@@ -146,11 +120,10 @@ const GenerateAST = (function generate() {
   // console.log(sourceCode);
   //
   return {
-    collectFiles: gatherFiles,
+    collectFiles,
     createProjectAST,
     astFromFile,
     saveToFile,
-    returnLines,
   };
 }());
 
