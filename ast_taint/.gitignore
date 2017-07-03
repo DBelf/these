@@ -1,9 +1,11 @@
 ### Own ignored folders ###
 
 tmp/
-addons/ 
+addons/
 addon_crawler/addon_crawler
 addon_crawler/vulnerabilities
+fileCrawler.txt
+stderr.txt
 
 Created by https://www.gitignore.io/api/node,webstorm
 
