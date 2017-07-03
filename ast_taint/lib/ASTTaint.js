@@ -32,6 +32,9 @@ const manifests = ManifestChecks.findManifest(projectPath);
 if(manifests.length) {
   console.log('Manifest Found:');
   manifests.forEach(manifest => console.log(manifest.contentSecurityPolicy()));
+} else{
+  console.log('No Manifest:');
+  console.log('');
 }
 filesInProject.map((file) => {
   try {
@@ -40,3 +43,4 @@ filesInProject.map((file) => {
     return ;
   }
 });
+console.log('---------');

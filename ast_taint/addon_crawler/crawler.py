@@ -25,7 +25,7 @@ def unzip(path):
     os.remove(path)
 
 driver = webdriver.Firefox()
-driver.get("https://addons.mozilla.org/nl/firefox/extensions/?sort=users&page=7")
+driver.get("https://addons.mozilla.org/nl/firefox/extensions/?sort=users&page=14")
 descriptionElementXPath = "//div[contains(@class, 'info')]";
 
 assert "Add-ons" in driver.title
