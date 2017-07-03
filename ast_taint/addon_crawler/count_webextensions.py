@@ -29,7 +29,6 @@ def calculatePercentage(part, whole):
 
 with open('../fileCrawler.txt', "r") as text_file:
     for lines in grouper(text_file, 4, ""):
-
         print unpackLines(lines)
 
 print 'Total number of extensions checked: {}'.format(totalRead)
