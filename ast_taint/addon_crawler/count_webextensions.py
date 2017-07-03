@@ -32,10 +32,10 @@ with open('../fileCrawler.txt', "r") as text_file:
 
         print unpackLines(lines)
 
-print totalRead
-print webextensions
-print editedCSP
-print unsafeOperations
+print 'Total number of extensions checked: {}'.format(totalRead)
+# print webextensions
+# print editedCSP
+# print unsafeOperations
 print 'Percentage WebExtensions: {0:.2f}%'.format(calculatePercentage(webextensions, totalRead))
 print 'Percentage edited CSPs: {0:.2f}%'.format(calculatePercentage(editedCSP, webextensions))
 print 'Percentage unsafe operations allowed: {0:.2f}%'.format(calculatePercentage(unsafeOperations, webextensions))
