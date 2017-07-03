@@ -42,11 +42,27 @@ const Scope = (function scoping() {
       case 'LabeledStatement':
         return statement;// Not addind this, no labeled statements for me...
       case 'TryStatement': {
-        const tryBody = statement.block.body.reduce((acc, blockStatement) =>
-          acc.concat(hoist(blockStatement)), []);
-        const catchBody = statement.handler.body.body.reduce((acc, blockStatement) =>
-          acc.concat(hoist(blockStatement)), []);
+        let tryBody = [];
+        let catchBody = [];
         let finalBody = [];
+        if (statement.block.body !== undefined) {
+          if (Array.isArray(statement.block.body)) {
+            tryBody = statement.block.body.reduce((acc, blockStatement) =>
+              acc.concat(hoist(blockStatement)), []);
+          } else {
+            tryBody = hoist(statement.block.body);
+          }
+        }
+        if (statement.handler !== null) {
+          if (statement.handler.body.body !== undefined) {
+            if (Array.isArray(statement.handler.body.body)) {
+              catchBody = statement.handler.body.body.reduce((acc, blockStatement) =>
+                acc.concat(hoist(blockStatement)), []);
+            } else {
+              catchBody = hoist(statement.handler.body.body);
+            }
+          }
+        }
         if (statement.finalizer !== null) {
           finalBody = statement.finalizer.body.reduce((acc, blockStatement) =>
             acc.concat(hoist(blockStatement)), []);

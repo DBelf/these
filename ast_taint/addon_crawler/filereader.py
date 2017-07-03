@@ -37,11 +37,13 @@ def parse_sink(line1, line2):
             for line in itertools.islice(text_file, position[0] - 1, position[1]):
                 new_file.write('{}\n'.format(line.strip()))
 
+count = 0
+for folder in os.walk(BASEPATH).next()[1]:
+    count += 1
+    subprocess.call('node ../lib/ASTTaint.js {0}'.format(BASEPATH + folder), shell=True)
+# subprocess.call('node ../lib/ASTTaint.js {0}'.format('/Users/dimitri/Documents/these/ast_taint/addons/adblock-for-firefox'), shell=True)
 
-# for folder in os.walk(BASEPATH).next()[1]:
-#     subprocess.call('node ../lib/ASTTaint.js {0}'.format(BASEPATH + folder), shell=True)
-subprocess.call('node ../lib/ASTTaint.js {0}'.format('/Users/dimitri/Documents/these/ast_taint/addons/adblock-for-firefox'), shell=True)
-
+print count
 with open('vulnerabilities/sources.txt') as f:
     for line1,line2 in itertools.izip_longest(*[f]*2):
         parse_source(line1,line2)

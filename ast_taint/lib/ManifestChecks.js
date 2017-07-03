@@ -6,7 +6,12 @@ const path = require('path');
 
 const ManiFestChecks = (function checks() {
   const getJSON = function (manifestPath) {
-    const obj = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    let obj;
+    try {
+      obj = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    } catch (err) {
+      obj = {};
+    }
     return obj;
   };
 
@@ -18,8 +23,8 @@ const ManiFestChecks = (function checks() {
 
     contentSecurityPolicy() {
       if (Object.prototype.hasOwnProperty.call(this.manifestJSON, 'content_security_policy')) {
-        return this.manifestJSON.content_security_policy;
-      } return 'script-src \'self\'; object-src \'self\';';
+        return `edited: ${this.manifestJSON.content_security_policy}`;
+      } return 'default: script-src \'self\'; object-src \'self\';';
     }
   }
 

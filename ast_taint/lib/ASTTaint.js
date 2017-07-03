@@ -1,10 +1,8 @@
 const GenerateAST = require('./GenerateAST');
 const Scope = require('./Scope');
 const ManifestChecks = require('./ManifestChecks');
-const fs = require('fs');
 
 const analyze = function (path) {
-  console.log(path);
   const ast = GenerateAST.astFromFile(path);
   const globalScope = Scope.getGlobalScope(ast);
   const sources = Scope.nestedVariableSources(path, globalScope);
@@ -31,5 +29,14 @@ console.log(`Reading ${projectPath}`);
 
 const filesInProject = GenerateAST.collectFiles(projectPath);
 const manifests = ManifestChecks.findManifest(projectPath);
-manifests.forEach(manifest => console.log(manifest.contentSecurityPolicy()));
-filesInProject.map(file => analyze(file));
+if(manifests.length) {
+  console.log('Manifest Found:');
+  manifests.forEach(manifest => console.log(manifest.contentSecurityPolicy()));
+}
+filesInProject.map((file) => {
+  try {
+    analyze(file);
+  } catch (err) {
+    return ;
+  }
+});
