@@ -24,18 +24,19 @@ def unzip(path):
     zip_ref.close()
     os.remove(path)
 
-driver = webdriver.Firefox()
-driver.get("https://addons.mozilla.org/nl/firefox/extensions/?sort=users&page=20")
-descriptionElementXPath = "//div[contains(@class, 'info')]";
+for i in range(1, 21):
+    driver = webdriver.Firefox()
+    driver.get("https://addons.mozilla.org/nl/firefox/extensions/?sort=users&page={}").format(i)
+    descriptionElementXPath = "//div[contains(@class, 'info')]";
 
-assert "Add-ons" in driver.title
+    assert "Add-ons" in driver.title
 
-elems = driver.find_elements_by_xpath("//a[@href]")
+    elems = driver.find_elements_by_xpath("//a[@href]")
 
-addons_in_elems = filter(lambda elem: ".xpi" in elem.get_attribute("href"), elems)
+    addons_in_elems = filter(lambda elem: ".xpi" in elem.get_attribute("href"), elems)
 
-for addon_url in addons_in_elems:
-    download_url(addon_url)
+    for addon_url in addons_in_elems:
+        download_url(addon_url)
 
-assert "No results found." not in driver.page_source
-driver.close()
+    assert "No results found." not in driver.page_source
+    driver.close()

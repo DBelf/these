@@ -35,6 +35,6 @@ print 'Total number of extensions checked: {}'.format(totalRead)
 # print webextensions
 # print editedCSP
 # print unsafeOperations
-print 'Percentage WebExtensions: {0:.2f}%'.format(calculatePercentage(webextensions, totalRead))
-print 'Percentage edited CSPs: {0:.2f}%'.format(calculatePercentage(editedCSP, webextensions))
-print 'Percentage unsafe operations allowed: {0:.2f}%'.format(calculatePercentage(unsafeOperations, webextensions))
+print 'Amount and Percentage WebExtensions: {0} - {1:.2f}%'.format(webextensions, calculatePercentage(webextensions, totalRead))
+print 'Amount and Percentage edited CSPs: {0} - {1:.2f}%'.format(editedCSP, calculatePercentage(editedCSP, webextensions))
+print 'Amount and Percentage unsafe operations allowed: {0} - {1:.2f}%'.format(unsafeOperations, calculatePercentage(unsafeOperations, webextensions))

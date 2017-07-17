@@ -28,7 +28,7 @@ const SinkFinder = (function sinkFinder() {
 
     saveToFile() {
       const path = './vulnerabilities/sinks.txt';
-      const data = `${this.file}\n ${JSON.stringify(this.location)};\n`;
+      const data = `${this.file}, Sink\n ${JSON.stringify(this.location)};\n`;
       GenerateAST.saveToFile(path, data);
     }
   }
@@ -42,6 +42,12 @@ const SinkFinder = (function sinkFinder() {
 
     argumentIsSource(sourcesInScope) {
       sourcesInScope.reduce((acc, source) => source.isUsedIn(this.args));
+    }
+
+    saveToFile() {
+      const path = './vulnerabilities/sinks.txt';
+      const data = `${this.file}, Communication Sink\n ${JSON.stringify(this.location)};\n`;
+      GenerateAST.saveToFile(path, data);
     }
   }
 
