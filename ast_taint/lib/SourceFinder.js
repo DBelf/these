@@ -12,7 +12,7 @@ const SourceFinder = (function sourceFinder() {
   const locationSources = ['href', 'search', 'hash', 'pathname'];
   const communicationSources =
     ['addMessageListener', 'addListener', 'addEventListener', 'addWeakMessageListener'];
-  //TODO CHECK WHAT I'M LISTENING TO!(i.e. window, or parent)
+  // TODO CHECK WHAT I'M LISTENING TO!(i.e. window, or parent)
 
   // Abstract class for all source types.
   class Source {
@@ -38,7 +38,6 @@ const SourceFinder = (function sourceFinder() {
           return this.pointsToExpression(statement);
         case 'CallExpression':
           return this.passedAsSourceArgument(statement);
-          // TODO add checks for passing to functions/Anything else.
         default:
           return [];
       }
@@ -58,7 +57,7 @@ const SourceFinder = (function sourceFinder() {
           this.file, expression.expression.left.name, expression.loc) : [];
     }
 
-    passedAsSourceArgument(statement) { // TODO extend functionality to actual functions
+    passedAsSourceArgument(statement) {
       if (statement.callee.property !== undefined) {
         if (Utils.hasProperty(statement, this.identifier)) {
           return communicationSources.reduce((acc, communicationSource) =>
@@ -183,6 +182,15 @@ const SourceFinder = (function sourceFinder() {
     }
   };
 
+  const checkExpression = function (node) {
+    if (node.expression.callee === undefined || node.expression.callee === null) {
+      return false;
+    }
+    const communication = communicationSources.filter(source => (
+      Utils.hasProperty(node.expression.callee, source)));
+    return communication.length > 0;
+  };
+
   // Checks whether the returnstatement returns a vulnerable memberaccess.
   const returnAccessesSource = function (returnStatement) {
     return returnStatement.argument !== null ? checkMemberAccess(returnStatement.argument) : false;
@@ -204,6 +212,7 @@ const SourceFinder = (function sourceFinder() {
 
   return {
     checkMemberAccess,
+    checkExpression,
     AssignedSource,
     DeclaredSource,
     AccessedSource,

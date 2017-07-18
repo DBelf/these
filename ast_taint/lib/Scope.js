@@ -224,6 +224,14 @@ const Scope = (function scoping() {
       new SourceFinder.AccessedSource(filepath, source.object.name, source.loc)));
   };
 
+  const expressionStatments = function (filepath, scopeBody) {
+    const expressions = scopeBody.filter(Utils.isExpression);
+    const expressionSources = expressions.filter(statement => (
+      SourceFinder.checkExpression(statement)));
+    return expressionSources.map(source => (
+      new SourceFinder.CommunicationSource(filepath, 'comm', source.loc)));
+  };
+
   /**
    * Collects the sources within a scope and returns a list of these.
    */
@@ -233,12 +241,13 @@ const Scope = (function scoping() {
     const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
     // const ifClauses = collectIfStatements(filepath, scopeBody, upperSources);
     const accessStatements = sourceAccesses(filepath, scopeBody);
+    const expressionSources = expressionStatments(filepath, scopeBody);
 
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
     // Missing any other statements.
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
-    return sources.concat(accessStatements);
+    return sources.concat(accessStatements).concat(expressionSources);
   };
 
   /**
@@ -380,8 +389,8 @@ const Scope = (function scoping() {
       return { sources: objectSources, sinks: objectSinks };
     }, { sources: [], sinks: [] });// Dit kan eleganter
   };
-
-  // const path = '../test/ast_tests/source/switch_sources.js';
+  //
+  // const path = '../test/ast_tests/source/runtime_listener.js';
   // const ast = GenerateAST.astFromFile(path);
   // const globalScope = getGlobalScope(ast);
   // console.log(nestedVulnerabilities(path, globalScope));

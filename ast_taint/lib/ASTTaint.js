@@ -5,8 +5,11 @@ const ManifestChecks = require('./ManifestChecks');
 const analyze = function (path) {
   const ast = GenerateAST.astFromFile(path);
   const globalScope = Scope.getGlobalScope(ast);
-  const sources = Scope.nestedVariableSources(path, globalScope);
-  const sinks = Scope.nestedSinks(path, globalScope);
+  const vulnerabilityObject = Scope.nestedVulnerabilities(path, globalScope);
+  const sources = vulnerabilityObject.sources;
+  const sinks = vulnerabilityObject.sinks;
+  // const sources = Scope.nestedVariableSources(path, globalScope);
+  // const sinks = Scope.nestedSinks(path, globalScope);
   sources.forEach((source) => {
     if (source) {
       source.saveToFile();
