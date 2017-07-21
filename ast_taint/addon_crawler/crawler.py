@@ -1,3 +1,4 @@
+import sys
 import urllib
 import re
 import zipfile
@@ -24,9 +25,9 @@ def unzip(path):
     zip_ref.close()
     os.remove(path)
 
-for i in range(1, 21):
+def download_page(pageNumber=1):
     driver = webdriver.Firefox()
-    driver.get("https://addons.mozilla.org/nl/firefox/extensions/?sort=users&page={}").format(i)
+    driver.get("https://addons.mozilla.org/nl/firefox/extensions/?sort=users&page={}".format(pageNumber))
     descriptionElementXPath = "//div[contains(@class, 'info')]";
 
     assert "Add-ons" in driver.title
@@ -40,3 +41,5 @@ for i in range(1, 21):
 
     assert "No results found." not in driver.page_source
     driver.close()
+
+download_page(int(sys.argv[1]))
