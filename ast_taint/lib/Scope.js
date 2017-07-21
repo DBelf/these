@@ -2,7 +2,6 @@
  * Created by dimitri on 18/05/2017.
  */
 
-const GenerateAST = require('./GenerateAST');
 const Utils = require('./Utils');
 const SourceFinder = require('./SourceFinder');
 const SinkFinder = require('./SinkFinder');
@@ -154,7 +153,6 @@ const Scope = (function scoping() {
    */
   const functionIsSource = function (filepath, scope, sourcesInScope) {
     const returnsInFunction = returnsInScope(scope);
-    // There's a chance this gets hit twice?
 
     const sourceReturns = returnsInFunction.filter(statement => (
       Utils.returnsIdentifier(statement))).reduce((acc, returnStatement) => (
@@ -239,12 +237,10 @@ const Scope = (function scoping() {
     const declaredAndUpperSources = upperSources.concat(declaredSources(filepath, scopeBody));
     const assignmentsInScope = collectAssignmentExpressions(scopeBody);
     const assignmentDeclarations = collectAssignmentDeclarations(scopeBody);
-    // const ifClauses = collectIfStatements(filepath, scopeBody, upperSources);
     const accessStatements = sourceAccesses(filepath, scopeBody);
     const expressionSources = expressionStatments(filepath, scopeBody);
 
     const potentialSources = assignmentsInScope.concat(assignmentDeclarations);
-    // Missing any other statements.
     const sources = declaredAndUpperSources.reduce((acc, source) => (
       acc.concat(source.isUsedIn(potentialSources))), declaredAndUpperSources);
     return sources.concat(accessStatements).concat(expressionSources);
@@ -387,13 +383,8 @@ const Scope = (function scoping() {
       const objectSources = hits.sources;
       const objectSinks = hits.sinks;
       return { sources: objectSources, sinks: objectSinks };
-    }, { sources: [], sinks: [] });// Dit kan eleganter
+    }, { sources: [], sinks: [] });
   };
-  //
-  // const path = '../test/ast_tests/source/runtime_listener.js';
-  // const ast = GenerateAST.astFromFile(path);
-  // const globalScope = getGlobalScope(ast);
-  // console.log(nestedVulnerabilities(path, globalScope));
 
   return {
     hoistFromControl,

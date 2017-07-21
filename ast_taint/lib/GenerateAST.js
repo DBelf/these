@@ -72,7 +72,6 @@ const GenerateAST = (function generate() {
     });
   };
 
-  // FIXME breaks on nested folders.
   const createWithFilePath = function (destination) {
     const fullPath = destination.split('/');
     if (fullPath.length > 1) {
@@ -80,15 +79,13 @@ const GenerateAST = (function generate() {
     }
   };
 
-  // FIXME calling this somehow prints null??
   const createTmpDir = function (destination) {
     if (!destination) {
       createDefault();
-    } else if (destination.indexOf('.js') >= 0) { // bitwise ~ makes it true or false
+    } else if (destination.indexOf('.js') >= 0) {
       FULLPATH = destination;
       createWithFilePath(destination);
     } else {
-      // TODO check whether forwardslash is in destination name.
       FULLPATH = destination.concat(DEFAULT_FILENAME);
       createWithFilePath();
     }
@@ -114,11 +111,6 @@ const GenerateAST = (function generate() {
     return ast;
   };
 
-  // const filePath = '../test/test_resources/line_print.js';
-  // const ast = astFromFile(filePath);
-  // const sourceCode = returnLines(filePath, ast.body[0].loc);
-  // console.log(sourceCode);
-  //
   return {
     collectFiles,
     createProjectAST,

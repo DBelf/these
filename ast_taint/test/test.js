@@ -137,7 +137,7 @@ describe('Scope Analysis', () => {
       const ast = GenerateAST.astFromFile(path);
       const globalScope = ScopeAnalysis.getGlobalScope(ast);
       const sources = ScopeAnalysis.nestedVariableSources(path, globalScope);
-      expect(sources).to.have.lengthOf(2);
+      expect(sources).to.have.lengthOf(3);
     });
     it('can find the source within either clause of an if statement', () => {
       const path = 'test/ast_tests/source/if_source.js';

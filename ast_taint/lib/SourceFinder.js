@@ -12,7 +12,6 @@ const SourceFinder = (function sourceFinder() {
   const locationSources = ['href', 'search', 'hash', 'pathname'];
   const communicationSources =
     ['addMessageListener', 'addListener', 'addEventListener', 'addWeakMessageListener'];
-  // TODO CHECK WHAT I'M LISTENING TO!(i.e. window, or parent)
 
   // Abstract class for all source types.
   class Source {
